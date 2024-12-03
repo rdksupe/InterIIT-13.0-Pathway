@@ -14,7 +14,7 @@ def handle_query():
 
     # Log or process the received query
     print(f"Received query: {query}")
-    # get_data(query)
+    get_data(query)
     return '',204
 
 

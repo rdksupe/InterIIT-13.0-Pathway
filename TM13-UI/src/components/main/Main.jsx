@@ -120,21 +120,21 @@ const Main = () => {
 		if (socket && socket.readyState === WebSocket.OPEN) {
 			socket.send(JSON.stringify({ type: 'query', query }));
 		}
-		// try {
-		// 	fetch('http://localhost:5000/query', {
-		// 	  method: 'POST',
-		// 	  headers: {
-		// 		'Content-Type': 'application/json',
-		// 	  },
-		// 	  body: JSON.stringify({ query: input }), // Send input to the Flask backend
-		// 	});
+		try {
+			fetch('http://localhost:5000/query', {
+			  method: 'POST',
+			  headers: {
+				'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({ query: input }), // Send input to the Flask backend
+			});
 		
-		// 	console.log('Query sent successfully!');
-		// 	setLoading(false);
-		//   } catch (error) {
-		// 	console.error('Error sending query to backend:', error);
-		// 	setLoading(false);
-		//   }
+			console.log('Query sent successfully!');
+			setLoading(false);
+		  } catch (error) {
+			console.error('Error sending query to backend:', error);
+			setLoading(false);
+		  }
 	}
 
 	// Adjust textarea height dynamically
@@ -160,6 +160,8 @@ const Main = () => {
 
 	const handleFileChange = (event) => {
 		setEvenData(event);
+		console.log(event);
+
 	};
 
 	const triggerFileInput = () => {
@@ -251,7 +253,7 @@ const Main = () => {
 			}
 		}}>
 			<div className="nav">
-				<img src={assets.pathway_icon} className="pway" alt="" />
+				<img src={assets.main_logo} className="pway" alt="" />
 				<div className="rightside">
 					<Dropdown />
 					<img src={assets.user} className="user" alt="" />
@@ -376,7 +378,7 @@ const Main = () => {
 							)}
 							</div>
 							{downloadData && (
-								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', margin:'10px 50px'}}>
+								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', marginTop: '1vh', marginLeft:'7vh'}}>
 								</img>
 							)}
 						</div>
@@ -414,7 +416,6 @@ const Main = () => {
 						<div>
 							<img src={assets.attach_icon} alt="Upload" onClick={triggerFileInput} />
 							<input
-								webkitdirectory="true"
 								multiple
 								id="hiddenFileInput"
 								type="file"

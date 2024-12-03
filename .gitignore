@@ -12,3 +12,9 @@ lib64/
 parts/
 sdist/
 var/add 
+plan.txt
+plan.json
+chart_generation.log
+assets/*
+output/*
+error_logs.json

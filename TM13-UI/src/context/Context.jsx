@@ -48,7 +48,7 @@ const ContextProvider = (props) => {
 					renderBatch();
 				} else {
 					console.log('All data rendered. Setting downloadData to true.');
-					setDownloadData(true);
+					// setDownloadData(true);
 				}
 			}
 		}, 1 * index); // Adjust delay for desired pacing
