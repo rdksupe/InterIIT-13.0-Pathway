@@ -48,7 +48,7 @@ const Main = () => {
 	const textAreaRef = useRef(null);
 
 	const generatePDF = () => {
-		// Send the raw Markdown content to the backend without conversion
+		// Send the raw Markdown content to the backend
 		fetch('http://localhost:5000/convert', {
 			method: 'POST',
 			headers: {
@@ -60,10 +60,33 @@ const Main = () => {
 			if (!response.ok) {
 				throw new Error('Failed to send data to the backend');
 			}
-			console.log('Content sent successfully to backend.');
+			return response.json();  // Expecting a JSON response
+		})
+		.then(data => {
+			console.log('Markdown content sent successfully to backend:', data.message);
+	
+			// Now fetch the generated PDF from the backend after it's processed
+			return fetch('http://localhost:5000/download-pdf', {
+				method: 'GET',
+			});
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Failed to fetch the generated PDF');
+			}
+			return response.blob(); // Convert the response to a blob
+		})
+		.then(blob => {
+			// Create a download link and trigger the download
+			const link = document.createElement('a');
+			link.href = window.URL.createObjectURL(blob);
+			link.download = 'generated_output.pdf'; // Specify the filename
+			document.body.appendChild(link);
+			link.click();
+			link.remove();
 		})
 		.catch(error => {
-			console.error('Error sending content to backend:', error);
+			console.error('Error during the process:', error);
 		});
 	};
 
