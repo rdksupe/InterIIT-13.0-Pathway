@@ -128,7 +128,7 @@ def web_scrape(url, query) -> Union[Dict, str]:
     Returns the scraped data as JSON if successful, else move on to the next best site in case of errors like required login, captcha etc.
     """
     #url, query = tup
-    api_url = f'htttp://35.184.195.118/:3000/{url}'
+    api_url = f'htttp://35.184.195.118:3000/{url}'
     headers = {
         'Accept': 'application/json',
         'X-Respond-With':'markdown',

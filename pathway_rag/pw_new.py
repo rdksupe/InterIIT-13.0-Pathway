@@ -131,16 +131,15 @@ class DocumentProcessor:
 
 def main():
     # Initialize data directory for document storage
-    data_dir = "~/tech-meet-13/RACCOON/Agents/LATS/temp_rag_space"
-    expanded_path = os.path.expanduser(data_dir)
+    data_dir = "../RACCOON/Agents/LATS/temp_rag_space"
 
     knowledge_dir = "/home/rdk/kb_1002"
     # os.makedirs(knowledge_dir,exist_ok=True)
-    os.makedirs(expanded_path, exist_ok=True)
+    os.makedirs(data_dir, exist_ok=True)
     
     # Set up and start servers
     processor = DocumentProcessor()
-    processor.initialize_vector_store(expanded_path)
+    processor.initialize_vector_store(data_dir)
     # processor.initialize_user_store(knowledge_dir)
     processor.setup_question_answerer()
     processor.setup_document_server()
