@@ -1,4 +1,4 @@
-# Reflective Agentic Coordination for Contextual Optimization of Organized Networks
+# DARTS : DYNAMIC AGENTIC REFLECTIVE TREE SEARCH
 
 ## Instructions to run the pipeline
 
@@ -41,6 +41,7 @@ brew install libmagic
 3. Install Required Dependencies and run the UI which will be available at localhost:5173
    `
    cd TM13-UI &&
+   python app.py &&
    npm i &&
    npm run dev
    `
