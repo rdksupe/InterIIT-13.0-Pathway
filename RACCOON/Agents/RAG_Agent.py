@@ -39,7 +39,7 @@ def ragAgent(query, api_key, LLM, state):
         \n
         '''
 
-        prompt = f"Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses must be with respect to this time frame" + sys_prompt + rag_result
+        prompt = f"""Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses must be with respect to this time frame""" + sys_prompt + rag_result
         client = OpenAI()
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
