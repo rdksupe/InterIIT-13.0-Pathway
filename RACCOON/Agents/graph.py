@@ -17,12 +17,13 @@ def generate_chart(content: str) -> str:
     Returns:
         str: 'Image Saved' if the chart is successfully generated and saved, or an error message otherwise.
     """
-    dotenv.load_dotenv('.env')
+    dotenv.load_dotenv('../../.env')
     genai.configure(api_key=os.environ["GEMINI_API_KEY_30"])
     model = genai.GenerativeModel("gemini-1.5-flash")
+    #TODO: Add openai client
 
     messages = f"""SYSTEM: You are a helpful AI assistant. You are being given a markdown file with the content below. The markdown file contains data extracted from different sources. Your job is to first analyse the data, and find if any kind of potential data visualization can be built for it.\
-    If a chart can be built, assume that it is generated and stored in 'assets' folder, with the name of the image being directly related to the data it is presenting. Now simply change the markdown file to include the image at the appropriate place. Only add a link to include the image. Do not change the content at all. Do not add charts everywhere. Only add charts if and only if enonugh data is available. Do not create a graph if in case one of the value is not present for a source. Use various different types of graphs available in matplotlib. Do not add a markdown code block in the beginnning.\ 
+    If a chart can be built, assume that it is generated and stored in 'assets' folder, with the name of the image being directly related to the data it is presenting. Now simply change the markdown file to include the image at the appropriate place. Only add a link to include the image. Do not change the content at all. Do not add charts everywhere. Only add charts if and only if enough data is available. Do not create a graph if in case one of the value is not present for a source. Use various different types of graphs available in matplotlib. Do not add a markdown code block in the beginning.\ 
     HUMAN: {content}
     """
     ai_msg = model.generate_content(messages)
@@ -52,7 +53,7 @@ def generate_chart(content: str) -> str:
     HUMAN: {ai_msg.text}
     """
     final = model.generate_content(messages_new)
-    # logging.info(f"Python_Tool: AI_CODE respone: {ai_msg.text}")
+    # logging.info(f"Python_Tool: AI_CODE response: {ai_msg.text}")
     print(final.text)
     # Execute the generated code and log the result
     try:

@@ -1,11 +1,12 @@
-import dotenv
+from dotenv import load_dotenv
 import logging
 import os
 import google.generativeai as genai
 from langchain_experimental.utilities import PythonREPL
 from openai import OpenAI
-client = OpenAI(api_key="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")
-# OpenAI.api_key = os.getenv('OPENAI_API_KEY_30')
+
+load_dotenv('../../.env')
+client = OpenAI(api_key=os.getenv('OPEN_AI_API_KEY_30'))
 
 def generate_chart(file_path: str) -> str:
     with open(file_path, 'r', encoding='utf-8') as md_file:
@@ -32,10 +33,10 @@ def generate_chart(file_path: str) -> str:
 
     1. Now simply change the markdown file to include the image at the appropriate place, by mentioning a link to it at the appropriate place. 
     2. Only add a link to include the image and properly define the path of the image in markdown format. Do not change the content at all. 
-    3. Do not add charts everywhere. Only add charts if and only if enonugh data is available. Only create charts for numeric data. 
+    3. Do not add charts everywhere. Only add charts if and only if enough data is available. Only create charts for numeric data. 
     4. Do not create a graph if in case one of the value is not present for a source. 
     5. Use various different types of graphs available in matplotlib. 
-    6. Do not add a markdown code block in the beginnning. 
+    6. Do not add a markdown code block in the beginning. 
     """
     # ai_msg = model.generate_content(messages)
 
@@ -106,13 +107,12 @@ def generate_chart(file_path: str) -> str:
         ]
     )
 
-    responsee = completion.choices[0].message.content.strip()
+    response = completion.choices[0].message.content.strip()
     try:
-        result = repl.run(responsee)
+        result = repl.run(response)
         logging.info(f"Execution Result: {result}")
         return "Image Saved"
     except Exception as e:
         logging.error(f"Failed to execute code. Error: {repr(e)}")
         return "Error"
-
 

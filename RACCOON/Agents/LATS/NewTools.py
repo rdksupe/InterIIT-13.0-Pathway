@@ -52,8 +52,8 @@ from langchain.agents import initialize_agent, AgentType
 from typing import Dict
 
 ERROR_LOG_FILE = "error_logs.json"
+load_dotenv('../../../.env')
 
-dotenv.load_dotenv('.env')
 
 def log_error(tool_name, error_message, additional_info=None):
     error_entry = {
@@ -83,7 +83,6 @@ def log_error(tool_name, error_message, additional_info=None):
         print(f"Failed to log error: {e}") 
         
 
-print(load_dotenv('.env'))
 logging.basicConfig(filename='chart_generation.log', level=logging.INFO, format='%(asctime)s %(levelname)s:%(message)s')
 
 os.environ["GOOGLE_API_KEY"]= os.getenv('GEMINI_API_KEY_30')
@@ -425,7 +424,8 @@ def get_indian_kanoon(query: str):
         tuple: A tuple containing the title (str), date (str), and document text (str).
     """
     # Load environment variables
-    dotenv.load_dotenv('.env')
+    dotenv.load_dotenv('../../../.env')
+
     INDIAN_KANOON_API_KEY = os.getenv('INDIAN_KANOON_API_KEY_30')
 
     try:
@@ -1366,7 +1366,3 @@ def get_reddit_search(query, limit=5):
 #     except Exception as e:
 #         print(f"Error in `web_scrape`: {e}")
 #         pass
-
-
-#print(web_scrape.invoke({"url":"https://indiankanoon.org/doc/79411056/", "query":"Children of which age will be tried as adults?"}))
-print(query_documents.invoke("Children of which age will be tried as adults?"))

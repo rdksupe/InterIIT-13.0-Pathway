@@ -17,7 +17,7 @@ from collections import defaultdict
 from langgraph.prebuilt import ToolNode
 from Agents.LATS.NewTools import *
 from dotenv import load_dotenv
-load_dotenv('.env')
+load_dotenv('../../../.env')
 parser = JsonOutputToolsParser(return_id=True)
 
 def custom_generate_candidates(tools):

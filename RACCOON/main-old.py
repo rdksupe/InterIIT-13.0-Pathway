@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-load_dotenv('.env')
+load_dotenv('../.env')
 
 import time
 import json
@@ -98,7 +98,7 @@ if query_type == "complex":
     #Tested multiple times
     else:
         fin_resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
-
+    os.makedirs('./output', exist_ok=True)
     with open('./output/individual_response.json', 'w') as json_file:
         json.dump(taskResultsDict, json_file, indent=4)
 

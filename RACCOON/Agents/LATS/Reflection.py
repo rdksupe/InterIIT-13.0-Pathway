@@ -12,7 +12,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
-load_dotenv('.env')
+load_dotenv('../../../.env')
 from Agents.LATS.utils import llm_to_check
 
 
@@ -209,7 +209,7 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-llm_to_check = ChatOpenAI(model="gpt-4o-mini",openai_api_key=os.getenv("OPENAI_API_KEY_30_TEST"))
+llm_to_check = ChatOpenAI(model="gpt-4o-mini",openai_api_key=os.getenv("OPEN_AI_API_KEY_30_TEST"))
 
 reflection_llm_chain = (
     prompt

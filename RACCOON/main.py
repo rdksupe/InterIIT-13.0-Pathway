@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-load_dotenv('.env')
+load_dotenv('../.env')
 
 import time
 import json
@@ -71,7 +71,7 @@ async def mainBackend(query, websocket):
     print("Running mainBackend, ", query)
     GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY_30')
     OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
-
+    os.makedirs('./output', exist_ok=True)
     LLM = 'OPENAI'
 
     key_dict = {
@@ -205,7 +205,7 @@ async def handle_connection(websocket):
             if data['type'] == 'cred':
                 print(f"Received credentials: {data['formData']}")
                         # Read the current .env file
-                env_file_path = '.env'
+                env_file_path = '../.env'
                 with open(env_file_path, 'r') as fp:
                     env_content = fp.readlines()
 
