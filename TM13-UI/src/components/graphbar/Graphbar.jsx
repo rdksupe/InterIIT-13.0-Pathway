@@ -164,17 +164,17 @@ const GraphBar = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState(flowNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(flowEdges);
 
-    // useEffect(() => {
-    //     if (graphData) {
-    //         const { nodes: updatedNodes, edges: updatedEdges } = createSampleGraph(graphData);
-    //         setNodes(updatedNodes);
-    //         setEdges(updatedEdges);
-    //     } else {
-    //         // If no data, reset to empty nodes/edges
-    //         setNodes([]);
-    //         setEdges([]);
-    //     }
-    // }, [graphData, setNodes, setEdges]);
+    useEffect(() => {
+        if (graphData) {
+            const { nodes: updatedNodes, edges: updatedEdges } = createSampleGraph(graphData);
+            setNodes(updatedNodes);
+            setEdges(updatedEdges);
+        } else {
+            // If no data, reset to empty nodes/edges
+            setNodes([]);
+            setEdges([]);
+        }
+    }, [graphData, setNodes, setEdges]);
 
     const handleNodeMouseEnter = useCallback((event, node) => {
         // Get the position of the click event
@@ -310,6 +310,33 @@ const GraphBar = () => {
                             <Controls />
                             <Background color="#f0f0f0" gap={16} variant="dots" />
                         </ReactFlow>
+                        {popupData && (
+                            <div
+                                style={{
+                                    top: popupData.position.y + 10, // Offset from click
+                                    left: popupData.position.x + 10,
+                                    // backgroundColor: "red",
+                                    color: "black",
+                                    padding: "15px",
+                                    zIndex: 1000,
+                                }}
+                            >
+                                <div className="details">
+                                    <strong>Node Details:</strong>
+                                    {popupData.data.metadata && (
+                                        <div>
+                                            <ul style={{ listStyleType: "none", padding: 0 }}>
+                                                {Object.entries(popupData.data.metadata).map(([key, value]) => (
+                                                    <li key={key} style={{ marginBottom: "5px" }}>
+                                                        <strong>{key}:</strong> {value}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
                 {activeButton === 2 && (
