@@ -1,5 +1,149 @@
 [
     {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://virtuemarketresearch.com/report/india-edtech-market (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x13c684bc0>: Failed to establish a new connection: [Errno 61] Connection refused'))",
+        "timestamp": "2024-12-04T00:02:31.395538",
+        "additional info": {
+            "url": "https://virtuemarketresearch.com/report/india-edtech-market"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "timestamp": "2024-12-04T00:02:30.188660",
+        "additional info": {
+            "url": "https://www.technbrains.com/blog/edtech-trends-in-2024/"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "timestamp": "2024-12-04T00:02:30.185128",
+        "additional info": {
+            "url": "https://www.imarcgroup.com/india-edtech-market"
+        }
+    },
+    {
+        "tool": "get_balance_sheet",
+        "error_message": "Empty DataFrame: Symbol Error",
+        "timestamp": "2024-12-04T00:02:28.697400",
+        "additional info": {
+            "query": "BYJU'S"
+        }
+    },
+    {
+        "tool": "get_balance_sheet",
+        "error_message": "Empty DataFrame: Symbol Error",
+        "timestamp": "2024-12-04T00:02:28.156269",
+        "additional info": {
+            "query": "BYJU'S"
+        }
+    },
+    {
+        "tool": "get_income_stmt",
+        "error_message": "Empty DataFrame: Invalid symbol or no data available.",
+        "timestamp": "2024-12-04T00:02:23.802792",
+        "additional info": {
+            "query": "BYJU'S"
+        }
+    },
+    {
+        "tool": "get_income_stmt",
+        "error_message": "Empty DataFrame: Invalid symbol or no data available.",
+        "timestamp": "2024-12-04T00:02:23.235449",
+        "additional info": {
+            "query": "BYJU'S"
+        }
+    },
+    {
+        "tool": "get_Indian_kanoon",
+        "error_message": "list index out of range",
+        "timestamp": "2024-12-04T00:02:21.927191",
+        "additional info": {
+            "query": "Chegg acquisition of Byju's antitrust laws India"
+        }
+    },
+    {
+        "tool": "get_balance_sheet",
+        "error_message": "Empty DataFrame: Symbol Error",
+        "timestamp": "2024-12-03T23:59:25.694641",
+        "additional info": {
+            "query": "BYJU"
+        }
+    },
+    {
+        "tool": "get_income_stmt",
+        "error_message": "Empty DataFrame: Invalid symbol or no data available.",
+        "timestamp": "2024-12-03T23:59:19.924159",
+        "additional info": {
+            "query": "BYJU"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.indiatoday.in/education-today/featurephilia/story/7-edtech-trends-to-watch-out-for-in-2024-2486758-2024-01-10 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x159a7caa0>: Failed to establish a new connection: [Errno 61] Connection refused'))",
+        "timestamp": "2024-12-03T23:58:41.197094",
+        "additional info": {
+            "url": "https://www.indiatoday.in/education-today/featurephilia/story/7-edtech-trends-to-watch-out-for-in-2024-2486758-2024-01-10"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.edtechreview.in/trends-insights/trends/top-edtech-trends-for-2024-enhancing-education-in-the-digital-age/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x159a4e5d0>: Failed to establish a new connection: [Errno 61] Connection refused'))",
+        "timestamp": "2024-12-03T23:58:40.913016",
+        "additional info": {
+            "url": "https://www.edtechreview.in/trends-insights/trends/top-edtech-trends-for-2024-enhancing-education-in-the-digital-age/"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "timestamp": "2024-12-03T23:58:40.641443",
+        "additional info": {
+            "url": "https://virtuemarketresearch.com/report/india-edtech-market"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.technavio.com/report/edtech-market-industry-analysis (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1599f85f0>: Failed to establish a new connection: [Errno 61] Connection refused'))",
+        "timestamp": "2024-12-03T23:58:03.638071",
+        "additional info": {
+            "url": "https://www.technavio.com/report/edtech-market-industry-analysis"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.imarcgroup.com/india-edtech-market (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1599f2750>: Failed to establish a new connection: [Errno 61] Connection refused'))",
+        "timestamp": "2024-12-03T23:58:03.367433",
+        "additional info": {
+            "url": "https://www.imarcgroup.com/india-edtech-market"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "timestamp": "2024-12-03T23:58:02.157161",
+        "additional info": {
+            "url": "https://virtuemarketresearch.com/report/india-edtech-market"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.investindia.gov.in/team-india-blogs/opportunities-indias-edtech-industry-driving-innovation-and-accessibility (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x159988980>: Failed to establish a new connection: [Errno 61] Connection refused'))",
+        "timestamp": "2024-12-03T23:57:10.531441",
+        "additional info": {
+            "url": "https://www.investindia.gov.in/team-india-blogs/opportunities-indias-edtech-industry-driving-innovation-and-accessibility"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "timestamp": "2024-12-03T23:57:09.220662",
+        "additional info": {
+            "url": "https://virtuemarketresearch.com/report/india-edtech-market"
+        }
+    },
+    {
         "tool": "query_documents",
         "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d38f200>: Failed to establish a new connection: [Errno 111] Connection refused'))",
         "timestamp": "2024-12-03T23:41:41.795754",
@@ -140,7 +284,10 @@
         "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c953830>: Failed to establish a new connection: [Errno 111] Connection refused'))",
         "timestamp": "2024-12-03T23:38:15.151363",
         "additional info": {
-            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+            "prompt": "SEC filin,
+        "timestamp": "2024-12-03T23:38:15.151363",
+        "additional info": {
+
         }
     },
     {
@@ -265,7 +412,12 @@
     },
     {
         "tool": "query_documents",
-        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c8b13d0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "error_message": "HTTPConnectionPool(host='loca
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.,
         "timestamp": "2024-12-03T23:34:55.554168",
         "additional info": {
             "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
@@ -388,12 +540,15 @@
         "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203bd010>: Failed to establish a new connection: [Errno 111] Connection refused'))",
         "timestamp": "2024-12-03T23:23:49.333655",
         "additional info": {
+            "prompt": "financial,
+        "timestamp": "2024-12-03T23:23:49.333655",
+        "additional info": {
             "prompt": "financial performance of product lines with revenue declines and margin issues 2024"
         }
     },
     {
         "tool": "query_documents",
-        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204fec60>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.,
         "timestamp": "2024-12-03T23:23:30.086243",
         "additional info": {
             "prompt": "BTG revenue by product line 2022 2023"
@@ -1084,14 +1239,15 @@
         "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://economictimes.indiatimes.com/topic/india-antitrust-laws/news (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac86c5472c0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
         "timestamp": "2024-12-03T11:03:10.763844",
         "additional info": {
+            "url": "https://econ,
+        "timestamp": "2024-12-03T11:03:10.763844",
+        "additional info": {
             "url": "https://economictimes.indiatimes.com/topic/india-antitrust-laws/news"
         }
     },
     {
         "tool": "get_Indian_kanoon",
-        "error_message": "list index out of range",
-        "timestamp": "2024-12-03T11:03:06.213313",
-        "additional info": {
+        "error: {
             "query": "antitrust law implications on business operations CoStar LoopNet"
         }
     },
@@ -1204,6 +1360,9 @@
         "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.macrotrends.net/stocks/charts/T/at-t/roi (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874022a50>: Failed to establish a new connection: [Errno 111] Connection refused'))",
         "timestamp": "2024-12-03T10:55:47.797340",
         "additional info": {
+            "url": "https://www.,
+        "timestamp": "2024-12-03T10:55:47.797340",
+        "additional info": {
             "url": "https://www.macrotrends.net/stocks/charts/T/at-t/roi"
         }
     },
@@ -1313,8 +1472,7 @@
     },
     {
         "tool": "web_scrape",
-        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://about.att.com/story/2024/q4-earnings-2023.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8741c6900>: Failed to establish a new connection: [Errno 111] Connection refused'))",
-        "timestamp": "2024-12-03T10:55:20.954578",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://about.att.com/story/2024/q4-earnings-2023.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object: "2024-12-03T10:55:20.954578",
         "additional info": {
             "url": "https://about.att.com/story/2024/q4-earnings-2023.html"
         }
@@ -1389,6 +1547,9 @@
         "timestamp": "2024-12-03T10:54:51.919491",
         "additional info": {
             "url": "https://finance.yahoo.com/news/cost-revenue-synergies-t-directv-165010231.html"
+        }
+    }
+]         "url": "https://finance.yahoo.com/news/cost-revenue-synergies-t-directv-165010231.html"
         }
     }
 ]
