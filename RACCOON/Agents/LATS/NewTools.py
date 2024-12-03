@@ -53,7 +53,7 @@ from typing import Dict
 
 ERROR_LOG_FILE = "error_logs.json"
 
-dotenv.load_dotenv()
+dotenv.load_dotenv('.env')
 
 def log_error(tool_name, error_message, additional_info=None):
     error_entry = {
@@ -83,7 +83,7 @@ def log_error(tool_name, error_message, additional_info=None):
         print(f"Failed to log error: {e}") 
         
 
-print(load_dotenv())
+print(load_dotenv('.env'))
 logging.basicConfig(filename='chart_generation.log', level=logging.INFO, format='%(asctime)s %(levelname)s:%(message)s')
 
 os.environ["GOOGLE_API_KEY"]= os.getenv('GEMINI_API_KEY_30')
@@ -425,7 +425,7 @@ def get_indian_kanoon(query: str):
         tuple: A tuple containing the title (str), date (str), and document text (str).
     """
     # Load environment variables
-    dotenv.load_dotenv()
+    dotenv.load_dotenv('.env')
     INDIAN_KANOON_API_KEY = os.getenv('INDIAN_KANOON_API_KEY_30')
 
     try:
@@ -540,13 +540,17 @@ def query_documents(prompt: str) -> Dict:
     """
     
     try :    
+        print("Started")
         start = time.time()
         response = requests.post(
             "http://localhost:4005/generate",
             headers={"Content-Type": "application/json"},
             json={"query": prompt}
         )
-        response.raise_for_status()  # Raise an error for HTTP issues
+        print(response)
+        print("Posted")
+        #response.raise_for_status()  # Raise an error for HTTP issues
+        print("Raised")
         end = time.time()
         print(end-start)
         print(response.json())
@@ -1363,3 +1367,6 @@ def get_reddit_search(query, limit=5):
 #         print(f"Error in `web_scrape`: {e}")
 #         pass
 
+
+#print(web_scrape.invoke({"url":"https://indiankanoon.org/doc/79411056/", "query":"Children of which age will be tried as adults?"}))
+print(query_documents.invoke("Children of which age will be tried as adults?"))

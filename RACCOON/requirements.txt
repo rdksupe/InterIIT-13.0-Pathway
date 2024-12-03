@@ -10,7 +10,6 @@ numpy
 pandas
 google-generativeai
 wikipedia
-edgar
 langchain
 langchain-google-genai
 langchain-community

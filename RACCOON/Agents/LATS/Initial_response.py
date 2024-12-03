@@ -12,7 +12,7 @@ import os
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 from Agents.LATS.utils import llm_to_check
-load_dotenv()
+load_dotenv('.env')
 
 prompt_template = ChatPromptTemplate.from_messages(
         [

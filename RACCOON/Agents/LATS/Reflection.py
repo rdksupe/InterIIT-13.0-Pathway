@@ -12,7 +12,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv('.env')
 from Agents.LATS.utils import llm_to_check
 
 

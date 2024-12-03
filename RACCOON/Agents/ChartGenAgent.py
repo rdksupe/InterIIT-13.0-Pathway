@@ -21,7 +21,7 @@ def generate_chart(file_path: str) -> str:
     Returns:
         str: 'Image Saved' if the chart is successfully generated and saved, or an error message otherwise.
     """
-    # dotenv.load_dotenv()
+    # dotenv.load_dotenv('.env')
     # genai.configure(api_key=os.environ["GEMINI_API_KEY_30"])
     # model = genai.GenerativeModel("gemini-1.5-flash")
 

@@ -22,7 +22,7 @@ from langchain_openai import ChatOpenAI
 
 
 
-dotenv.load_dotenv()
+dotenv.load_dotenv('.env')
 
 def conciseAns_vanilla(query, api_key, LLM, tools_list):
     os.environ["OPENAI_API_KEY"] = api_key
