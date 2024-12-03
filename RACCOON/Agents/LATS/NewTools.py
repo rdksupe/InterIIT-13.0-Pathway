@@ -133,6 +133,7 @@ def web_scrape(url, query) -> Union[Dict, str]:
         
     }
     output_folder = 'temp_rag_space'
+    print(os.getcwd())
     print(output_folder)
     try:
         # Create output folder if it doesn't exist
@@ -234,27 +235,6 @@ def web_search_simple(query: str):
         )
         return ''
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @tool
 def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form: str) -> str:
     """
@@ -350,22 +330,6 @@ def get_and_download_annual_report(query:str,ticker: str, financial_year: str) -
         log_error("get_and_download_annual_report", str(e), {"ticker": ticker, "financial_year": financial_year})
         return web_search.invoke(f"Annual report of {ticker} for Financial Year {financial_year}")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #================
 # NOT USING THIS
 #================
@@ -453,7 +417,7 @@ def get_indian_kanoon(query: str):
         date = doc_result['publishdate']
         doc = clean_text(doc_result['doc'])
         output_folder = "temp_rag_space"
-
+        print(os.getcwd())
         os.makedirs(output_folder, exist_ok=True)        
         # Generate filename based on URL and timestamp
         filename = f"legal{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
@@ -513,7 +477,7 @@ def get_us_case_law(query: str) -> Tuple[str, str]:
         output_folder = "temp_rag_space"
 
 
-            
+        print(os.getcwd())
         os.makedirs(output_folder, exist_ok=True)
             
             # Generate filename based on URL and timestamp
@@ -551,7 +515,7 @@ def query_documents(prompt: str) -> Dict:
         response = requests.post(
             "http://localhost:4005/generate",
             headers={"Content-Type": "application/json"},
-            json={"query": prompt}
+            json={"query": urllib.parse.quote(prompt)},
         )
         print(response)
         print("Posted")
