@@ -1,0 +1,73 @@
+### Chain of Thoughts (COT)
+
+The query presented is concerning the legality and implications of a specific offensive behavior - harassment of a child. This is a sensitive and complex issue that intersects multiple domains such as law, public policy, child protection, and ethics. Therefore, a multi-dimensional approach is necessary to fully address the user’s query.
+
+Firstly, we need to explore the legal framework surrounding harassment, particularly related to children. This requires an understanding of both national and state laws. We will initiate a subtask specifically focused on retrieving pertinent legal information regarding child harassment laws from both US and Indian jurisdictions.
+
+Next, we should consider the implications of harassment in public policy, particularly how governments address and combat child harassment. This involves studying public policy research around child protection and family welfare.
+
+From an ethical standpoint, we should also examine the societal and psychological impacts of child harassment. This dimension will focus on gathering information from ethical research, advocating for the protection of children.
+
+We should also take into consideration the potential consequences for the perpetrator, including legal repercussions, which requires another legal analysis.
+
+To summarize, the query will be broken down into the following sub-tasks:
+
+1. **Legal Analysis in the USA regarding Child Harassment** – This task will investigate US case law concerning child harassment.
+2. **Legal Analysis in India regarding Child Harassment** – This task will obtain Indian legal definitions and case law relevant to child harassment.
+3. **Public Policy Research** – This task will examine public policies focused on child protection and rights.
+4. **Ethical Implications** – This task will gather information on the societal and psychological impacts of child harassment.
+5. **Consequences for Perpetrators** – This task will explore potential legal repercussions for individuals found guilty of harassing a child.
+
+Given this breakdown, we can now prepare our JSON template that includes individual tasks with focused agents and relevant tools.
+
+### JSON Template
+
+```json
+{
+    "main_task": "Gather valid information regarding the legality and implications of child harassment.",
+    "sub_tasks": {
+        "task_1": {
+            "content": "Retrieve American legal data and case laws regarding child harassment.",
+            "agent": "US Case Law Researcher",
+            "agent_role_description": "A legal researcher specializing in US case law, focusing on child harassment and abuse cases. Responsibilities include gathering and analyzing relevant legal documents and precedents.",
+            "tools": ["get_us_case_law"],
+            "local_constraints": ["The task must only focus on cases related to child harassment in the US."],
+            "require_data": []
+        },
+        "task_2": {
+            "content": "Retrieve Indian legal data and case laws regarding child harassment.",
+            "agent": "Indian Legal Researcher",
+            "agent_role_description": "A legal researcher specializing in Indian law regarding child rights and harassment, tasked with obtaining and interpreting relevant legal cases.",
+            "tools": ["get_indian_kanoon"],
+            "local_constraints": ["The task must only focus on cases relevant to child harassment in India."],
+            "require_data": []
+        },
+        "task_3": {
+            "content": "Research public policies in relation to child protection against harassment.",
+            "agent": "Public Policy Researcher",
+            "agent_role_description": "A researcher focused on public policies that protect children and address child harassment. Responsible for identifying effective frameworks being implemented.",
+            "tools": ["web_search"],
+            "local_constraints": ["The research should focus on policies and programs set within the last decade."],
+            "require_data": []
+        },
+        "task_4": {
+            "content": "Examine the societal and psychological impacts of child harassment.",
+            "agent": "Ethics Researcher",
+            "agent_role_description": "A specialist in ethics and psychology, tasked with analyzing the societal implications and the psychological effects of child harassment.",
+            "tools": ["web_search"],
+            "local_constraints": ["Research must focus on peer-reviewed studies and articles from reputable sources."],
+            "require_data": []
+        },
+        "task_5": {
+            "content": "Investigate the potential legal consequences for individuals guilty of child harassment.",
+            "agent": "Legal Consequences Analyst",
+            "agent_role_description": "An analyst specializing in the legal repercussions faced by offenders of child harassment, required to compile data on sentencing and legal outcomes.",
+            "tools": ["get_us_case_law", "get_indian_kanoon"],
+            "local_constraints": ["The analysis should differentiate between cases in the US and India, identifying pertinent laws and penalties."],
+            "require_data": ["task_1", "task_2"]
+        }
+    }
+}
+``` 
+
+This JSON structure clearly outlines the main task of gathering valid information about child harassment and provides a comprehensive set of focused sub-tasks that address the legal, policy, ethical, and societal implications of the query. Each sub-task is carefully designed to operate independently unless otherwise noted in their requirements, promoting parallel execution where possible.
