@@ -4,7 +4,7 @@
 pip install -r requirements.txt
 
 Add OpenAI key in the .env file.
-ollama run nomic-embed-text:latest
+
 ```
 This will pull and load the embedding and the chat completion models from Ollama and expose the endpoints at http://0.0.0.0:11434
 
@@ -12,7 +12,7 @@ If using some other base_url for your ollama installation you will need to chang
 
 ## Running 
 ```
-python pathway.py
+python pw_new.py
 ```
 Please note that the entire code has been tested and written in a Python venv of version 3.11.10
 
