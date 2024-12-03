@@ -33,12 +33,17 @@ const Main = () => {
 		setDownloadData,
 		socket,
 		setSocket,
+		agentData,
+		setAgentData,
+		onRenderAgent,
 	} = useContext(Context);
 	const [socket1, setSocket1] = useState(null);
 
 	const resultDataRef = useRef(null); // Reference to the result-data container for auto scrolling
+	const agentDataRef = useRef(null);
 
 	const [markdownContent, setMarkdownContent] = useState('');
+	const agent = useRef(true);
 
 
 	const handleMarkdownChange = (e) => {
@@ -96,6 +101,12 @@ const Main = () => {
 			resultDataRef.current.scrollTop = resultDataRef.current.scrollHeight;
 		}
 	}, [resultData]);
+	useEffect(() => {
+		if (agentDataRef.current) {
+			agentDataRef.current.scrollTop = agentDataRef.current.scrollHeight;
+		}
+	}, [agentData]);
+
 
 	const handleCardClick = (promptText) => {
 		setInput(promptText);
@@ -158,66 +169,80 @@ const Main = () => {
 	};
 
 	useEffect(() => {
-		const ws = new WebSocket('ws://localhost:8090');
-		ws.onopen = () => {
-			console.log('WebSocket connected to agent server');
-		};
-		ws.onmessage = (event) => {
-			try {
-				const data = JSON.parse(event.data);
 
-				if (data.type === 'agents') {
-					console.log("agents data", data);
-					onRender(data.response);
-					// console.log(data.response);
-					setMarkdownContent(data.response);
+		try{
+			const ws = new WebSocket('ws://localhost:8090');
+
+			ws.onopen = () => {
+				console.log('WebSocket connected to agent server');
+				
+			};
+			ws.onmessage = (event) => {
+				try {
+					const data = JSON.parse(event.data);
+
+					if (data.type === 'agents') {
+						
+						console.log("agents data", data);
+						if(agent.current === true){
+						onRenderAgent(data.response);
+						// console.log(data.response);
+						setMarkdownContent(data.response);}
+					}
+				} catch (error) {
+					console.error('Error parsing WebSocket message:', error);
 				}
-			} catch (error) {
-				console.error('Error parsing WebSocket message:', error);
-			}
-		};
-		ws.onclose = () => {
-			console.log('WebSocket disconnected');
-		};
-		setSocket1(ws);
-		return () => {
-			ws.close();
-		};
+			};
+			ws.onclose = () => {
+				console.log('WebSocket disconnected');
+			};
+			setSocket1(ws);
+			return () => {
+				ws.close();
+			};
+		}
+		catch(error){
+			console.error('Verbose WebSocket Server Not Connected', error);
+		}
 	}, []);
 
 	useEffect(() => {
 		const ws = new WebSocket('ws://localhost:8080');
-		ws.onopen = () => {
-			console.log('WebSocket connected');
-		};
-		ws.onmessage = (event) => {
-			try {
-				const data = JSON.parse(event.data);
+		try{	
+			ws.onopen = () => {
+				console.log('WebSocket connected');
+			};
+			ws.onmessage = (event) => {
+				try {
+					const data = JSON.parse(event.data);
 
-				if (data.type === 'graph') {
+					if (data.type === 'graph') {
+						
+						const graph = JSON.parse(data.response);
+						console.log(graph);
+						setGraphData(graph);
 					
-					const graph = JSON.parse(data.response);
-					console.log(graph);
-					setGraphData(graph);
-				
-				} else if (data.type === 'response') {
-					onRender(data.response);
-					console.log(data.response);
-					setMarkdownContent(data.response);
-				} else if (data.type === 'agents') {
-					console.log("agents data", data);
+					} else if (data.type === 'response') {
+						agent.current = false;
+						onRender(data.response);
+						console.log(data.response);
+						setMarkdownContent(data.response);
+					}
+				} catch (error) {
+					console.error('Error parsing WebSocket message:', error);
 				}
-			} catch (error) {
-				console.error('Error parsing WebSocket message:', error);
-			}
-		};
-		ws.onclose = () => {
-			console.log('WebSocket disconnected');
-		};
-		setSocket(ws);
-		return () => {
-			ws.close();
-		};
+			};
+			ws.onclose = () => {
+				console.log('WebSocket disconnected');
+			};
+			setSocket(ws);
+			return () => {
+				ws.close();
+			};
+		}
+		catch(error){
+			console.error('Main WebSocket Server Not Connected', error);
+		}
 	}, []);
 
 	return (
@@ -299,28 +324,58 @@ const Main = () => {
 								<img src={assets.user} className="result-user" alt="" />
 								<p>{recentPrompt}</p>
 							</div>
-							<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto' }}>
-								<img src={assets.pway_icon} className="pway-res" alt="" />
-								{loading ? (
-									<div className="loader">
-										<hr />
-										<hr />
-										<hr />
-									</div>
-								) : (
-									<div className="markdown-content">
-										<ReactMarkdown 
-										rehypePlugins={[rehypeRaw]} 
-										remarkPlugins={[remarkGfm]}
-										components={{
-											a: ({ href, children }) => (
-											  <a href={href} target="_blank" rel="noopener noreferrer">
-												{children}
-											  </a>
-											)
-										  }}>{resultData}</ReactMarkdown>
-									</div>
-								)}
+							<div>
+							{!agent.current ?	
+								(<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
+									<img src={assets.pway_icon} className="pway-res" alt="" />
+									{loading ? (
+										<div className="loader">
+											<hr />
+											<hr />
+											<hr />
+										</div>
+									) : (
+										<div className="markdown-content" >
+											<ReactMarkdown
+											rehypePlugins={[rehypeRaw]} 
+											remarkPlugins={[remarkGfm]}
+											components={{
+												a: ({ href, children }) => (
+												<a href={href} target="_blank" rel="noopener noreferrer">
+													{children}
+												</a>
+												)
+											}}>{resultData}</ReactMarkdown>
+										</div>
+									)}
+								</div>):(
+								<div className="result-data" ref={agentDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
+									<img src={assets.pway_icon} className="pway-res" alt="" />
+									{loading ? (
+										<div className="loader">
+											<hr />
+											<hr />
+											<hr />
+										</div>
+									) : (
+										
+
+										<div className="markdown-content" style={{color: 'grey'}}>
+											<ReactMarkdown
+											rehypePlugins={[rehypeRaw]} 
+											remarkPlugins={[remarkGfm]}
+											components={{
+												a: ({ href, children }) => (
+												<a href={href} target="_blank" rel="noopener noreferrer">
+													{children}
+												</a>
+												)
+											}}>{agentData}</ReactMarkdown>
+										</div>
+										
+									)}
+								</div>
+							)}
 							</div>
 							{downloadData && (
 								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', marginTop: '1vh', marginLeft:'7vh'}}>
@@ -378,6 +433,7 @@ const Main = () => {
 						<p></p>
 					</div>
 				</div>
+			
 			</div>
 		</div>
 	);
