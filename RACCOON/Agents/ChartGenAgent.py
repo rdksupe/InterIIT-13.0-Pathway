@@ -38,9 +38,8 @@ def generate_chart(file_path: str) -> str:
     5. Use various different types of graphs available in matplotlib. 
     6. Do not add a markdown code block in the beginning. 
     """
-    # ai_msg = model.generate_content(messages)
 
-    # client = OpenAI()
+    #TODO: Add gemini-1.5-flash model
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
