@@ -11,7 +11,7 @@ import multiprocessing
 import gunicorn.app.base
 
 app = FastAPI()
-load_dotenv('.env')
+load_dotenv('../.env')
 
 # OpenAI client configuration
 endpoint = "https://models.inference.ai.azure.com"
