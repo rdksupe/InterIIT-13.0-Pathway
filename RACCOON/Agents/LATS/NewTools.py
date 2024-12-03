@@ -83,7 +83,6 @@ def log_error(tool_name, error_message, additional_info=None):
         print(f"Failed to log error: {e}") 
         
 
-logging.basicConfig(filename='chart_generation.log', level=logging.INFO, format='%(asctime)s %(levelname)s:%(message)s')
 
 os.environ["GOOGLE_API_KEY"]= os.getenv('GEMINI_API_KEY_30')
 os.environ["OPENAI_API_KEY"] = os.getenv('OPEN_AI_API_KEY_30')
@@ -182,13 +181,21 @@ def web_search(query: str):
         include_raw_content=False,
         include_images=False,
     )
-    
     try:
         search_results = tavily_search.invoke({"query": query})
-        for search_result in search_results:
-            url = search_result['url']
-            content = search_result['content']
-            web_scrape.invoke({"url": url, "query": query})
+        try:
+            for search_result in search_results:
+                url = search_result['url']
+                content = search_result['content']
+                web_scrape.invoke({"url": url, "query": query})
+        except Exception as e:
+            # If both fail, return error message
+            log_error(
+                tool_name="tavily_web_search",
+                error_message=str(e),
+                additional_info={"query": query}
+            )
+            return search_results
     except Exception as e:
         # If both fail, return error message
         log_error(
@@ -196,7 +203,6 @@ def web_search(query: str):
             error_message=str(e),
             additional_info={"query": query}
         )
-        #return [{"error": f"Search failed: {str(e)}"}]
         return ''
 
 @tool
@@ -578,11 +584,10 @@ def get_company_profile(symbol: str) -> str:
     try:
         profile = finnhub_client.company_profile2(symbol=symbol)
         if not profile:
-            if len(news) == 0:
-                log_error(
-                tool_name="get_company_news",
-                error_message=f"Failed to find company profile for symbol {symbol} from finnhub!",
-                additional_info={"query": symbol}
+            log_error(
+            tool_name="get_company_news",
+            error_message=f"Failed to find company profile for symbol {symbol} from finnhub!",
+            additional_info={"query": symbol}
             )
             
             return web_search_simple.invoke(f"Find a Company Profile Information for {symbol}")
@@ -662,7 +667,7 @@ def get_company_news(symbol: str, start_date: str, end_date: str, max_news_num: 
         return web_search_simple.invoke(f"Retrieve market news related to {symbol} from date {start_date} to {end_date}")
 
 @tool
-def get_basic_financials_history(symbol: str, freq: str, start_date: str, end_date: str, selected_columns: list = None) -> dict:
+def get_basic_financials_history(symbol: str, freq: str, start_date: str, end_date: str, selected_columns: list = None,query=None) -> dict:
     """
     Get historical basic financials for a company using Finnhub API.
     
@@ -672,6 +677,7 @@ def get_basic_financials_history(symbol: str, freq: str, start_date: str, end_da
         start_date (str): Start date in YYYY-MM-DD format
         end_date (str): End date in YYYY-MM-DD format
         selected_columns (list): List of specific financial metrics to return
+        query (str): The original query that triggered this tool
         
     Returns:
         dict: Historical financial data for the company
@@ -963,7 +969,7 @@ def get_discord(channel_id):
     """
     try:
         headers = {
-            'authorization': DISCORD_AUTH_KEY
+            'authorization': os.getenv("DISCORD_AUTH_KEY")
         }
         url = f"https://discord.com/api/v9/channels/{channel_id}/messages"
         
@@ -1237,12 +1243,6 @@ def get_reddit_search(query, limit=5):
         )
         
         return "No posts found matching the query."
-
-
-
-# print(web_scrape.invoke({"url": "https://pathway.com/developers/api-docs/pathway/#pathway.run", "query": "What is Pathway ?"}))
-# print(get_indian_kanoon.invoke("sexual harrasment in schools"))
-# ------------- Just to check error logging ----------------
 
 # query = "random"
 # symbol = "random"
