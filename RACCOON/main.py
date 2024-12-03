@@ -148,13 +148,13 @@ async def mainBackend(query, websocket):
                 f.write(str(out_str))
         with open ('./output/drafted_response.md', 'w') as f:
             if LLM=='GEMINI':
-                f.write(str(fin_resp).replace('[', '$').replace(']', '$'))
-                resp = str(fin_resp).replace('[', '$').replace(']', '$')
+                fin_resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', fin_resp, flags=re.DOTALL)
+                f.write(str(fin_resp))
                 await asyncio.sleep(1)
                 await websocket.send(json.dumps({"type": "response", "response": resp}))
             elif LLM=='OPENAI':
-                f.write(str(fin_resp).replace('[', '$').replace(']', '$'))
-                resp = str(fin_resp).replace('[', '$').replace(']', '$')
+                fin_resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', fin_resp, flags=re.DOTALL)
+                f.write(str(fin_resp))
                 await asyncio.sleep(1)
                 await websocket.send(json.dumps({"type": "response", "response": resp}))
         with open ('./output/response_1.md', 'w') as f:
