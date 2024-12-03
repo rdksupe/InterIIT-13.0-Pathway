@@ -86,21 +86,21 @@ const Main = () => {
 		if (socket && socket.readyState === WebSocket.OPEN) {
 			socket.send(JSON.stringify({ type: 'query', query }));
 		}
-		try {
-			fetch('http://localhost:5000/query', {
-			  method: 'POST',
-			  headers: {
-				'Content-Type': 'application/json',
-			  },
-			  body: JSON.stringify({ query: input }), // Send input to the Flask backend
-			});
+		// try {
+		// 	fetch('http://localhost:5000/query', {
+		// 	  method: 'POST',
+		// 	  headers: {
+		// 		'Content-Type': 'application/json',
+		// 	  },
+		// 	  body: JSON.stringify({ query: input }), // Send input to the Flask backend
+		// 	});
 		
-			console.log('Query sent successfully!');
-			setLoading(false);
-		  } catch (error) {
-			console.error('Error sending query to backend:', error);
-			setLoading(false);
-		  }
+		// 	console.log('Query sent successfully!');
+		// 	setLoading(false);
+		//   } catch (error) {
+		// 	console.error('Error sending query to backend:', error);
+		// 	setLoading(false);
+		//   }
 	}
 
 	// Adjust textarea height dynamically
