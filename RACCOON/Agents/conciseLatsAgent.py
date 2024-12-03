@@ -6,7 +6,7 @@ import os
 import json
 from dotenv import load_dotenv
 from datetime import datetime
-load_dotenv()
+load_dotenv('.env')
 
 def drafterAgentSimplified(text, query):
     system_prompt = f'''

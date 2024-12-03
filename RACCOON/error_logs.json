@@ -2,6 +2,22 @@
     {
         "tool": "query_documents",
         "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T12:06:14.727686",
+        "additional info": {
+            "prompt": "Children of which age will be tried as adults?"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T12:04:27.877951",
+        "additional info": {
+            "prompt": "Children of which age will be tried as adults?"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
         "timestamp": "2024-12-03T11:50:49.601938",
         "additional info": {
             "prompt": "LoopNet antitrust lawsuit history"

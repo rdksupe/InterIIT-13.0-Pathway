@@ -15,7 +15,7 @@
 # os.environ["PATHWAY_PERSISTENT_STORAGE"] = "./persistence_data"
 
 
-# load_dotenv()
+# load_dotenv('.env')
 # # Configure text splitting parameters for document chunks
 # text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=800)
 

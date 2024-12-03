@@ -2,7 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 import time
-load_dotenv()
+load_dotenv('.env')
 
 from datetime import datetime
 import google.generativeai as genai

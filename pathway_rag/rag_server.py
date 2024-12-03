@@ -11,12 +11,14 @@ import multiprocessing
 import gunicorn.app.base
 
 app = FastAPI()
-load_dotenv()
+load_dotenv('.env')
 
 # OpenAI client configuration
 endpoint = "https://models.inference.ai.azure.com"
 model_name = "gpt-4o-mini"
-client = OpenAI(api_key="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")
+
+api_key = os.getenv('OPEN_AI_API_KEY_30')
+client = OpenAI(api_key=api_key)
 
 # Add VoyageAI configuration
 VOYAGE_API_KEY = os.getenv("VOYAGE_API_KEY")

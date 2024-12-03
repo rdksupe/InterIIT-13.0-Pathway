@@ -2,7 +2,7 @@ from Agents.LATS.Create_graph import generateGraph_forLATS
 import json
 from Agents.LATS.NewTools import *
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv('.env')
 
 def SolveSubQuery(query:str, tools):
     question = query
