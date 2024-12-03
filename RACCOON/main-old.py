@@ -56,10 +56,12 @@ with open("tickers.txt", "a") as f_ticker:
     f_ticker.write('')
 
 query = '''
-How the fuck did the motherfucking company Microsoft become so fucking big.
+Hello Baby Gurl
 '''
 
-if applyTopicalGuardails(query):
+guard_rails, reasonings = applyTopicalGuardails(query)
+
+if guard_rails:
     query_type = classifierAgent(query, GOOGLE_API_KEY).lower()
     if query_type == "complex":
         print("RUNNING COMPLEX TASK PIPELINE")
@@ -145,6 +147,11 @@ if applyTopicalGuardails(query):
             
             fin_resp, fin_resp_lats = run_parallel()
 else:
-    print("Sudhar ja Bhosdike")
+    resp = ''''''
+    for key in reasonings:
+        resp += f'''**{key}**\n\n'''
+        resp += f'''{reasonings[key]}\n\n'''
+    with open("Bad_Question.md", "w") as f:
+        f.write(resp)
 
 print(f'Total Time: {time.time()-now}')
