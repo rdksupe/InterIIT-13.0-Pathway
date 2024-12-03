@@ -1,0 +1,592 @@
+[
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-reports-record-revenues-of-r-4-8-billion-and-adjusted-net-income-of-r-2-3-billion-in-1q23--301817839.html",
+        "timestamp": "2024-12-03T05:47:33.088441",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-reports-record-revenues-of-r-4-8-billion-and-adjusted-net-income-of-r-2-3-billion-in-1q23--301817839.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053127.html",
+        "timestamp": "2024-12-03T05:47:32.567878",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053127.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/revenue/",
+        "timestamp": "2024-12-03T05:47:32.042102",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/revenue/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btg.listedcompany.com/misc/presentation/20230301-btg-am-fy2022.pdf",
+        "timestamp": "2024-12-03T05:47:24.315996",
+        "additional info": "{'url': 'https://btg.listedcompany.com/misc/presentation/20230301-btg-am-fy2022.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/revenue/",
+        "timestamp": "2024-12-03T05:47:23.775557",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/revenue/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/",
+        "timestamp": "2024-12-03T05:47:23.213255",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://res.innovestxonline.com/stocks/extra/54805_20230302073043.pdf",
+        "timestamp": "2024-12-03T05:47:22.987723",
+        "additional info": "{'url': 'https://res.innovestxonline.com/stocks/extra/54805_20230302073043.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053127.html",
+        "timestamp": "2024-12-03T05:47:22.654661",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053127.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btg.listedcompany.com/misc/presentation/20240228-btg-am-fy2023.pdf",
+        "timestamp": "2024-12-03T05:47:22.460582",
+        "additional info": "{'url': 'https://btg.listedcompany.com/misc/presentation/20240228-btg-am-fy2023.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://abbott.mediaroom.com/2024-01-24-Abbott-Reports-Fourth-Quarter-and-Full-Year-2023-Results-Issues-2024-Financial-Outlook",
+        "timestamp": "2024-12-03T05:23:22.920759",
+        "additional info": "{'url': 'https://abbott.mediaroom.com/2024-01-24-Abbott-Reports-Fourth-Quarter-and-Full-Year-2023-Results-Issues-2024-Financial-Outlook'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.forrester.com/blogs/apple-sales-and-profits-analysis-for-fy-2023-top-10-insights/",
+        "timestamp": "2024-12-03T05:23:22.439534",
+        "additional info": "{'url': 'https://www.forrester.com/blogs/apple-sales-and-profits-analysis-for-fy-2023-top-10-insights/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841",
+        "timestamp": "2024-12-03T05:23:22.023282",
+        "additional info": "{'url': 'https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://insights.pfizer.com/fourth-quarter-fy-earnings-2023/",
+        "timestamp": "2024-12-03T05:23:19.065583",
+        "additional info": "{'url': 'https://insights.pfizer.com/fourth-quarter-fy-earnings-2023/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.abbottinvestor.com/static-files/6cb09c09-2422-40e0-a24b-6545ffcf5267",
+        "timestamp": "2024-12-03T05:23:18.639122",
+        "additional info": "{'url': 'https://www.abbottinvestor.com/static-files/6cb09c09-2422-40e0-a24b-6545ffcf5267'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841",
+        "timestamp": "2024-12-03T05:23:18.209367",
+        "additional info": "{'url': 'https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.abbottinvestor.com/static-files/6cb09c09-2422-40e0-a24b-6545ffcf5267",
+        "timestamp": "2024-12-03T05:23:07.859797",
+        "additional info": "{'url': 'https://www.abbottinvestor.com/static-files/6cb09c09-2422-40e0-a24b-6545ffcf5267'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://investors.cvshealth.com/investors/newsroom/press-release-details/2024/CVS-HEALTH-REPORTS-FOURTH-QUARTER-AND-FULL-YEAR-2023-RESULTS/default.aspx",
+        "timestamp": "2024-12-03T05:23:07.465065",
+        "additional info": "{'url': 'https://investors.cvshealth.com/investors/newsroom/press-release-details/2024/CVS-HEALTH-REPORTS-FOURTH-QUARTER-AND-FULL-YEAR-2023-RESULTS/default.aspx'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://insights.pfizer.com/fourth-quarter-fy-earnings-2023/",
+        "timestamp": "2024-12-03T05:23:07.019795",
+        "additional info": "{'url': 'https://insights.pfizer.com/fourth-quarter-fy-earnings-2023/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://insights.pfizer.com/fourth-quarter-fy-earnings-2023/",
+        "timestamp": "2024-12-03T05:23:03.285215",
+        "additional info": "{'url': 'https://insights.pfizer.com/fourth-quarter-fy-earnings-2023/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841",
+        "timestamp": "2024-12-03T05:23:02.765368",
+        "additional info": "{'url': 'https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.ge.com/sites/default/files/ge_ar2023_annualreport.pdf",
+        "timestamp": "2024-12-03T05:23:02.119979",
+        "additional info": "{'url': 'https://www.ge.com/sites/default/files/ge_ar2023_annualreport.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://insights.pfizer.com/fourth-quarter-fy-earnings-2023/",
+        "timestamp": "2024-12-03T05:22:53.049139",
+        "additional info": "{'url': 'https://insights.pfizer.com/fourth-quarter-fy-earnings-2023/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841",
+        "timestamp": "2024-12-03T05:22:52.601298",
+        "additional info": "{'url': 'https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.ge.com/sites/default/files/ge_ar2023_annualreport.pdf",
+        "timestamp": "2024-12-03T05:22:52.217177",
+        "additional info": "{'url': 'https://www.ge.com/sites/default/files/ge_ar2023_annualreport.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.deloitte.com/an/en/Industries/consumer/analysis/consumer-products-industry-outlook.html",
+        "timestamp": "2024-12-03T05:22:45.427962",
+        "additional info": "{'url': 'https://www.deloitte.com/an/en/Industries/consumer/analysis/consumer-products-industry-outlook.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://burton-taylor.com/reports/08/2023/financial-market-dataanalysis-2023-company-spotlight-product-types",
+        "timestamp": "2024-12-03T05:22:44.798257",
+        "additional info": "{'url': 'https://burton-taylor.com/reports/08/2023/financial-market-dataanalysis-2023-company-spotlight-product-types'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841",
+        "timestamp": "2024-12-03T05:22:44.382421",
+        "additional info": "{'url': 'https://www.pfizer.com/sites/default/files/investors/financial_reports/annual_reports/2023/?linkId=359477841'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www2.deloitte.com/content/dam/Deloitte/us/Documents/consumer-business/us-consumer-business-consumer-products-industry-outlook.pdf",
+        "timestamp": "2024-12-03T05:22:13.882241",
+        "additional info": "{'url': 'https://www2.deloitte.com/content/dam/Deloitte/us/Documents/consumer-business/us-consumer-business-consumer-products-industry-outlook.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.canalys.com/newsroom/worldwide-smartphone-market-2023",
+        "timestamp": "2024-12-03T05:22:12.921746",
+        "additional info": "{'url': 'https://www.canalys.com/newsroom/worldwide-smartphone-market-2023'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.forrester.com/blogs/apple-sales-and-profits-analysis-for-fy-2023-top-10-insights/",
+        "timestamp": "2024-12-03T05:22:12.523488",
+        "additional info": "{'url': 'https://www.forrester.com/blogs/apple-sales-and-profits-analysis-for-fy-2023-top-10-insights/'}"
+    },
+    {
+        "tool": "get_company_profile",
+        "error_message": "FinnhubAPIException(status_code: 403): You don't have access to this resource.",
+        "timestamp": "2024-12-03T05:22:08.491820",
+        "additional info": "{'symbol': 'BTG.L'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://accountinginsights.org/enhancing-financial-performance-key-metrics-strategies-and-trends-2024/",
+        "timestamp": "2024-12-03T05:22:02.393199",
+        "additional info": "{'url': 'https://accountinginsights.org/enhancing-financial-performance-key-metrics-strategies-and-trends-2024/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.deloitte.com/cbc/en/Industries/consumer/analysis/consumer-products-industry-outlook.html",
+        "timestamp": "2024-12-03T05:22:01.987569",
+        "additional info": "{'url': 'https://www.deloitte.com/cbc/en/Industries/consumer/analysis/consumer-products-industry-outlook.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://nowcfo.com/financial-kpis-to-keep-track-of-in-2024/",
+        "timestamp": "2024-12-03T05:22:01.974168",
+        "additional info": "{'url': 'https://nowcfo.com/financial-kpis-to-keep-track-of-in-2024/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www2.deloitte.com/content/dam/Deloitte/us/Documents/consumer-business/us-consumer-business-consumer-products-industry-outlook-2024.pdf",
+        "timestamp": "2024-12-03T05:22:01.538287",
+        "additional info": "{'url': 'https://www2.deloitte.com/content/dam/Deloitte/us/Documents/consumer-business/us-consumer-business-consumer-products-industry-outlook-2024.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://mooresrowland.co/en/blog/financial-reporting-and-analysis-in-2024-key-updates-you-need-to-know/",
+        "timestamp": "2024-12-03T05:22:01.454639",
+        "additional info": "{'url': 'https://mooresrowland.co/en/blog/financial-reporting-and-analysis-in-2024-key-updates-you-need-to-know/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.forbes.com/sites/bernardmarr/2023/12/11/the-biggest-banking-and-financial-services-trends-for-2024/",
+        "timestamp": "2024-12-03T05:22:01.087731",
+        "additional info": "{'url': 'https://www.forbes.com/sites/bernardmarr/2023/12/11/the-biggest-banking-and-financial-services-trends-for-2024/'}"
+    },
+    {
+        "tool": "get_company_profile",
+        "error_message": "FinnhubAPIException(status_code: 403): You don't have access to this resource.",
+        "timestamp": "2024-12-03T05:21:54.977326",
+        "additional info": "{'symbol': 'BTO.TO'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btgpactual.eu/download_file/231/208",
+        "timestamp": "2024-12-03T05:16:04.514310",
+        "additional info": "{'url': 'https://btgpactual.eu/download_file/231/208'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.bt.com/bt-plc/assets/documents/bt-plc-financial-results/annual-reports/2023-bt-plc-annual-report.pdf",
+        "timestamp": "2024-12-03T05:15:58.858380",
+        "additional info": "{'url': 'https://www.bt.com/bt-plc/assets/documents/bt-plc-financial-results/annual-reports/2023-bt-plc-annual-report.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/revenue/",
+        "timestamp": "2024-12-03T05:15:58.231136",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/revenue/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://finance.yahoo.com/news/b2gold-btg-reports-y-y-135300709.html",
+        "timestamp": "2024-12-03T05:15:23.303518",
+        "additional info": "{'url': 'https://finance.yahoo.com/news/b2gold-btg-reports-y-y-135300709.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/financials/",
+        "timestamp": "2024-12-03T05:15:22.694355",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/financials/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/financials/ratios/",
+        "timestamp": "2024-12-03T05:15:22.159969",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/financials/ratios/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053136.html",
+        "timestamp": "2024-12-03T05:15:18.855338",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053136.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://finance.yahoo.com/news/btg-pactual-ends-2023-record-092800555.html",
+        "timestamp": "2024-12-03T05:15:18.141940",
+        "additional info": "{'url': 'https://finance.yahoo.com/news/btg-pactual-ends-2023-record-092800555.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btgpactual.eu/download_file/231/208",
+        "timestamp": "2024-12-03T05:15:17.509794",
+        "additional info": "{'url': 'https://btgpactual.eu/download_file/231/208'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.sec.gov/Archives/edgar/data/1455003/000145500324000001/2023USBFSFull3.pdf",
+        "timestamp": "2024-12-03T05:15:07.795616",
+        "additional info": "{'url': 'https://www.sec.gov/Archives/edgar/data/1455003/000145500324000001/2023USBFSFull3.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://api.mziq.com/mzfilemanager/v2/d/0afe1b62-e299-4dec-a938-763ebc4e2c11/cddc033c-2bb1-4a5a-e6ad-aa5829eaab2c?origin=2",
+        "timestamp": "2024-12-03T05:15:07.270270",
+        "additional info": "{'url': 'https://api.mziq.com/mzfilemanager/v2/d/0afe1b62-e299-4dec-a938-763ebc4e2c11/cddc033c-2bb1-4a5a-e6ad-aa5829eaab2c?origin=2'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btgpactual.eu/download_file/231/208",
+        "timestamp": "2024-12-03T05:15:06.737747",
+        "additional info": "{'url': 'https://btgpactual.eu/download_file/231/208'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/financials/",
+        "timestamp": "2024-12-03T05:13:41.510748",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/financials/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.nasdaq.com/articles/b2gold-btg-reports-y-y-rise-in-23-gold-output-revenues",
+        "timestamp": "2024-12-03T05:13:40.986803",
+        "additional info": "{'url': 'https://www.nasdaq.com/articles/b2gold-btg-reports-y-y-rise-in-23-gold-output-revenues'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/revenue/",
+        "timestamp": "2024-12-03T05:13:40.364000",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/revenue/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-reports-record-revenues-and-net-income-in-1q24--resulting-in-22-8-roae-302143441.html",
+        "timestamp": "2024-12-03T05:13:37.434905",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-reports-record-revenues-and-net-income-in-1q24--resulting-in-22-8-roae-302143441.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.wallstreetzen.com/stocks/us/nysemkt/btg/revenue",
+        "timestamp": "2024-12-03T05:13:36.927533",
+        "additional info": "{'url': 'https://www.wallstreetzen.com/stocks/us/nysemkt/btg/revenue'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.wallstreetzen.com/stocks/us/nysemkt/btg/earnings",
+        "timestamp": "2024-12-03T05:13:36.335284",
+        "additional info": "{'url': 'https://www.wallstreetzen.com/stocks/us/nysemkt/btg/earnings'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.macrotrends.net/stocks/charts/BTG/b2gold-corp/revenue",
+        "timestamp": "2024-12-03T05:13:13.935674",
+        "additional info": "{'url': 'https://www.macrotrends.net/stocks/charts/BTG/b2gold-corp/revenue'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/revenue/",
+        "timestamp": "2024-12-03T05:13:13.387003",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/revenue/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.wallstreetzen.com/stocks/us/nysemkt/btg/revenue",
+        "timestamp": "2024-12-03T05:13:12.790060",
+        "additional info": "{'url': 'https://www.wallstreetzen.com/stocks/us/nysemkt/btg/revenue'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btgpactual.eu/download_file/231/208",
+        "timestamp": "2024-12-03T05:11:40.730456",
+        "additional info": "{'url': 'https://btgpactual.eu/download_file/231/208'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btg.listedcompany.com/misc/one-report/2023/btg-company-overview-2023-en.pdf",
+        "timestamp": "2024-12-03T05:11:40.218759",
+        "additional info": "{'url': 'https://btg.listedcompany.com/misc/one-report/2023/btg-company-overview-2023-en.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btgpactual.eu/application/files/7217/1408/3167/BTG_Pactual_Europe_SA_Annual_Accounts_2023.pdf",
+        "timestamp": "2024-12-03T05:11:39.702497",
+        "additional info": "{'url': 'https://btgpactual.eu/application/files/7217/1408/3167/BTG_Pactual_Europe_SA_Annual_Accounts_2023.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://finance.yahoo.com/news/b2gold-btg-earnings-miss-estimates-165400381.html",
+        "timestamp": "2024-12-03T05:11:35.846896",
+        "additional info": "{'url': 'https://finance.yahoo.com/news/b2gold-btg-earnings-miss-estimates-165400381.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/",
+        "timestamp": "2024-12-03T05:11:35.454345",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/revenue/",
+        "timestamp": "2024-12-03T05:11:35.061323",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/revenue/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btgpactual.eu/application/files/7217/1408/3167/BTG_Pactual_Europe_SA_Annual_Accounts_2023.pdf",
+        "timestamp": "2024-12-03T05:11:26.567483",
+        "additional info": "{'url': 'https://btgpactual.eu/application/files/7217/1408/3167/BTG_Pactual_Europe_SA_Annual_Accounts_2023.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053136.html",
+        "timestamp": "2024-12-03T05:11:26.078210",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053136.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://thefintechbuzz.com/fintech-pr/2024/02/05/49820/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23/0/",
+        "timestamp": "2024-12-03T05:11:25.686684",
+        "additional info": "{'url': 'https://thefintechbuzz.com/fintech-pr/2024/02/05/49820/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23/0/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://finance.yahoo.com/news/b2gold-btg-reports-y-y-135300709.html",
+        "timestamp": "2024-12-03T05:11:22.345917",
+        "additional info": "{'url': 'https://finance.yahoo.com/news/b2gold-btg-reports-y-y-135300709.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://finance.yahoo.com/news/b2gold-btg-earnings-miss-estimates-165400381.html",
+        "timestamp": "2024-12-03T05:11:21.821089",
+        "additional info": "{'url': 'https://finance.yahoo.com/news/b2gold-btg-earnings-miss-estimates-165400381.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-reports-record-revenues-of-r-4-8-billion-and-adjusted-net-income-of-r-2-3-billion-in-1q23--301817839.html",
+        "timestamp": "2024-12-03T05:11:21.298926",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-reports-record-revenues-of-r-4-8-billion-and-adjusted-net-income-of-r-2-3-billion-in-1q23--301817839.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053136.html",
+        "timestamp": "2024-12-03T05:11:07.083108",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053136.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://finance.yahoo.com/news/btg-pactual-ends-2023-record-092800555.html",
+        "timestamp": "2024-12-03T05:11:06.680421",
+        "additional info": "{'url': 'https://finance.yahoo.com/news/btg-pactual-ends-2023-record-092800555.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://thefintechbuzz.com/fintech-pr/2024/02/05/49820/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23/0/",
+        "timestamp": "2024-12-03T05:11:06.048423",
+        "additional info": "{'url': 'https://thefintechbuzz.com/fintech-pr/2024/02/05/49820/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23/0/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://finance.yahoo.com/news/btg-pactual-ends-2023-record-092800555.html",
+        "timestamp": "2024-12-03T05:11:02.221409",
+        "additional info": "{'url': 'https://finance.yahoo.com/news/btg-pactual-ends-2023-record-092800555.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053127.html",
+        "timestamp": "2024-12-03T05:11:01.768491",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053127.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/revenue/",
+        "timestamp": "2024-12-03T05:11:01.140914",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/revenue/'}"
+    },
+    {
+        "tool": "get_company_profile",
+        "error_message": "FinnhubAPIException(status_code: 403): You don't have access to this resource.",
+        "timestamp": "2024-12-03T05:10:57.656764",
+        "additional info": "{'symbol': 'BTO.TO'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://finance.yahoo.com/quote/BTG/financials/",
+        "timestamp": "2024-12-03T05:10:52.788266",
+        "additional info": "{'url': 'https://finance.yahoo.com/quote/BTG/financials/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/financials/",
+        "timestamp": "2024-12-03T05:10:52.269166",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/financials/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.barchart.com/stocks/quotes/BTG/income-statement/annual",
+        "timestamp": "2024-12-03T05:10:51.745177",
+        "additional info": "{'url': 'https://www.barchart.com/stocks/quotes/BTG/income-statement/annual'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://btgpactual.eu/download_file/231/208",
+        "timestamp": "2024-12-03T05:10:48.377702",
+        "additional info": "{'url': 'https://btgpactual.eu/download_file/231/208'}"
+    },
+    {
+        "tool": "get_company_profile",
+        "error_message": "FinnhubAPIException(status_code: 403): You don't have access to this resource.",
+        "timestamp": "2024-12-03T05:10:48.306397",
+        "additional info": "{'symbol': 'BTO.TO'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053127.html",
+        "timestamp": "2024-12-03T05:10:47.709606",
+        "additional info": "{'url': 'https://www.prnewswire.com/news-releases/btg-pactual-ends-2023-with-record-revenue-and-net-income-resulting-in-roae-of-22-7-for-the-year-and-23-4-in-4q23--302053127.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://stockanalysis.com/stocks/btg/revenue/",
+        "timestamp": "2024-12-03T05:10:46.671747",
+        "additional info": "{'url': 'https://stockanalysis.com/stocks/btg/revenue/'}"
+    },
+    {
+        "tool": "get_company_profile",
+        "error_message": "FinnhubAPIException(status_code: 403): You don't have access to this resource.",
+        "timestamp": "2024-12-03T05:10:33.292122",
+        "additional info": "{'symbol': 'BTO.TO'}"
+    },
+    {
+        "tool": "get_company_profile",
+        "error_message": "FinnhubAPIException(status_code: 403): You don't have access to this resource.",
+        "timestamp": "2024-12-03T05:08:43.478293",
+        "additional info": "{'symbol': 'BTO.TO'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.davecantingroup.com/wp-content/uploads/2024/01/For-print_2024-0129-Final-Version-State-of-Retail-Auto-Q1-2024-1.pdf",
+        "timestamp": "2024-12-03T05:07:38.300837",
+        "additional info": "{'url': 'https://www.davecantingroup.com/wp-content/uploads/2024/01/For-print_2024-0129-Final-Version-State-of-Retail-Auto-Q1-2024-1.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.kroll.com/-/media/kroll-images/pdfs/executive-summary-automotive-industry-insights-spring-2024.pdf",
+        "timestamp": "2024-12-03T05:07:37.786035",
+        "additional info": "{'url': 'https://www.kroll.com/-/media/kroll-images/pdfs/executive-summary-automotive-industry-insights-spring-2024.pdf'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://matrixcmg.com/insight/automotive-aftermarket-sector-update-fall-2024/",
+        "timestamp": "2024-12-03T05:07:37.170593",
+        "additional info": "{'url': 'https://matrixcmg.com/insight/automotive-aftermarket-sector-update-fall-2024/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.ecb.europa.eu/press/financial-stability-publications/fsr/html/ecb.fsr202405~7f212449c8.en.html",
+        "timestamp": "2024-12-03T05:07:33.808044",
+        "additional info": "{'url': 'https://www.ecb.europa.eu/press/financial-stability-publications/fsr/html/ecb.fsr202405~7f212449c8.en.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.spglobal.com/mobility/en/research-analysis/automakers-struggle-to-sustain-profit-margins.html",
+        "timestamp": "2024-12-03T05:07:33.014767",
+        "additional info": "{'url': 'https://www.spglobal.com/mobility/en/research-analysis/automakers-struggle-to-sustain-profit-margins.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://finance.yahoo.com/news/snipp-interactive-reports-q3-2024-120000892.html",
+        "timestamp": "2024-12-03T05:07:32.454396",
+        "additional info": "{'url': 'https://finance.yahoo.com/news/snipp-interactive-reports-q3-2024-120000892.html'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.morningstar.com/company-reports/1231461-double-digit-operating-margin-remains-on-track-despite-expected-revenue-decline-in-fiscal-2024",
+        "timestamp": "2024-12-03T05:07:22.013430",
+        "additional info": "{'url': 'https://www.morningstar.com/company-reports/1231461-double-digit-operating-margin-remains-on-track-despite-expected-revenue-decline-in-fiscal-2024'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.motor.com/2024/08/automakers-struggle-to-sustain-profit-margins/",
+        "timestamp": "2024-12-03T05:07:21.496331",
+        "additional info": "{'url': 'https://www.motor.com/2024/08/automakers-struggle-to-sustain-profit-margins/'}"
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "402 Client Error: Payment Required for url: https://r.jina.ai/https://www.spglobal.com/mobility/en/research-analysis/automakers-struggle-to-sustain-profit-margins.html",
+        "timestamp": "2024-12-03T05:07:20.999981",
+        "additional info": "{'url': 'https://www.spglobal.com/mobility/en/research-analysis/automakers-struggle-to-sustain-profit-margins.html'}"
+    },
+    {
+        "tool": "get_income_stmt",
+        "error_message": "Empty DataFrame: Invalid symbol or no data available.",
+        "timestamp": "2024-12-03T05:07:00.645439",
+        "additional info": "{'query': 'TASK2'}"
+    },
+    {
+        "tool": "get_income_stmt",
+        "error_message": "Empty DataFrame: Invalid symbol or no data available.",
+        "timestamp": "2024-12-03T05:06:49.263078",
+        "additional info": "{'query': 'example_ticker'}"
+    }
+]mple_ticker'}"
+    }
+]
