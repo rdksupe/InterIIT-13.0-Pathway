@@ -1,73 +1,66 @@
-### Chain of Thoughts (COT)
+### Chain of Thought (COT)
 
-The query presented is concerning the legality and implications of a specific offensive behavior - harassment of a child. This is a sensitive and complex issue that intersects multiple domains such as law, public policy, child protection, and ethics. Therefore, a multi-dimensional approach is necessary to fully address the user’s query.
+To address the task of evaluating the financial performance of BTG's key product lines over the last two years, with a focus on identifying segments that have experienced significant revenue declines or margins, we will break down this primary task into several focused sub-tasks. Each sub-task will address a specific aspect of the financial analysis, leveraging different financial data tools and insights. 
 
-Firstly, we need to explore the legal framework surrounding harassment, particularly related to children. This requires an understanding of both national and state laws. We will initiate a subtask specifically focused on retrieving pertinent legal information regarding child harassment laws from both US and Indian jurisdictions.
+1. **Identify Key Financial Statements:** The first step involves identifying and retrieving BTG's income statement, balance sheet, and cash flow statement over the last two years. This provides a comprehensive picture of the financial health of BTG and is essential for further analysis.
 
-Next, we should consider the implications of harassment in public policy, particularly how governments address and combat child harassment. This involves studying public policy research around child protection and family welfare.
+2. **Analyze Revenue Streams:** Once we have the necessary financial data, the next step will involve breaking down revenue by product lines. This analysis will help identify which specific segments are declining in revenue and will require extracting detailed income statement data.
 
-From an ethical standpoint, we should also examine the societal and psychological impacts of child harassment. This dimension will focus on gathering information from ethical research, advocating for the protection of children.
+3. **Assess Margin Trends:** After analyzing revenue, the following task will be to assess margin trends for the identified product lines, which will rely on the results from the previous analysis of revenue. This involves calculating margins based on revenue and relevant costs from the income statement.
 
-We should also take into consideration the potential consequences for the perpetrator, including legal repercussions, which requires another legal analysis.
+4. **Compile Results and Identify Key Findings:** Finally, findings from the previous tasks will be compiled to summarize which product lines are experiencing significant declines in revenue or margins, thus completing the assessment of financial performance.
 
-To summarize, the query will be broken down into the following sub-tasks:
+Each sub-task is designed to be handled by a single specialized agent, allowing for parallel execution where possible. 
 
-1. **Legal Analysis in the USA regarding Child Harassment** – This task will investigate US case law concerning child harassment.
-2. **Legal Analysis in India regarding Child Harassment** – This task will obtain Indian legal definitions and case law relevant to child harassment.
-3. **Public Policy Research** – This task will examine public policies focused on child protection and rights.
-4. **Ethical Implications** – This task will gather information on the societal and psychological impacts of child harassment.
-5. **Consequences for Perpetrators** – This task will explore potential legal repercussions for individuals found guilty of harassing a child.
+#### Local Constraints:
+- **Task 1:** Must retrieve data from financial statements dated within the last two years.
+- **Task 2:** Focus specifically on product line revenues, filtering for any that show declines.
+- **Task 3:** Calculate margins based on the preceding revenue analysis from Task 2.
+- **Task 4:** Summarize the findings logically based on the results from all previous tasks.
 
-Given this breakdown, we can now prepare our JSON template that includes individual tasks with focused agents and relevant tools.
+#### Global Constraints:
+- All analyses must adhere to reporting standards and ensure that all financial data is accurate and up-to-date, ensuring compliance with applicable regulations.
 
-### JSON Template
+### JSON Template Population
 
 ```json
 {
-    "main_task": "Gather valid information regarding the legality and implications of child harassment.",
+    "main_task": "Evaluate the financial performance of BTG's key product lines in the last two years, highlighting any segments experiencing significant revenue decline or margin.",
     "sub_tasks": {
         "task_1": {
-            "content": "Retrieve American legal data and case laws regarding child harassment.",
-            "agent": "US Case Law Researcher",
-            "agent_role_description": "A legal researcher specializing in US case law, focusing on child harassment and abuse cases. Responsibilities include gathering and analyzing relevant legal documents and precedents.",
-            "tools": ["get_us_case_law"],
-            "local_constraints": ["The task must only focus on cases related to child harassment in the US."],
+            "content": "Retrieve BTG's income statement, balance sheet, and cash flow statement for the last two years. This data forms the foundation for understanding the company's overall financial health.",
+            "agent": "Financial Analyst",
+            "agent_role_description": "The Financial Analyst is responsible for retrieving and analyzing financial statements to provide insights on the financial standings of the company.",
+            "tools": ["get_income_stmt", "get_balance_sheet", "get_cash_flow"],
+            "local_constraints": ["Data must be dated within the last two years."],
             "require_data": []
         },
         "task_2": {
-            "content": "Retrieve Indian legal data and case laws regarding child harassment.",
-            "agent": "Indian Legal Researcher",
-            "agent_role_description": "A legal researcher specializing in Indian law regarding child rights and harassment, tasked with obtaining and interpreting relevant legal cases.",
-            "tools": ["get_indian_kanoon"],
-            "local_constraints": ["The task must only focus on cases relevant to child harassment in India."],
-            "require_data": []
+            "content": "Based on the income statement retrieved in task_1, analyze the revenue for BTG's key product lines to identify any segments experiencing revenue decline over the last two years.",
+            "agent": "Market Researcher",
+            "agent_role_description": "The Market Researcher will analyze the data retrieved in task_1, focusing on revenue by product line and identifying any decline.",
+            "tools": ["get_income_stmt"],
+            "local_constraints": ["Focus on product line revenues and filter for declines."],
+            "require_data": ["task_1"]
         },
         "task_3": {
-            "content": "Research public policies in relation to child protection against harassment.",
-            "agent": "Public Policy Researcher",
-            "agent_role_description": "A researcher focused on public policies that protect children and address child harassment. Responsible for identifying effective frameworks being implemented.",
-            "tools": ["web_search"],
-            "local_constraints": ["The research should focus on policies and programs set within the last decade."],
-            "require_data": []
+            "content": "Based on the revenue analysis conducted in task_2, assess the margin trends for the identified product lines and calculate margins using revenue and cost data from the income statement.",
+            "agent": "Financial Analyst",
+            "agent_role_description": "The Financial Analyst will calculate and analyze margins for BTG's key product lines based on the revenue data provided in task_2.",
+            "tools": ["get_income_stmt"],
+            "local_constraints": ["Calculate margins based on revenue and costs identified in task_2."],
+            "require_data": ["task_2"]
         },
         "task_4": {
-            "content": "Examine the societal and psychological impacts of child harassment.",
-            "agent": "Ethics Researcher",
-            "agent_role_description": "A specialist in ethics and psychology, tasked with analyzing the societal implications and the psychological effects of child harassment.",
-            "tools": ["web_search"],
-            "local_constraints": ["Research must focus on peer-reviewed studies and articles from reputable sources."],
-            "require_data": []
-        },
-        "task_5": {
-            "content": "Investigate the potential legal consequences for individuals guilty of child harassment.",
-            "agent": "Legal Consequences Analyst",
-            "agent_role_description": "An analyst specializing in the legal repercussions faced by offenders of child harassment, required to compile data on sentencing and legal outcomes.",
-            "tools": ["get_us_case_law", "get_indian_kanoon"],
-            "local_constraints": ["The analysis should differentiate between cases in the US and India, identifying pertinent laws and penalties."],
-            "require_data": ["task_1", "task_2"]
+            "content": "Compile results from tasks 2 and 3 to summarize and identify key findings on revenue declines and margin performance for BTG's product lines.",
+            "agent": "General Researcher",
+            "agent_role_description": "The General Researcher will synthesize findings from previous analyses to report on significant trends in revenue and margins.",
+            "tools": [],
+            "local_constraints": ["Summarization must logically follow from the findings in tasks 2 and 3."],
+            "require_data": ["task_2", "task_3"]
         }
     }
 }
 ``` 
 
-This JSON structure clearly outlines the main task of gathering valid information about child harassment and provides a comprehensive set of focused sub-tasks that address the legal, policy, ethical, and societal implications of the query. Each sub-task is carefully designed to operate independently unless otherwise noted in their requirements, promoting parallel execution where possible.
+In this structured task breakdown, each sub-task is designed to build logically on the last, while still being manageable and specific enough to allow for effective parallel execution where possible.
