@@ -55,14 +55,6 @@ const Sidebar = () => {
 		}));
 	};
 
-	// Handle file input change
-	// const handleFileChange = (e) => {
-	// 	const { name, files } = e.target;
-	// 	setFormData((prevData) => ({
-	// 		...prevData,
-	// 		[name]: files[0] // Store the first file
-	// 	}));
-	// };
 	const handleFileChange = (e) => {
 		const { name, files } = e.target;
 	  
@@ -147,12 +139,6 @@ const Sidebar = () => {
 					})}
 				</div>
 				<div className="bottom">
-					<div className="bottom-item recent-entry">
-						<img src={assets.question_icon}
-							alt=""
-							title="Help desk" />
-						{extended ? <p>Help desk</p> : null}
-					</div>
 					<div className="bottom-item recent-entry" onClick={openFilePopup}>
 						<img src={assets.history_icon}
 							alt=""
