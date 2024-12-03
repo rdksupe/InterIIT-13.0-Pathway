@@ -33,12 +33,17 @@ const Main = () => {
 		setDownloadData,
 		socket,
 		setSocket,
+		agentData,
+		setAgentData,
+		onRenderAgent,
 	} = useContext(Context);
 	const [socket1, setSocket1] = useState(null);
 
 	const resultDataRef = useRef(null); // Reference to the result-data container for auto scrolling
+	const agentDataRef = useRef(null);
 
 	const [markdownContent, setMarkdownContent] = useState('');
+	const agent = useRef(true);
 
 
 	const handleMarkdownChange = (e) => {
@@ -48,7 +53,7 @@ const Main = () => {
 	const textAreaRef = useRef(null);
 
 	const generatePDF = () => {
-		// Send the raw Markdown content to the backend without conversion
+		// Send the raw Markdown content to the backend
 		fetch('http://localhost:5000/convert', {
 			method: 'POST',
 			headers: {
@@ -60,10 +65,33 @@ const Main = () => {
 			if (!response.ok) {
 				throw new Error('Failed to send data to the backend');
 			}
-			console.log('Content sent successfully to backend.');
+			return response.json();  // Expecting a JSON response
+		})
+		.then(data => {
+			console.log('Markdown content sent successfully to backend:', data.message);
+	
+			// Now fetch the generated PDF from the backend after it's processed
+			return fetch('http://localhost:5000/download-pdf', {
+				method: 'GET',
+			});
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Failed to fetch the generated PDF');
+			}
+			return response.blob(); // Convert the response to a blob
+		})
+		.then(blob => {
+			// Create a download link and trigger the download
+			const link = document.createElement('a');
+			link.href = window.URL.createObjectURL(blob);
+			link.download = 'generated_output.pdf'; // Specify the filename
+			document.body.appendChild(link);
+			link.click();
+			link.remove();
 		})
 		.catch(error => {
-			console.error('Error sending content to backend:', error);
+			console.error('Error during the process:', error);
 		});
 	};
 
@@ -73,6 +101,12 @@ const Main = () => {
 			resultDataRef.current.scrollTop = resultDataRef.current.scrollHeight;
 		}
 	}, [resultData]);
+	useEffect(() => {
+		if (agentDataRef.current) {
+			agentDataRef.current.scrollTop = agentDataRef.current.scrollHeight;
+		}
+	}, [agentData]);
+
 
 	const handleCardClick = (promptText) => {
 		setInput(promptText);
@@ -86,21 +120,21 @@ const Main = () => {
 		if (socket && socket.readyState === WebSocket.OPEN) {
 			socket.send(JSON.stringify({ type: 'query', query }));
 		}
-		// try {
-		// 	fetch('http://localhost:5000/query', {
-		// 	  method: 'POST',
-		// 	  headers: {
-		// 		'Content-Type': 'application/json',
-		// 	  },
-		// 	  body: JSON.stringify({ query: input }), // Send input to the Flask backend
-		// 	});
+		try {
+			fetch('http://localhost:5000/query', {
+			  method: 'POST',
+			  headers: {
+				'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({ query: input }), // Send input to the Flask backend
+			});
 		
-		// 	console.log('Query sent successfully!');
-		// 	setLoading(false);
-		//   } catch (error) {
-		// 	console.error('Error sending query to backend:', error);
-		// 	setLoading(false);
-		//   }
+			console.log('Query sent successfully!');
+			setLoading(false);
+		  } catch (error) {
+			console.error('Error sending query to backend:', error);
+			setLoading(false);
+		  }
 	}
 
 	// Adjust textarea height dynamically
@@ -126,6 +160,8 @@ const Main = () => {
 
 	const handleFileChange = (event) => {
 		setEvenData(event);
+		console.log(event);
+
 	};
 
 	const triggerFileInput = () => {
@@ -133,66 +169,80 @@ const Main = () => {
 	};
 
 	useEffect(() => {
-		const ws = new WebSocket('ws://localhost:8090');
-		ws.onopen = () => {
-			console.log('WebSocket connected to agent server');
-		};
-		ws.onmessage = (event) => {
-			try {
-				const data = JSON.parse(event.data);
 
-				if (data.type === 'agents') {
-					console.log("agents data", data);
-					onRender(data.response);
-					// console.log(data.response);
-					setMarkdownContent(data.response);
+		try{
+			const ws = new WebSocket('ws://localhost:8090');
+
+			ws.onopen = () => {
+				console.log('WebSocket connected to agent server');
+				
+			};
+			ws.onmessage = (event) => {
+				try {
+					const data = JSON.parse(event.data);
+
+					if (data.type === 'agents') {
+						
+						console.log("agents data", data);
+						if(agent.current === true){
+						onRenderAgent(data.response);
+						// console.log(data.response);
+						setMarkdownContent(data.response);}
+					}
+				} catch (error) {
+					console.error('Error parsing WebSocket message:', error);
 				}
-			} catch (error) {
-				console.error('Error parsing WebSocket message:', error);
-			}
-		};
-		ws.onclose = () => {
-			console.log('WebSocket disconnected');
-		};
-		setSocket1(ws);
-		return () => {
-			ws.close();
-		};
+			};
+			ws.onclose = () => {
+				console.log('WebSocket disconnected');
+			};
+			setSocket1(ws);
+			return () => {
+				ws.close();
+			};
+		}
+		catch(error){
+			console.error('Verbose WebSocket Server Not Connected', error);
+		}
 	}, []);
 
 	useEffect(() => {
 		const ws = new WebSocket('ws://localhost:8080');
-		ws.onopen = () => {
-			console.log('WebSocket connected');
-		};
-		ws.onmessage = (event) => {
-			try {
-				const data = JSON.parse(event.data);
+		try{	
+			ws.onopen = () => {
+				console.log('WebSocket connected');
+			};
+			ws.onmessage = (event) => {
+				try {
+					const data = JSON.parse(event.data);
 
-				if (data.type === 'graph') {
+					if (data.type === 'graph') {
+						
+						const graph = JSON.parse(data.response);
+						console.log(graph);
+						setGraphData(graph);
 					
-					const graph = JSON.parse(data.response);
-					console.log(graph);
-					setGraphData(graph);
-				
-				} else if (data.type === 'response') {
-					onRender(data.response);
-					console.log(data.response);
-					setMarkdownContent(data.response);
-				} else if (data.type === 'agents') {
-					console.log("agents data", data);
+					} else if (data.type === 'response') {
+						agent.current = false;
+						onRender(data.response);
+						console.log(data.response);
+						setMarkdownContent(data.response);
+					}
+				} catch (error) {
+					console.error('Error parsing WebSocket message:', error);
 				}
-			} catch (error) {
-				console.error('Error parsing WebSocket message:', error);
-			}
-		};
-		ws.onclose = () => {
-			console.log('WebSocket disconnected');
-		};
-		setSocket(ws);
-		return () => {
-			ws.close();
-		};
+			};
+			ws.onclose = () => {
+				console.log('WebSocket disconnected');
+			};
+			setSocket(ws);
+			return () => {
+				ws.close();
+			};
+		}
+		catch(error){
+			console.error('Main WebSocket Server Not Connected', error);
+		}
 	}, []);
 
 	return (
@@ -203,7 +253,7 @@ const Main = () => {
 			}
 		}}>
 			<div className="nav">
-				<img src={assets.pathway_icon} className="pway" alt="" />
+				<img src={assets.main_logo} className="pway" alt="" />
 				<div className="rightside">
 					<Dropdown />
 					<img src={assets.user} className="user" alt="" />
@@ -274,31 +324,61 @@ const Main = () => {
 								<img src={assets.user} className="result-user" alt="" />
 								<p>{recentPrompt}</p>
 							</div>
-							<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
-								<img src={assets.pway_icon} className="pway-res" alt="" />
-								{loading ? (
-									<div className="loader">
-										<hr />
-										<hr />
-										<hr />
-									</div>
-								) : (
-									<div className="markdown-content">
-										<ReactMarkdown 
-										rehypePlugins={[rehypeRaw]} 
-										remarkPlugins={[remarkGfm]}
-										components={{
-											a: ({ href, children }) => (
-											  <a href={href} target="_blank" rel="noopener noreferrer">
-												{children}
-											  </a>
-											)
-										  }}>{resultData}</ReactMarkdown>
-									</div>
-								)}
+							<div>
+							{!agent.current ?	
+								(<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
+									<img src={assets.pway_icon} className="pway-res" alt="" />
+									{loading ? (
+										<div className="loader">
+											<hr />
+											<hr />
+											<hr />
+										</div>
+									) : (
+										<div className="markdown-content" >
+											<ReactMarkdown
+											rehypePlugins={[rehypeRaw]} 
+											remarkPlugins={[remarkGfm]}
+											components={{
+												a: ({ href, children }) => (
+												<a href={href} target="_blank" rel="noopener noreferrer">
+													{children}
+												</a>
+												)
+											}}>{resultData}</ReactMarkdown>
+										</div>
+									)}
+								</div>):(
+								<div className="result-data" ref={agentDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
+									<img src={assets.pway_icon} className="pway-res" alt="" />
+									{loading ? (
+										<div className="loader">
+											<hr />
+											<hr />
+											<hr />
+										</div>
+									) : (
+										
+
+										<div className="markdown-content" style={{color: 'grey'}}>
+											<ReactMarkdown
+											rehypePlugins={[rehypeRaw]} 
+											remarkPlugins={[remarkGfm]}
+											components={{
+												a: ({ href, children }) => (
+												<a href={href} target="_blank" rel="noopener noreferrer">
+													{children}
+												</a>
+												)
+											}}>{agentData}</ReactMarkdown>
+										</div>
+										
+									)}
+								</div>
+							)}
 							</div>
 							{downloadData && (
-								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', margin:'10px 50px'}}>
+								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', marginTop: '1vh', marginLeft:'7vh'}}>
 								</img>
 							)}
 						</div>
@@ -311,12 +391,12 @@ const Main = () => {
 							onChange={(e) => setInput(e.target.value)}
 							value={input}
 							placeholder="Enter the Prompt Here"
-							onKeyDown={(e) => {
-								if (e.key === 'Enter') {
-									e.preventDefault();
-									handleClick();
-								}
-							}}
+							// onKeyDown={(e) => {
+							// 	if (e.key === 'Enter') {
+							// 		e.preventDefault();
+							// 		handleClick();
+							// 	}
+							// }}
 							rows={1} // Start with 1 row
 							style={{
 								position: 'relative',
@@ -336,7 +416,6 @@ const Main = () => {
 						<div>
 							<img src={assets.attach_icon} alt="Upload" onClick={triggerFileInput} />
 							<input
-								webkitdirectory="true"
 								multiple
 								id="hiddenFileInput"
 								type="file"
@@ -354,6 +433,7 @@ const Main = () => {
 						<p></p>
 					</div>
 				</div>
+			
 			</div>
 		</div>
 	);
