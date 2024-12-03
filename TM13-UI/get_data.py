@@ -3,14 +3,14 @@ import dotenv
 import logging
 import os
 import json
-import google.generativeai as genai
-from langchain_huggingface import HuggingFaceEndpoint
-from langchain.chains import LLMChain
-from langchain.prompts import PromptTemplate
-import json
+# import google.generativeai as genai
+# from langchain_huggingface import HuggingFaceEndpoint
+# from langchain.chains import LLMChain
+# from langchain.prompts import PromptTemplate
+# import json
 import re
 from openai import OpenAI
-client = OpenAI(api_key="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")
+client = OpenAI(api_key="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")
 
 def extract_and_convert_to_json(text):
     # Using regex to find the company name and ticker symbol pattern
@@ -22,11 +22,14 @@ def extract_and_convert_to_json(text):
     # Prepare a list of dictionaries for the JSON structure
     companies = []
     for match in matches:
+        start_date = '2023-05-01'
+        end_date = '2024-11-30'
         company = {
             "company_name": match[0],
             "ticker_symbol": match[1],
             "file_path": f"src/{match[0]}_stock_data.csv"
         }
+        get_stock_data(match[1], start_date, end_date, company["file_path"])
         companies.append(company)
     
     # Create a valid JSON structure
@@ -35,8 +38,19 @@ def extract_and_convert_to_json(text):
     # Save it to a JSON file
     with open('companies.json', 'w') as f:
         f.write(json_data)
-    
     print(json_data)
+    # Loop through each company
+    # for company in json_data:
+    #     ticker_symbol = company["ticker_symbol"]
+    #     company_name = company['company_name']
+        
+    #     # Call the get_stock_data function for the current company
+    #     start_date = '2023-05-01'
+    #     end_date = '2024-11-30'
+    #     output_file = f'src/{company_name}_stock_data.csv'
+    #     get_stock_data(ticker_symbol, start_date, end_date, output_file)
+    
+
 
 
 logging.basicConfig(level=logging.INFO)
@@ -79,20 +93,20 @@ def get_stock_data(ticker_symbol, start_date, end_date, output_file):
     df.to_csv(output_file)
     return df
 
-query = "Give me a detailed report on the impacts of Alibaba acquiring eBay  . Would that be a reasonable acquisition? If so, what are the potential consequences of that company from a financial and consumer based perspective."
-get_data(query)
+# query = "Give me a detailed report on the impacts of Alibaba acquiring eBay  . Would that be a reasonable acquisition? If so, what are the potential consequences of that company from a financial and consumer based perspective."
+# get_data(query)
 
-# Read the companies.json file
-with open('companies.json', 'r') as f:
-    companies_data = json.load(f)
+# # Read the companies.json file
+# with open('companies.json', 'r') as f:
+#     companies_data = json.load(f)
 
-# Loop through each company
-for company in companies_data:
-    ticker_symbol = company['ticker_symbol']
-    company_name = company['company_name']
+# # Loop through each company
+# for company in companies_data:
+#     ticker_symbol = company['ticker_symbol']
+#     company_name = company['company_name']
     
-    # Call the get_stock_data function for the current company
-    start_date = '2023-05-01'
-    end_date = '2024-11-30'
-    output_file = f'src/{company_name}_stock_data.csv'
-    get_stock_data(ticker_symbol, start_date, end_date, output_file)
+#     # Call the get_stock_data function for the current company
+#     start_date = '2023-05-01'
+#     end_date = '2024-11-30'
+#     output_file = f'src/{company_name}_stock_data.csv'
+#     get_stock_data(ticker_symbol, start_date, end_date, output_file)
