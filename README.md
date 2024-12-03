@@ -1,4 +1,6 @@
-## Instructions to run Retrieval-Augmented Computational Contextual Organizer with Optimized Navigation
+# Reflective Agentic Coordination for Contextual Optimization of Organized Networks
+
+## Instructions to run the pipeline
 
 
 This project requires Python 3.12.0 or later. Ensure that you have the correct Python version installed before running the project. The project also requires npm and node.
