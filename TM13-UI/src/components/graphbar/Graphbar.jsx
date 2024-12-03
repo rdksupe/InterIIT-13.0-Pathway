@@ -12,7 +12,7 @@ import 'reactflow/dist/style.css';
 import { Context } from "../../context/Context";
 import companies from '../../../companies.json';
 
-// Flexible graph node class
+
 class GraphNode {
     constructor(value, metadata = {}) {
         this.value = value;
@@ -26,26 +26,25 @@ class GraphNode {
     }
 }
 
-
 const createSampleGraph = (graphData) => {
     const nodesList = {};
     const levelCounts = {}; // Object to track the number of nodes at each level
     const totalWidth = 400; // Total width for positioning nodes
     const verticalSpacing = 150; // Vertical spacing between levels (already given)
 
-    // Create all nodes
+
     for (const nodeData of graphData.nodes) {
         nodesList[nodeData.value] = new GraphNode(nodeData.value, nodeData.metadata);
     }
 
-    // Link nodes using edges
+
     for (const edge of graphData.edges) {
         const sourceNode = nodesList[edge.source];
         const targetNode = nodesList[edge.target];
         sourceNode.addChild(targetNode); // Add actual node references
     }
 
-    // Initialize levels and count nodes at each level
+
     const setNodeLevel = (node, level) => {
         if (node.level !== undefined) return; // Avoid resetting level if already set
         node.level = level;
@@ -113,7 +112,6 @@ const createSampleGraph = (graphData) => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
             }
         });
 
@@ -124,8 +122,8 @@ const createSampleGraph = (graphData) => {
                 id: `edge-${node.value}-${child.value}`,
                 source: String(node.value),
                 target: String(child.value),
-                type: 'straight',
-                arrowHeadType: 'arrowclosed'
+                animated: true,
+                style: { stroke: '#1C1CF0' },
             });
 
         });
@@ -247,12 +245,12 @@ const GraphBar = () => {
             }
             return null;
         }).filter((data) => data !== null);
-    
+
         return (
             <Plot
                 data={chartData}
                 layout={{
-                    title: chartType === "candlestick" ? "Stock Candlestick Chart" : "Stock Time Series Chart",
+                    title: chartType === "candlestick" ? "Stock Candlestick Chart" :  "Stock Time Series" ,
                     xaxis: { title: "Date" },
                     yaxis: { title: "Price (USD)" },
                     responsive: true,
@@ -262,7 +260,7 @@ const GraphBar = () => {
             />
         );
     };
-    
+
 
     return (
         <div className="graph-main">
@@ -308,17 +306,18 @@ const GraphBar = () => {
                             onNodeMouseLeave={handleNodeMouseLeave}
                         >
                             <Controls />
-                            <Background color="#f0f0f0" gap={16} variant="dots" />
+                            <Background color="#1C1CF0" gap={6} variant="dots" />
                         </ReactFlow>
                         {popupData && (
                             <div
                                 style={{
                                     top: popupData.position.y + 10, // Offset from click
                                     left: popupData.position.x + 10,
-                                    // backgroundColor: "red",
                                     color: "black",
                                     padding: "15px",
                                     zIndex: 1000,
+                                    backgroundColor: '#e6f3ff',
+                                    height: '100%'
                                 }}
                             >
                                 <div className="details">
@@ -342,16 +341,17 @@ const GraphBar = () => {
                 {activeButton === 2 && (
                     <div className="chart-container">
                         <div style={{ marginBottom: "20px" }}>
-                            <label htmlFor="chartType" style={{ marginRight: "10px" }}>
-                                Select Chart Type:
-                            </label>
+                            <label htmlFor="chartType" style={{ marginLeft: "20px" }}>
+                                Select Chart Type: </label>
                             <select
                                 id="chartType"
                                 value={chartType}
+                                style={{ marginLeft: '10px' }}
                                 onChange={(e) => setChartType(e.target.value)}
                             >
                                 <option value="candlestick">Candlestick</option>
                                 <option value="line">Time Series</option>
+                                {/* <option value="bullet">Bullet Chart</option> */}
                             </select>
                         </div>
                         {renderChart()}

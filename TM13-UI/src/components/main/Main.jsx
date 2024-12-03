@@ -29,61 +29,43 @@ const Main = () => {
 		setEvenData,
 		graphData,
 		setGraphData,
-		socket,
-		setSocket,
 		downloadData,
 		setDownloadData,
+		socket,
+		setSocket,
 	} = useContext(Context);
-	// const [socket, setSocket] = useState(null);
+	const [socket1, setSocket1] = useState(null);
 
 	const resultDataRef = useRef(null); // Reference to the result-data container for auto scrolling
-	
+
 	const [markdownContent, setMarkdownContent] = useState('');
 
 
-  const handleMarkdownChange = (e) => {
-    setMarkdownContent(e.target.value);
-  };
+	const handleMarkdownChange = (e) => {
+		setMarkdownContent(e.target.value);
+	};
 
-  const generatePDF = () => {
-    //console.log(resultData);
-    // Convert Markdown to HTML using 'marked'
-    const htmlContent = marked(markdownContent);
+	const textAreaRef = useRef(null);
 
-    // Create a div element to temporarily hold the HTML content
-    const element = document.createElement('div');
-    element.innerHTML = htmlContent;
-
-    // Apply custom styles to adjust line gap and make it look nice
-    const style = document.createElement('style');
-    style.innerHTML = `
-      div {
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        line-height: 1.8; /* Adjust this value to set the line gap */
-        text-align: justify;
-      }
-      h1, h2, h3, h4 {
-        font-weight: bold;
-        margin-top: 10px;
-      }
-      p {
-        margin-bottom: 15px;
-      }
-    `;
-    element.appendChild(style);
-
-    // Use html2pdf.js to convert the HTML to a PDF with margins and line gap
-    html2pdf()
-      .from(element)
-      .set({
-        margin: 20, // Set margin for all sides (top, bottom, left, right)
-        filename: 'response.pdf',
-        html2canvas: { scale: 5 },  // Increase the scale for better resolution
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      })
-      .save()
-  };
+	const generatePDF = () => {
+		// Send the raw Markdown content to the backend without conversion
+		fetch('http://localhost:5000/convert', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ content: markdownContent }),
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Failed to send data to the backend');
+			}
+			console.log('Content sent successfully to backend.');
+		})
+		.catch(error => {
+			console.error('Error sending content to backend:', error);
+		});
+	};
 
 	// Auto-scrolling effect when resultData changes
 	useEffect(() => {
@@ -104,7 +86,41 @@ const Main = () => {
 		if (socket && socket.readyState === WebSocket.OPEN) {
 			socket.send(JSON.stringify({ type: 'query', query }));
 		}
+		// try {
+		// 	fetch('http://localhost:5000/query', {
+		// 	  method: 'POST',
+		// 	  headers: {
+		// 		'Content-Type': 'application/json',
+		// 	  },
+		// 	  body: JSON.stringify({ query: input }), // Send input to the Flask backend
+		// 	});
+		
+		// 	console.log('Query sent successfully!');
+		// 	setLoading(false);
+		//   } catch (error) {
+		// 	console.error('Error sending query to backend:', error);
+		// 	setLoading(false);
+		//   }
 	}
+
+	// Adjust textarea height dynamically
+	const adjustHeight = () => {
+		const textArea = textAreaRef.current;
+
+		// Reset the height to auto to shrink it before resizing
+		textArea.style.height = 'auto';
+
+		// Adjust the height based on scrollHeight
+		textArea.style.height = `${textArea.scrollHeight}px`;
+
+		// Move the textarea upwards by adjusting margin-top dynamically
+		const diff = textArea.scrollHeight - textArea.clientHeight;
+	};
+
+	// Adjust height when input changes
+	useEffect(() => {
+		adjustHeight();
+	}, [input]);
 
 	const [files, setFiles] = useState([]);
 
@@ -115,6 +131,34 @@ const Main = () => {
 	const triggerFileInput = () => {
 		document.getElementById('hiddenFileInput').click(); // Programmatically trigger click on hidden input
 	};
+
+	useEffect(() => {
+		const ws = new WebSocket('ws://localhost:8090');
+		ws.onopen = () => {
+			console.log('WebSocket connected to agent server');
+		};
+		ws.onmessage = (event) => {
+			try {
+				const data = JSON.parse(event.data);
+
+				if (data.type === 'agents') {
+					console.log("agents data", data);
+					onRender(data.response);
+					// console.log(data.response);
+					setMarkdownContent(data.response);
+				}
+			} catch (error) {
+				console.error('Error parsing WebSocket message:', error);
+			}
+		};
+		ws.onclose = () => {
+			console.log('WebSocket disconnected');
+		};
+		setSocket1(ws);
+		return () => {
+			ws.close();
+		};
+	}, []);
 
 	useEffect(() => {
 		const ws = new WebSocket('ws://localhost:8080');
@@ -152,7 +196,12 @@ const Main = () => {
 	}, []);
 
 	return (
-		<div className="main">
+		<div className="main" tabIndex="0" onKeyDown={(e) => {
+			if (e.key === 'Enter') {
+				e.preventDefault();
+				handleClick();
+			}
+		}}>
 			<div className="nav">
 				<img src={assets.pathway_icon} className="pway" alt="" />
 				<div className="rightside">
@@ -161,60 +210,63 @@ const Main = () => {
 				</div>
 			</div>
 			<div className="main-content">
-				<div className="main-container">
+				<div className="main-container" >
 					{!showResults ? (
 						<>
-							<div className="greet">
-								<TypeAnimation
-									sequence={[
-										'Hello, Team 30!',
-									]}
-									speed={{ type: 'keyStrokeDelayInMs', value: 100 }}
-									style={{ fontSize: '1em' }}
-								/>
-								<p style={{ fontSize: '0.75em' }}>How can I help you today?</p>
+							<div className="contain">
+								<div className="greet">
+									<TypeAnimation
+										sequence={[
+											'Hello, Team 30!',
+										]}
+										speed={{ type: 'keyStrokeDelayInMs', value: 100 }}
+										style={{ fontSize: '1em' }}
+									/>
+									<p style={{ fontSize: '0.75em' }}>How can I help you today?</p>
+								</div>
+								<div className="cards">
+									<div
+										className="card"
+										onClick={() =>
+											handleCardClick("Give me a detailed report on the current state of Russian economy and the impacts of sanctions. I am Aramco and is will it br profitable for me to acquire Lukoil? Will the sanction pose any problem for my company in any prospect?")
+										}
+									>
+										<p style={{ textAlign: "justify" }}>Give me a detailed report on the current state of Russian economy and the impacts of sanctions. I am Aramco and is will it br profitable for me to acquire Lukoil? Will the sanction pose any problem for my company in any prospect?</p>
+										{/* <img src={assets.compass_icon} alt="" /> */}
+									</div>
+									<div
+										className="card"
+										onClick={() => {
+											handleCardClick(
+												"Analyze AT&T's financial performance post-acquisition of DirecTV, focusing on Return on Investment (ROI) and identifying any significant accounting adjustments related to the deal."
+											);
+										}}
+									>
+										<p style={{ textAlign: "justify" }}>Analyze AT&T's financial performance post-acquisition of DirecTV, focusing on Return on Investment (ROI) and identifying any significant accounting adjustments related to the deal.</p>
+									</div>
+									<div
+										className="card"
+										onClick={() =>
+											handleCardClick(
+												"Give me a detailed report on the current state of ed-tech sector in India and US. Can chegg acquire byju's, what would be the impact of such merger and acquisition on the market in every prospect?"
+											)
+										}
+									>
+										<p style={{ textAlign: "justify" }}>Give me a detailed report on the current state of ed-tech sector in India and US. Can chegg acquire byju's, what would be the impact of such merger and acquisition on the market in every prospect? </p>
+										{/* <img src={assets.message_icon} alt="" /> */}
+									</div>
+									<div
+										className="card"
+										onClick={() =>
+											handleCardClick("Analyze CoStar Group's and LoopNet's financial statements to identify potential areas of legal and financial risk associated with their overlapping business operations.")
+										}
+									>
+										<p style={{ textAlign: "justify" }}>Analyze CoStar Group's and LoopNet's financial statements to identify potential areas of legal and financial risk associated with their overlapping business operations.</p>
+									</div>
+									{/* Your card elements here */}
+								</div>
 							</div>
-							<div className="cards">
-							<div
-									className="card"
-									onClick={() =>
-										handleCardClick("Give me a detailed report on the current state of Russian economy and the impacts of sanctions. I am Aramco and is will it br profitable for me to acquire Lukoil? Will the sanction pose any problem for my company in any prospect?")
-									}
-								>
-									<p style={{ textAlign: "justify" }}>Give me a detailed report on the current state of Russian economy and the impacts of sanctions. I am Aramco and is will it br profitable for me to acquire Lukoil? Will the sanction pose any problem for my company in any prospect?</p>
-									{/* <img src={assets.compass_icon} alt="" /> */}
-								</div>
-								<div
-									className="card"
-									onClick={() => {
-										handleCardClick(
-											"Analyze AT&T's financial performance post-acquisition of DirecTV, focusing on Return on Investment (ROI) and identifying any significant accounting adjustments related to the deal."
-										);
-									}}
-								>
-									<p style={{textAlign: "justify"}}>Analyze AT&T's financial performance post-acquisition of DirecTV, focusing on Return on Investment (ROI) and identifying any significant accounting adjustments related to the deal.</p>
-								</div>
-								<div
-									className="card"
-									onClick={() =>
-										handleCardClick(
-											"Give me a detailed report on the current state of ed-tech sector in India and US. Can chegg acquire byju's, what would be the impact of such merger and acquisition on the market in every prospect?"
-										)
-									}
-								>
-									<p style={{textAlign: "justify"}}>Give me a detailed report on the current state of ed-tech sector in India and US. Can chegg acquire byju's, what would be the impact of such merger and acquisition on the market in every prospect? </p>
-									{/* <img src={assets.message_icon} alt="" /> */}
-								</div>
-								<div
-									className="card"
-									onClick={() =>
-										handleCardClick("Analyze CoStar Group's and LoopNet's financial statements to identify potential areas of legal and financial risk associated with their overlapping business operations.")
-									}
-								>
-									<p style={{textAlign: "justify"}}>Analyze CoStar Group's and LoopNet's financial statements to identify potential areas of legal and financial risk associated with their overlapping business operations.</p>
-								</div>
-								{/* Your card elements here */}
-							</div>
+
 						</>
 					) : (
 						<div className="result">
@@ -232,26 +284,32 @@ const Main = () => {
 									</div>
 								) : (
 									<div className="markdown-content">
-										<ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>{resultData}</ReactMarkdown>
+										<ReactMarkdown 
+										rehypePlugins={[rehypeRaw]} 
+										remarkPlugins={[remarkGfm]}
+										components={{
+											a: ({ href, children }) => (
+											  <a href={href} target="_blank" rel="noopener noreferrer">
+												{children}
+											  </a>
+											)
+										  }}>{resultData}</ReactMarkdown>
 									</div>
 								)}
 							</div>
 							{downloadData && (
-								<button className="download" onClick={generatePDF}>
-									Download
-								</button>
+								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', margin:'10px 50px'}}>
+								</img>
 							)}
 						</div>
 					)}
 				</div>
 				<div className="main-bottom">
 					<div className="search-box">
-						<input
-							onChange={(e) => {
-								setInput(e.target.value);
-							}}
+						<textarea
+							ref={textAreaRef}
+							onChange={(e) => setInput(e.target.value)}
 							value={input}
-							type="text"
 							placeholder="Enter the Prompt Here"
 							onKeyDown={(e) => {
 								if (e.key === 'Enter') {
@@ -259,9 +317,24 @@ const Main = () => {
 									handleClick();
 								}
 							}}
+							rows={1} // Start with 1 row
+							style={{
+								position: 'relative',
+								background: '#f0f4f9',
+								outline: 'none',
+								border: 'none',
+								width: '100%',
+								minHeight: '40px', // Minimum height for the textarea
+								maxHeight: '100px',
+								resize: 'none', // Disable manual resize by the user
+								overflow: 'hidden', // Hide overflow to prevent scrollbars
+								fontSize: '16px', // Adjust font size as needed
+								borderRadius: '5px', // Rounded corners for style
+								overflowY: 'auto'
+							}}
 						/>
 						<div>
-							<img src={assets.gallery_icon} alt="Upload" onClick={triggerFileInput} />
+							<img src={assets.attach_icon} alt="Upload" onClick={triggerFileInput} />
 							<input
 								webkitdirectory="true"
 								multiple
@@ -270,7 +343,6 @@ const Main = () => {
 								style={{ display: 'none' }} // Hide the input field
 								onChange={handleFileChange}
 							/>
-							<img src={assets.mic_icon} alt="" />
 							<img
 								src={assets.send_icon}
 								alt=""
