@@ -1,1 +1,0 @@
-{'code': 200, 'status': 20000, 'data': {'title': 'marketwatch.com', 'description': '', 'url': 'https://www.marketwatch.com/investing/stock/BTG/financials/cash-flow/quarter', 'content': 'marketwatch.com\n===============', 'usage': {'tokens': 5}}}
