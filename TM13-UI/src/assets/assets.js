@@ -15,8 +15,9 @@ import code_icon from './code_icon.png'
 import send_icon from './send_icon.png'
 import gemini_icon from './gemini_icon.png'
 import pway_icon from './pway.png'
-import pathway_icon from './pathway-logo-blue.svg'
 import edit_icon from './edit_icon.png'
+import attach_icon from './attachment.png'
+import download_icon from './downloads.png'
 
 export const assets = {
 	history_icon,
@@ -35,7 +36,8 @@ export const assets = {
 	send_icon,
 	gemini_icon,
 	user,
-	pathway_icon,
 	pway_icon,
-	edit_icon
+	edit_icon,
+	attach_icon,
+	download_icon
 };
