@@ -227,7 +227,7 @@ def reflection_chain(inputs) -> Reflection:
         f.write("\n\n")'''
     reflection = tool_choices[0]
     #This has to be commented
-    if not isinstance(inputs["candidate"][-1], AIMessage):
-        reflection.found_solution = False
+    #if not isinstance(inputs["candidate"][-1], AIMessage):
+    #    reflection.found_solution = False
     #Till here
     return reflection
