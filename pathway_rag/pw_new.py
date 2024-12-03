@@ -50,7 +50,11 @@ class DocumentProcessor:
     def initialize_vector_store(self, path1):
         """Initialize document store with provided file path"""
         source1 = pw.io.fs.read(path=path1, with_metadata=True, format="binary", mode="streaming")
-
+        path2 = "../RACCOON/temp_rag_space"
+        source2 = pw.io.fs.read(path=path2, with_metadata=True, format="binary", mode="streaming")
+        print(source1.schema)
+        print(source2.schema)
+        print(os.getcwd())
         usearch = UsearchKnnFactory(embedder=self.embedder)
         bm25 = TantivyBM25Factory(ram_budget=524288000, in_memory_index=True)
         factories = [usearch, bm25]
@@ -58,7 +62,7 @@ class DocumentProcessor:
         
         self.vector_store = DocumentStore.from_langchain_components(
             retriever_factory=retriever_factory,
-            docs=[source1],
+            docs=[source1,source2],
             parser=self.parser,
             splitter=text_splitter,
         )
