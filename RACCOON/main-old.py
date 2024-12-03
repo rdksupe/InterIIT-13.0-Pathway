@@ -5,6 +5,7 @@ load_dotenv()
 import time
 import json
 import google.generativeai as genai
+import re
 
 from Agents.Agents import Agent
 from Agents.Smack import Smack
@@ -108,9 +109,11 @@ if query_type == "complex":
             f.write(str(out_str))
     with open ('./output/drafted_response.md', 'w') as f:
         if LLM=='GEMINI':
-            f.write(str(fin_resp.replace('[', '$').replace(']', '$')))
+            fin_resp = re.sub(r"\[(.*?)\](?!()", r"$$\n\1\n$$", fin_resp, flags=re.DOTALL)
+            f.write(str(fin_resp))
         elif LLM=='OPENAI':
-            f.write(str(fin_resp.replace('[', '$').replace(']', '$')))
+            fin_resp = re.sub(r"\[(.*?)\](?!()", r"$$\n\1\n$$", fin_resp, flags=re.DOTALL)
+            f.write(str(fin_resp))
     with open ('./output/response_1.md', 'w') as f:
         print(type(taskResultsDict[sub_task]))
         print(taskResultsDict[sub_task])
