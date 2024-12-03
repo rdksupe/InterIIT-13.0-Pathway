@@ -1,18 +1,770 @@
 [
     {
-        "tool": "tavily_web_search",
-        "error_message": "string indices must be integers, not 'str'",
-        "timestamp": "2024-12-03T08:35:05.625575",
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:50:49.601938",
         "additional info": {
-            "query": "BTG product line revenue data 2021 2022 2023 analysis"
+            "prompt": "LoopNet antitrust lawsuit history"
         }
     },
     {
-        "tool": "tavily_web_search",
-        "error_message": "string indices must be integers, not 'str'",
-        "timestamp": "2024-12-03T08:34:59.985378",
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:50:37.724578",
         "additional info": {
-            "query": "BTG historical product line revenue data 2021 2022 2023"
+            "prompt": "LoopNet antitrust lawsuit history"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:50:25.972786",
+        "additional info": {
+            "prompt": "LoopNet antitrust lawsuit history"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:50:10.462368",
+        "additional info": {
+            "prompt": "CoStar Group antitrust lawsuit history"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:49:58.371757",
+        "additional info": {
+            "prompt": "CoStar Group antitrust lawsuit history"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:49:47.961502",
+        "additional info": {
+            "prompt": "CoStar Group antitrust lawsuit history"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:49:31.408858",
+        "additional info": {
+            "prompt": "LoopNet legal risks 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:49:19.388702",
+        "additional info": {
+            "prompt": "LoopNet legal risks 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:49:06.662400",
+        "additional info": {
+            "prompt": "LoopNet legal risks 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:48:54.007640",
+        "additional info": {
+            "prompt": "CoStar Group legal risks 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:48:41.996639",
+        "additional info": {
+            "prompt": "CoStar Group legal risks 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:48:20.077885",
+        "additional info": {
+            "prompt": "CoStar Group legal risks 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:48:02.937279",
+        "additional info": {
+            "prompt": "LoopNet financial analysis 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:47:51.034823",
+        "additional info": {
+            "prompt": "LoopNet financial analysis 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:47:40.372497",
+        "additional info": {
+            "prompt": "LoopNet financial analysis 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:47:13.422182",
+        "additional info": {
+            "prompt": "CoStar Group financial analysis 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:46:50.966760",
+        "additional info": {
+            "prompt": "CoStar Group financial analysis 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:46:30.180952",
+        "additional info": {
+            "prompt": "CoStar Group financial analysis 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:46:07.306607",
+        "additional info": {
+            "prompt": "LoopNet financial performance 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:45:52.893004",
+        "additional info": {
+            "prompt": "LoopNet financial performance 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:45:37.642721",
+        "additional info": {
+            "prompt": "LoopNet financial performance 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:45:14.859078",
+        "additional info": {
+            "prompt": "CoStar Group financial performance 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:44:54.506277",
+        "additional info": {
+            "prompt": "CoStar Group financial performance 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:44:30.378357",
+        "additional info": {
+            "prompt": "CoStar Group financial performance 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:43:57.374144",
+        "additional info": {
+            "prompt": "CoStar Group LoopNet revenue expenses comparison 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:43:37.526601",
+        "additional info": {
+            "prompt": "CoStar Group LoopNet revenue expenses comparison 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:43:16.280290",
+        "additional info": {
+            "prompt": "CoStar Group LoopNet revenue expenses comparison 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:42:49.896546",
+        "additional info": {
+            "prompt": "CoStar Group LoopNet financial metrics analysis 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:42:23.264603",
+        "additional info": {
+            "prompt": "CoStar Group LoopNet financial metrics analysis 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:42:00.555602",
+        "additional info": {
+            "prompt": "CoStar Group LoopNet financial metrics analysis 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:41:30.436697",
+        "additional info": {
+            "prompt": "LoopNet financial data 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:41:08.792308",
+        "additional info": {
+            "prompt": "LoopNet financial data 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:40:46.446746",
+        "additional info": {
+            "prompt": "LoopNet financial data 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:40:22.207393",
+        "additional info": {
+            "prompt": "CoStar Group financial data 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:39:58.288852",
+        "additional info": {
+            "prompt": "CoStar Group financial data 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:39:33.325662",
+        "additional info": {
+            "prompt": "CoStar Group financial data 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:39:02.186397",
+        "additional info": {
+            "prompt": "CoStar Group LoopNet overlapping revenue categories common expenses 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:38:32.013055",
+        "additional info": {
+            "prompt": "CoStar Group LoopNet overlapping revenue categories common expenses 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:38:05.490418",
+        "additional info": {
+            "prompt": "CoStar Group LoopNet overlapping revenue categories common expenses 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:37:38.901682",
+        "additional info": {
+            "prompt": "financial performance comparison CoStar Group LoopNet 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:37:19.008572",
+        "additional info": {
+            "prompt": "financial performance comparison CoStar Group LoopNet 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:36:56.338321",
+        "additional info": {
+            "prompt": "financial performance comparison CoStar Group LoopNet 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:36:38.675286",
+        "additional info": {
+            "prompt": "antitrust technology market competition CoStar Group LoopNet"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "timestamp": "2024-12-03T11:30:26.686831",
+        "additional info": {
+            "prompt": "ed-tech market analysis India 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:29:08.746200",
+        "additional info": {
+            "prompt": "US ed-tech market analysis 2024 trends statistics"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:28:12.438739",
+        "additional info": {
+            "prompt": "ed-tech market analysis India 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:28:10.269504",
+        "additional info": {
+            "prompt": "US ed-tech market analysis 2024 trends statistics"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:27:56.236843",
+        "additional info": {
+            "prompt": "ed-tech market analysis India 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:27:53.042232",
+        "additional info": {
+            "prompt": "US ed-tech market analysis 2024 trends statistics"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:27:30.328016",
+        "additional info": {
+            "prompt": "current state of ed-tech sector in India 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:27:25.340601",
+        "additional info": {
+            "prompt": "current state of the ed-tech sector in the US 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:27:16.436702",
+        "additional info": {
+            "prompt": "current state of ed-tech sector in India 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:27:12.271181",
+        "additional info": {
+            "prompt": "current state of the ed-tech sector in the US 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:27:00.724831",
+        "additional info": {
+            "prompt": "current state of ed-tech sector in India 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:26:59.169280",
+        "additional info": {
+            "prompt": "current state of the ed-tech sector in the US 2024"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://practiceguides.chambers.com/practice-guides/antitrust-litigation-2024/india/trends-and-developments (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac86c755b20>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T11:03:11.390152",
+        "additional info": {
+            "url": "https://practiceguides.chambers.com/practice-guides/antitrust-litigation-2024/india/trends-and-developments"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.mondaq.com/india/antitrust-eu-competition-/1422222/recent-regulatory-developments-in-the-indian-competition-law-regime (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac86c548980>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T11:03:11.036824",
+        "additional info": {
+            "url": "https://www.mondaq.com/india/antitrust-eu-competition-/1422222/recent-regulatory-developments-in-the-indian-competition-law-regime"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://economictimes.indiatimes.com/topic/india-antitrust-laws/news (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac86c5472c0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T11:03:10.763844",
+        "additional info": {
+            "url": "https://economictimes.indiatimes.com/topic/india-antitrust-laws/news"
+        }
+    },
+    {
+        "tool": "get_Indian_kanoon",
+        "error_message": "list index out of range",
+        "timestamp": "2024-12-03T11:03:06.213313",
+        "additional info": {
+            "query": "antitrust law implications on business operations CoStar LoopNet"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
+        "timestamp": "2024-12-03T11:02:56.249372",
+        "additional info": {
+            "prompt": "antitrust cases involving CoStar Group and LoopNet"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.morningstar.com/news/marketwatch/2024100167/att-exits-pay-tv-and-frees-directv-to-combine-with-rival-dish (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8740b5d90>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:56:11.611535",
+        "additional info": {
+            "url": "https://www.morningstar.com/news/marketwatch/2024100167/att-exits-pay-tv-and-frees-directv-to-combine-with-rival-dish"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://finance.yahoo.com/news/t-sells-directv-bows-entertainment-114832167.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8740b5c40>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:56:11.334325",
+        "additional info": {
+            "url": "https://finance.yahoo.com/news/t-sells-directv-bows-entertainment-114832167.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://cordcuttersnews.com/att-lost-over-30-billion-on-directv-as-it-finally-sells-its-ownership-to-tpg/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8740b5820>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:56:11.048678",
+        "additional info": {
+            "url": "https://cordcuttersnews.com/att-lost-over-30-billion-on-directv-as-it-finally-sells-its-ownership-to-tpg/"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://about.att.com/story/2024/3q-earnings.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8740221e0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:56:08.060282",
+        "additional info": {
+            "url": "https://about.att.com/story/2024/3q-earnings.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2024/2Q24/2Q24_ATT_Earnings.pdf (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8740b7410>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:56:07.706575",
+        "additional info": {
+            "url": "https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2024/2Q24/2Q24_ATT_Earnings.pdf"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://about.att.com/story/2024/q1-earnings.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8740b5e50>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:56:07.434602",
+        "additional info": {
+            "url": "https://about.att.com/story/2024/q1-earnings.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.morningstar.com/news/marketwatch/20241024358/atts-stock-is-beating-verizons-by-a-lot-in-2024-heres-where-analysts-stand (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac87405a720>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:59.287764",
+        "additional info": {
+            "url": "https://www.morningstar.com/news/marketwatch/20241024358/atts-stock-is-beating-verizons-by-a-lot-in-2024-heres-where-analysts-stand"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.financecharts.com/stocks/T/performance (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874020e30>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:58.932423",
+        "additional info": {
+            "url": "https://www.financecharts.com/stocks/T/performance"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://stockanalysis.com/stocks/t/forecast/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874021af0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:58.660644",
+        "additional info": {
+            "url": "https://stockanalysis.com/stocks/t/forecast/"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.bizjournals.com/dallas/news/2024/10/23/at-t-reveals-update-in-directv-deal.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874020d40>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:55.735413",
+        "additional info": {
+            "url": "https://www.bizjournals.com/dallas/news/2024/10/23/at-t-reveals-update-in-directv-deal.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2024/3Q24/3Q24_ATT_Earnings.pdf (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874058d10>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:55.421986",
+        "additional info": {
+            "url": "https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2024/3Q24/3Q24_ATT_Earnings.pdf"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://finance.yahoo.com/news/t-third-quarter-results-show-103300298.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874021160>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:55.081871",
+        "additional info": {
+            "url": "https://finance.yahoo.com/news/t-third-quarter-results-show-103300298.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.macrotrends.net/stocks/charts/T/at-t/roi (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874022a50>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:47.797340",
+        "additional info": {
+            "url": "https://www.macrotrends.net/stocks/charts/T/at-t/roi"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.macrotrends.net/stocks/charts/T/at-t/revenue (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac87415e480>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:47.439473",
+        "additional info": {
+            "url": "https://www.macrotrends.net/stocks/charts/T/at-t/revenue"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://about.att.com/story/2024/q2-earnings.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874164530>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:47.171178",
+        "additional info": {
+            "url": "https://about.att.com/story/2024/q2-earnings.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://stockanalysis.com/stocks/t/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874021a00>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:44.422149",
+        "additional info": {
+            "url": "https://stockanalysis.com/stocks/t/"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2023/4q-2023/4Q23_ATT_Earnings.pdf (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8741c5e20>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:44.107122",
+        "additional info": {
+            "url": "https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2023/4q-2023/4Q23_ATT_Earnings.pdf"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2024/1Q24/1Q24_ATT_Earnings.pdf (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874021af0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:43.828607",
+        "additional info": {
+            "url": "https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2024/1Q24/1Q24_ATT_Earnings.pdf"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2024/1Q24/1Q24_ATT_Earnings.pdf (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874023d10>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:36.516834",
+        "additional info": {
+            "url": "https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2024/1Q24/1Q24_ATT_Earnings.pdf"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.macrotrends.net/stocks/charts/T/at-t/roe (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874022db0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:36.203568",
+        "additional info": {
+            "url": "https://www.macrotrends.net/stocks/charts/T/at-t/roe"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.macrotrends.net/stocks/charts/T/at-t/roi (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac87420bb30>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:35.890675",
+        "additional info": {
+            "url": "https://www.macrotrends.net/stocks/charts/T/at-t/roi"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.morningstar.com/company-reports/1203366-att-earnings-modest-growth-should-offset-higher-taxes-and-lower-directv-distributions-in-2024 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8740225d0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:31.921114",
+        "additional info": {
+            "url": "https://www.morningstar.com/company-reports/1203366-att-earnings-modest-growth-should-offset-higher-taxes-and-lower-directv-distributions-in-2024"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.morningstar.com/stocks/att-earnings-modest-growth-should-offset-higher-taxes-lower-directv-distributions-2024 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac87420b620>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:31.607885",
+        "additional info": {
+            "url": "https://www.morningstar.com/stocks/att-earnings-modest-growth-should-offset-higher-taxes-lower-directv-distributions-2024"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://stockanalysis.com/stocks/t/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874020890>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:31.243767",
+        "additional info": {
+            "url": "https://stockanalysis.com/stocks/t/"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://about.att.com/story/2023/q4-earnings-2022.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8741c7380>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:21.524846",
+        "additional info": {
+            "url": "https://about.att.com/story/2023/q4-earnings-2022.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.prnewswire.com/news-releases/att-reports-fourth-quarter-and-full-year-results-301730296.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874188170>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:21.235848",
+        "additional info": {
+            "url": "https://www.prnewswire.com/news-releases/att-reports-fourth-quarter-and-full-year-results-301730296.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://about.att.com/story/2024/q4-earnings-2023.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8741c6900>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:20.954578",
+        "additional info": {
+            "url": "https://about.att.com/story/2024/q4-earnings-2023.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.prnewswire.com/news-releases/att-delivers-strong-2023-results-cash-from-operations-and-free-cash-flow-driven-by-5g-and-fiber-growth-302043219.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8741884d0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:11.867096",
+        "additional info": {
+            "url": "https://www.prnewswire.com/news-releases/att-delivers-strong-2023-results-cash-from-operations-and-free-cash-flow-driven-by-5g-and-fiber-growth-302043219.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.prnewswire.com/news-releases/att-reports-fourth-quarter-and-full-year-results-301730296.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874188aa0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:11.590858",
+        "additional info": {
+            "url": "https://www.prnewswire.com/news-releases/att-reports-fourth-quarter-and-full-year-results-301730296.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://about.att.com/story/2024/q4-earnings-2023.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac874189700>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:11.310808",
+        "additional info": {
+            "url": "https://about.att.com/story/2024/q4-earnings-2023.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.prnewswire.com/news-releases/att-delivers-strong-2023-results-cash-from-operations-and-free-cash-flow-driven-by-5g-and-fiber-growth-302043219.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac87418a9f0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:04.229530",
+        "additional info": {
+            "url": "https://www.prnewswire.com/news-releases/att-delivers-strong-2023-results-cash-from-operations-and-free-cash-flow-driven-by-5g-and-fiber-growth-302043219.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2023/4q-2023/4Q23_ATT_Earnings.pdf (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac8741c41a0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:03.952301",
+        "additional info": {
+            "url": "https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/quarterly-earnings/2023/4q-2023/4Q23_ATT_Earnings.pdf"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://about.att.com/story/2024/q4-earnings-2023.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac87418a030>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:55:03.670822",
+        "additional info": {
+            "url": "https://about.att.com/story/2024/q4-earnings-2023.html"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/annual-reports/2021/2021-managements-discussion-and-analysis.pdf (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac87413e540>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:54:52.500941",
+        "additional info": {
+            "url": "https://investors.att.com/~/media/Files/A/ATT-IR-V2/financial-reports/annual-reports/2021/2021-managements-discussion-and-analysis.pdf"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.thewrap.com/directv-dish-merger-pay-tv-industry-impact-analysis/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac87428cf20>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:54:52.230841",
+        "additional info": {
+            "url": "https://www.thewrap.com/directv-dish-merger-pay-tv-industry-impact-analysis/"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://finance.yahoo.com/news/cost-revenue-synergies-t-directv-165010231.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ac87428f230>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T10:54:51.919491",
+        "additional info": {
+            "url": "https://finance.yahoo.com/news/cost-revenue-synergies-t-directv-165010231.html"
         }
     }
 ]

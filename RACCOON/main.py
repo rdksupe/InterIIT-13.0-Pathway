@@ -100,9 +100,7 @@ async def mainBackend(query, websocket):
 
         with open('Graph.json', 'w') as fp:
             json.dump(dic_for_UI_graph, fp)
-        pass
         
-        response_dict = dict()
         out_str = ''''''
 
         agentsList = []
@@ -122,21 +120,19 @@ async def mainBackend(query, websocket):
         taskResultsDict = smack.executeSmack()
         for task in taskResultsDict:
             out_str += f'{taskResultsDict[task]} \n'
-
+        resp = ''
         #Need to test this later
         if IS_RAG == True:
             rag_context, rag_processed_response = ragAgent(query, key_dict[LLM], LLM, state = 'report')
             out_str = f'{rag_processed_response}\n \n{out_str}'
-            fin_resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
-            resp = str(fin_resp)
+            resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
+            resp = str(resp)
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
         #Tested multiple times
         else:
             resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
-            # resp = str(fin_resp)
-            # await asyncio.sleep(1)
-            # await websocket.send(json.dumps({"type": "response", "response": resp}))
+            
 
         with open('./output/individual_response.json', 'w') as json_file:
             json.dump(taskResultsDict, json_file, indent=4)
@@ -148,13 +144,13 @@ async def mainBackend(query, websocket):
                 f.write(str(out_str))
         with open ('./output/drafted_response.md', 'w') as f:
             if LLM=='GEMINI':
-                resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                f.write(str(fin_resp))
+                resp_edited = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+                f.write(str(resp_edited))
                 await asyncio.sleep(1)
-                await websocket.send(json.dumps({"type": "response", "response": resp}))
+                await websocket.send(json.dumps({"type": "response", "response": str(resp_edited)}))
             elif LLM=='OPENAI':
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                f.write(str(fin_resp))
+                f.write(str(resp))
                 await asyncio.sleep(1)
                 await websocket.send(json.dumps({"type": "response", "response": resp}))
         with open ('./output/response_1.md', 'w') as f:
@@ -171,8 +167,7 @@ async def mainBackend(query, websocket):
         #Need to test this later
         if IS_RAG == True:
             rag_context = ragAgent(query, key_dict[LLM], LLM, state = "concise")
-            fin_resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
-            resp = fin_resp
+            resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
 
@@ -183,13 +178,13 @@ async def mainBackend(query, websocket):
                     # future_resp_lats = executor.submit(conciseAns_vanilla_LATS, query, tools_list)
                     future_resp = executor.submit(conciseAns_vanilla, query, key_dict[LLM], LLM, tools_list)
                     # Get the results
-                    fin_resp = future_resp.result()['output']
+                    resp = future_resp.result()['output']
                     # fin_resp_lats = future_resp_lats.result()
                     fin_resp_lats = ''
-                return fin_resp, fin_resp_lats
+                return resp, fin_resp_lats
             
-            fin_resp, fin_resp_lats = run_parallel()
-            resp = str(fin_resp)
+            resp, fin_resp_lats = run_parallel()
+            resp = str(resp)
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
 
