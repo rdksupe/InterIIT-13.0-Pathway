@@ -133,7 +133,7 @@ async def mainBackend(query, websocket):
             await websocket.send(json.dumps({"type": "response", "response": resp}))
         #Tested multiple times
         else:
-            fin_resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
+            resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
             # resp = str(fin_resp)
             # await asyncio.sleep(1)
             # await websocket.send(json.dumps({"type": "response", "response": resp}))
@@ -148,12 +148,12 @@ async def mainBackend(query, websocket):
                 f.write(str(out_str))
         with open ('./output/drafted_response.md', 'w') as f:
             if LLM=='GEMINI':
-                fin_resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', fin_resp, flags=re.DOTALL)
+                resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
                 f.write(str(fin_resp))
                 await asyncio.sleep(1)
                 await websocket.send(json.dumps({"type": "response", "response": resp}))
             elif LLM=='OPENAI':
-                fin_resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', fin_resp, flags=re.DOTALL)
+                resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
                 f.write(str(fin_resp))
                 await asyncio.sleep(1)
                 await websocket.send(json.dumps({"type": "response", "response": resp}))
