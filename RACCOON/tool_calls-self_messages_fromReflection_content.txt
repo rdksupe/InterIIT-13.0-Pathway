@@ -1,0 +1,15 @@
+[{'name': 'web_search', 'args': {'query': 'economic implications of planning agent frameworks cost-benefit analysis effectiveness metrics'}, 'id': 'call_p5IodHbQKzgbU8Wvf4kt6nsU', 'type': 'tool_call'}]
+
+
+[{'name': 'web_search', 'args': {'query': 'planning agent frameworks in RAG systems 2024'}, 'id': 'call_b66bHpUxhIEFyaajMQKw6Mmi', 'type': 'tool_call'}]
+
+
+[{'name': 'web_search', 'args': {'query': 'public policy considerations planning agent frameworks regulatory implications'}, 'id': 'call_PGRK4B5ZZ36FROfe7ZXB9jwC', 'type': 'tool_call'}]
+
+
+[{'name': 'get_us_case_law', 'args': {'query': 'AI data usage legal framework compliance liability privacy'}, 'id': 'call_tPvEJAfSGMqbCXwsZPzv9lg7', 'type': 'tool_call'}, {'name': 'get_indian_kanoon', 'args': {'query': 'AI data usage legal framework compliance liability privacy'}, 'id': 'call_Uq5u86Gm5DYpnBx6YzCmb23D', 'type': 'tool_call'}]
+
+
+[{'name': 'web_search', 'args': {'query': 'planning agent frameworks for agentic RAG systems comparison advantages disadvantages trade-offs'}, 'id': 'call_8P1A3rZqM1FEDsWs5a2m7wrs', 'type': 'tool_call'}]
+
+
