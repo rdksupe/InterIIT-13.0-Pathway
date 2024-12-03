@@ -297,7 +297,7 @@ const Main = () => {
 								<img src={assets.user} className="result-user" alt="" />
 								<p>{recentPrompt}</p>
 							</div>
-							<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
+							<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto' }}>
 								<img src={assets.pway_icon} className="pway-res" alt="" />
 								{loading ? (
 									<div className="loader">
@@ -321,7 +321,7 @@ const Main = () => {
 								)}
 							</div>
 							{downloadData && (
-								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', margin:'10px 50px'}}>
+								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', marginTop: '1vh', marginLeft:'7vh'}}>
 								</img>
 							)}
 						</div>
