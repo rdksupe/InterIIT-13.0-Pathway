@@ -36,7 +36,7 @@ import json
 from datetime import datetime
 from langchain.tools import BaseTool, tool
 import time
-
+from edgar import *
 from edgar import Company
 from bs4 import BeautifulSoup
 from langchain.tools import tool
@@ -128,7 +128,7 @@ def web_scrape(url, query) -> Union[Dict, str]:
     Returns the scraped data as JSON if successful, else move on to the next best site in case of errors like required login, captcha etc.
     """
     #url, query = tup
-    api_url = f'htttp://35.184.195.118:3000/{url}'
+    api_url = f'http://35.184.195.118:3000/{url}'
     headers = {
         'Accept': 'application/json',
         'X-Respond-With':'markdown',
@@ -264,6 +264,7 @@ def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form:
     Returns:
         str: SEC filing to be sent to RAG endpoint for retrieval.
     """
+    company = ''
     try:
         company = Company(ticker)
         start_year = int(start_date[:4])
