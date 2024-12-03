@@ -87,8 +87,8 @@ async def mainBackend(query, websocket):
         f.write("")
     with open("tickers.txt", "a") as f_ticker:
         f_ticker.write('')
-
-    if applyTopicalGuardails(query):
+    guard_rails, reasonings = applyTopicalGuardails(query)
+    if guard_rails:
         query_type = classifierAgent(query, GOOGLE_API_KEY).lower()
         if query_type == "complex":
             print("RUNNING COMPLEX TASK PIPELINE")
@@ -191,9 +191,13 @@ async def mainBackend(query, websocket):
                 await asyncio.sleep(1)
                 await websocket.send(json.dumps({"type": "response", "response": resp}))
     else:
-        print("This content may violate our usage policies.")
-
-    print(f'Total Time: {time.time()-now}')
+        resp = ''''''
+        for key in reasonings:
+            resp += f'''**{key}**\n\n'''
+            resp += f'''{reasonings[key]}\n\n'''
+        with open("Bad_Question.md", "w") as f:
+            f.write(resp)
+        print(f'Total Time: {time.time()-now}')
 
 async def handle_connection(websocket):
     try:
