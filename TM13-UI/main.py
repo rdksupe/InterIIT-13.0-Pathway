@@ -117,9 +117,9 @@ In conclusion, while the merger could offer efficiencies and broaden consumer re
 
 async def send(websocket):
     agents = [
-        {"name": "order_hisqwerwetory", "response": "Analyzing order history..."},
-        {"name": "clicerewwkstream", "response": "Analyzing user click patterns..."},
-        {"name": "invewerwerntory", "response": "Cross-checking inventory status..."}
+        {"name": "order_hisqwerwetory", "response": "Analyzing osdfaaaaaadsffffffffffffrder history..."},
+        {"name": "clicerewwkstream", "response": "Analyzing usersdf clizxcxxxxxxxxxxxxxxxxxxxxxxxxack patterns..."},
+        {"name": "invewerwerntory", "response": "Cross-chfdffffffffffffffffffffffffffffffffassdfgdgfsdfgecking inventory status..."}
     ]
     await websocket.send(json.dumps({"type": "agents", "agents": agents}))
 
@@ -132,18 +132,28 @@ async def handle_connection(websocket):  # Removed unused 'path' parameter
 
                 # Simulate agent analysis responses
                 agents = [
-                    {"name": "order_history", "response": "Analyzing order history..."},
-                    {"name": "clickstream", "response": "Analyzing user click patterns..."},
-                    {"name": "inventory", "response": "Cross-checking inventory status..."}
+                    {"name": "order_history", "response": "Analyjksfhjksdfjkhskjdgfhkszing order history..."},
+                    {"name": "clickstream", "response": "Analyzing asdfhjkashfdjahsfkuser click patterns..."},
+                    {"name": "inventory", "response": "Cross-checkasdjkfghjgfjhasgdfhjaging inventory status..."}
                 ]
-                await asyncio.sleep(1)
+                await asyncio.sleep(2)
+                with open('./ProcessLogs.md', 'a') as fp:
+                    fp.write(str(agents))
+
+                agents = [
+                    {"name": "order_hsdfgsdistory", "response": "Analyjajkdfhjahfksfhjksdfjkhskjdgfhkszing order history..."},
+                    {"name": "clasdfaickstream", "response": "Analyzing asdfhjkashfakjhdfjkahdfkjdjahsfkuser click patterns..."},
+                    {"name": "inasdfventory", "response": "Cross-checkasdjkfghjgfjajkahfjkahfkhasgdfhjaging inventory status..."}
+                ]
                 
-                await websocket.send(json.dumps({"type": "agents", "agents": agents}))
-                await asyncio.sleep(1)
-                await send(websocket)
+                # await websocket.send(json.dumps({"type": "agents", "agents": agents}))
+                await asyncio.sleep(2)
+                with open('./ProcessLogs.md', 'a') as fp:
+                    fp.write(str(agents))
+                # await send(websocket)
 
                 # Simulate final bot response
-                await asyncio.sleep(1)
+                await asyncio.sleep(10)
                 await websocket.send(json.dumps({"type": "response", "response": resp}))
     except websockets.exceptions.ConnectionClosed:
         print("Client connection closed")
