@@ -1,7 +1,7 @@
 __pycache__/
 venv/
 *.py[cod]
-
+.vscode
 bin/
 build/
 develop-eggs/
@@ -11,4 +11,4 @@ lib/
 lib64/
 parts/
 sdist/
-var/
+var/add 

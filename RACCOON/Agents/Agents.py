@@ -80,7 +80,7 @@ class Agent:
             Based on your role, research and give us a comprehensive response analyzing various metrics. Try to stick to your role. 
             Try to substantiate your answers with as much numbers, comparatives, facts, case laws and history as possible wherever required.
             Provide Numbers and Explicitly researched facts in your response in order to back your claims. You may also provide tables of 
-            relavant information. 
+            relevant information. 
             Research, analyze and report from a multi-dimensional aspect, for instance interdependency
             between multiple domains like finance, microeconomics, macroeconomics, public policy, politics, law, environment etc,
             Large Scale considerations v/s Small Scale considerations, Long Term Considerations v/s Short Term Considerations etc.
@@ -91,9 +91,9 @@ class Agent:
             Use the following format for reasoning:
             - Thought: Describe what you're thinking.
             - Action: Choose a tool from the pool of tools.
-            - Action Input: Provide the input for the tool. Ensure that the input provided matches with the paramters of the tool, and the datatypes are same.
-            - Observation: Record the tool's result. In this observtion, give a detailed explaination and reasoning of your response, backed by facts and numbers wherever required.
-            Ensure that the Obervation, that is the Final response is not short and concise, but detailed report with all the facts and figures well substantiated. 
+            - Action Input: Provide the input for the tool. Ensure that the input provided matches with the parameters of the tool, and the datatypes are same.
+            - Observation: Record the tool's result. In this observation, give a detailed explanation and reasoning of your response, backed by facts and numbers wherever required.
+            Ensure that the Observation, that is the Final response is not short and concise, but detailed report with all the facts and figures well substantiated. 
             Try to substantiate your answers with as much numbers, comparatives, facts, case laws and history as possible wherever required.
             MAKE YOUR OUTPUTS EXTREMELY DETAILED AND WELL REASONED AND DO NOT OMIT ANY IMPORTANT FACTS WHICH ARE RESEARCHED BY THE TOOLS.
 

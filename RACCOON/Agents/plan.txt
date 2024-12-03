@@ -1,0 +1,79 @@
+### Chain of Thoughts (COT)
+
+To effectively respond to the query about evaluating the financial performance of BTG's key product lines over the past two years, I will break down the task into several sub-tasks, each focusing on specific aspects within finance. This will allow for a comprehensive analysis while facilitating the parallel execution of tasks wherever possible.
+
+1. **Subtask 1: Gather Financial Filings** 
+   - **Content**: To evaluate financial performance accurately, starting with gathering SEC filings related to BTG is essential. This data will provide the baseline financial information required.
+   - **Agent**: Financial Analyst
+   - **Agent Role Description**: The financial analyst will look into the most recent SEC filings to retrieve information related to BTG's product lines.
+   - **Tools**: `get_sec_filings`
+   - **Local Constraints**: Filings must be from the last two years and relevant to BTG's products.
+   - **Require Data**: None
+
+2. **Subtask 2: Analyze Revenue and Margin Data from Filings**
+   - **Content**: Based on the SEC filings gathered in Subtask 1, extract revenue and margin data for each key product line.
+   - **Agent**: Data Interpreter
+   - **Agent Role Description**: The data interpreter will analyze the SEC filings to pull specific income statement data regarding revenue and margins.
+   - **Tools**: `get_income_stmt`
+   - **Local Constraints**: Data must specifically focus on product line segments.
+   - **Require Data**: task_1
+
+3. **Subtask 3: Identify Segments with Declines**
+   - **Content**: From the revenue and margin data analyzed in Subtask 2, identify any product segments that exhibit significant revenue declines or margin contractions.
+   - **Agent**: Quantitative Researcher
+   - **Agent Role Description**: The quantitative researcher will identify trends and declines based on metrics derived from the analyzed financial data.
+   - **Tools**: None required, purely analytical work.
+   - **Local Constraints**: Significant declines must be defined by a threshold (e.g., more than 10% decline).
+   - **Require Data**: task_2
+
+4. **Subtask 4: Prepare a Summary Report**
+   - **Content**: Create a summary report that encapsulates the findings from the previous sub-tasks, making it clear which product lines experienced declines and by what percentages.
+   - **Agent**: General Researcher
+   - **Agent Role Description**: The general researcher will compile and format the findings into a report.
+   - **Tools**: None required, report preparation.
+   - **Local Constraints**: The report must be concise and clear, suitable for presentation.
+   - **Require Data**: task_3
+
+### Global Constraints
+The overall global constraint is that all data must be accurate, results must align chronologically to ensure consistency and relevancy, and sensitive financial information must be handled according to regulatory standards.
+
+### JSON Output
+```json
+{
+  "main_task": "Evaluate the financial performance of BTG's key product lines in the last two years, highlighting any segments experiencing significant revenue decline or margin.",
+  "sub_tasks": {
+    "task_1": {
+      "content": "Gather SEC filings related to BTG over the last two years to collect baseline financial data needed for analysis.",
+      "agent": "Financial Analyst",
+      "agent_role_description": "The financial analyst will look into the most recent SEC filings to retrieve information related to BTG's product lines.",
+      "tools": ["get_sec_filings"],
+      "local_constraints": ["Filings must be from the last two years and relevant to BTG's products."],
+      "require_data": []
+    },
+    "task_2": {
+      "content": "Based on the SEC filings gathered in task_1, extract revenue and margin data for each key product line.",
+      "agent": "Data Interpreter",
+      "agent_role_description": "The data interpreter will analyze the SEC filings to pull specific income statement data regarding revenue and margins.",
+      "tools": ["get_income_stmt"],
+      "local_constraints": ["Data must specifically focus on product line segments."],
+      "require_data": ["task_1"]
+    },
+    "task_3": {
+      "content": "From the revenue and margin data analyzed in task_2, identify any product segments that exhibit significant revenue declines or margin contractions.",
+      "agent": "Quantitative Researcher",
+      "agent_role_description": "The quantitative researcher will identify trends and declines based on metrics derived from the analyzed financial data.",
+      "tools": [],
+      "local_constraints": ["Significant declines must be defined by a threshold (e.g., more than 10% decline)."],
+      "require_data": ["task_2"]
+    },
+    "task_4": {
+      "content": "Create a summary report that encapsulates the findings from the previous sub-tasks, making it clear which product lines experienced declines and by what percentages.",
+      "agent": "General Researcher",
+      "agent_role_description": "The general researcher will compile and format the findings into a report.",
+      "tools": [],
+      "local_constraints": ["The report must be concise and clear, suitable for presentation."],
+      "require_data": ["task_3"]
+    }
+  }
+}
+```

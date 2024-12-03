@@ -6,7 +6,9 @@ import os
 import json
 from dotenv import load_dotenv
 from datetime import datetime
-load_dotenv('.env')
+load_dotenv('../../.env')
+GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY_30')
+OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
 
 def drafterAgentSimplified(text, query):
     system_prompt = f'''
@@ -17,7 +19,7 @@ def drafterAgentSimplified(text, query):
     Following is the content:
     {text}
         '''
-    client = OpenAI()
+    client = OpenAI(api_key=OPENAI_API_KEY)
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[

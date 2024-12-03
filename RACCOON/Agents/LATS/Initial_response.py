@@ -12,7 +12,7 @@ import os
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 from Agents.LATS.utils import llm_to_check
-load_dotenv('.env')
+load_dotenv('../../../.env')
 
 prompt_template = ChatPromptTemplate.from_messages(
         [
@@ -39,7 +39,7 @@ def custom_generate_initial_response(tools):
     def generate_initial_response(state: TreeState) -> dict:
         
 
-        llm_to_check = ChatOpenAI(model="gpt-4o-mini",openai_api_key=os.getenv("OPENAI_API_KEY_30_TEST"))
+        llm_to_check = ChatOpenAI(model="gpt-4o-mini",openai_api_key=os.getenv("OPEN_AI_API_KEY_30_TEST"))
 
 
         initial_answer_chain = prompt_template | llm_to_check.bind_tools(tools=tools).with_config(

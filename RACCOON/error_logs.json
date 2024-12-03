@@ -1,6 +1,614 @@
 [
     {
         "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d38f200>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:41:41.795754",
+        "additional info": {
+            "prompt": "financial data analysis trends 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d3af440>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:41:02.755746",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d3be000>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:40:52.539480",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d3c8ec0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:40:43.497296",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d3dd400>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:40:32.953042",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d3ddca0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:40:22.855326",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d3ed2e0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:40:13.802156",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d3ee570>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:40:03.462187",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d3f8890>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:39:52.915588",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6d3f8290>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:39:44.560039",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c92a7b0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:39:27.980042",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c91c350>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:39:18.409801",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c928b30>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:39:08.605030",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c92b5f0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:38:57.898974",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c92b770>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:38:48.411729",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c940230>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:38:37.553007",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c9527e0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:38:25.669859",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c953830>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:38:15.151363",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c95ec60>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:38:06.328222",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c9f0320>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:37:47.574530",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c8042f0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:37:36.823358",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c9e2300>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:37:27.678582",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c9e3c80>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:37:17.159596",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c8157f0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:37:06.214450",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c815cd0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:36:47.667431",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c804470>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:36:36.935809",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c8061b0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:36:25.861346",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c820890>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:36:15.881077",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c712240>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:35:46.742298",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c7276b0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:35:36.322458",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c896ab0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:35:26.567418",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c895eb0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:35:15.407875",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c864230>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:35:04.697954",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c8b13d0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:34:55.554168",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c875fd0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:34:44.482085",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c846870>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:34:34.138073",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75cf6c853ad0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:34:24.495891",
+        "additional info": {
+            "prompt": "SEC filings for Company(B2GOLD CORP [1429937] BTG, Gold and Silver Ores) from 2022 to 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203db470>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:28:02.477024",
+        "additional info": {
+            "prompt": "2024 product lines financial performance revenue decline margin issues analysis"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203daf90>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:27:50.484091",
+        "additional info": {
+            "prompt": "2024 product lines financial performance revenue decline margin issues analysis"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x71202045f230>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:27:40.151598",
+        "additional info": {
+            "prompt": "2024 product lines financial performance revenue decline margin issues analysis"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204fd010>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:27:11.274002",
+        "additional info": {
+            "prompt": "2024 financial performance analysis product lines revenue decline margin issues"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x71202038ab40>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:27:01.949402",
+        "additional info": {
+            "prompt": "2024 financial performance analysis product lines revenue decline margin issues"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203434a0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:26:41.410278",
+        "additional info": {
+            "prompt": "2024 financial performance analysis product lines revenue decline margin issues"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x712020490200>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:26:22.827370",
+        "additional info": {
+            "prompt": "2024 financial reports product lines revenue declines margin issues"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120205c6cc0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:26:11.568037",
+        "additional info": {
+            "prompt": "2024 financial reports product lines revenue declines margin issues"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203da6f0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:26:01.842612",
+        "additional info": {
+            "prompt": "2024 financial reports product lines revenue declines margin issues"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203be5a0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:24:52.477953",
+        "additional info": {
+            "prompt": "financial performance of product lines with revenue declines and margin issues 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203bcb60>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:24:23.233516",
+        "additional info": {
+            "prompt": "financial performance of product lines with revenue declines and margin issues 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203bd010>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:23:49.333655",
+        "additional info": {
+            "prompt": "financial performance of product lines with revenue declines and margin issues 2024"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204fec60>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:23:30.086243",
+        "additional info": {
+            "prompt": "BTG revenue by product line 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x712020341970>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:23:18.724501",
+        "additional info": {
+            "prompt": "BTG revenue by product line 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203419a0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:23:07.057815",
+        "additional info": {
+            "prompt": "BTG revenue by product line 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x712020427320>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:23:00.087834",
+        "additional info": {
+            "prompt": "2023 industry margin benchmarks by sector"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203406b0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:22:47.482963",
+        "additional info": {
+            "prompt": "2023 industry margin benchmarks by sector"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x712020341520>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:22:45.975948",
+        "additional info": {
+            "prompt": "BTG product lines revenue decline analysis 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120203407d0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:22:37.246368",
+        "additional info": {
+            "prompt": "2023 industry margin benchmarks by sector"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204ff7a0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:22:30.943375",
+        "additional info": {
+            "prompt": "BTG product lines revenue decline analysis 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x71202045eb70>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:22:20.242256",
+        "additional info": {
+            "prompt": "current industry benchmarks for margin performance 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x712020436ae0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:22:16.148847",
+        "additional info": {
+            "prompt": "BTG product lines revenue decline analysis 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204346e0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:22:09.505549",
+        "additional info": {
+            "prompt": "current industry benchmarks for margin performance 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120205c5d00>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:58.840718",
+        "additional info": {
+            "prompt": "current industry benchmarks for margin performance 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204ac080>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:56.492812",
+        "additional info": {
+            "prompt": "BTG product lines revenue performance 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204ad460>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:43.857137",
+        "additional info": {
+            "prompt": "BTG product lines revenue performance 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204ae270>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:42.484657",
+        "additional info": {
+            "prompt": "BTG margin performance analysis 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204ad1f0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:35.813655",
+        "additional info": {
+            "prompt": "BTG product lines revenue performance 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204905c0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:30.074527",
+        "additional info": {
+            "prompt": "BTG margin performance analysis 2023"
+        }
+    },
+    {
+        "tool": "web_scrape",
+        "error_message": "HTTPConnectionPool(host='35.184.195.118', port=3000): Max retries exceeded with url: /https://www.prnewswire.com/news-releases/btg-pactual-reports-record-total-revenues-and-adjusted-net-income-of-r17-2bn-and-r8-3bn-in-2022--respectively-301744963.html (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x71202045d910>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:24.203795",
+        "additional info": {
+            "url": "https://www.prnewswire.com/news-releases/btg-pactual-reports-record-total-revenues-and-adjusted-net-income-of-r17-2bn-and-r8-3bn-in-2022--respectively-301744963.html"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x71202045e6c0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:20.250142",
+        "additional info": {
+            "prompt": "BTG margin performance analysis 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x71202045cd10>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:16.933678",
+        "additional info": {
+            "prompt": "BTG product lines revenue analysis 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120204369c0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:21:06.514781",
+        "additional info": {
+            "prompt": "BTG product lines revenue analysis 2022 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x71202040cd70>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:20:49.214502",
+        "additional info": {
+            "prompt": "industry benchmarks for margin performance analysis 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120205e26c0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:20:39.377998",
+        "additional info": {
+            "prompt": "industry benchmarks for margin performance analysis 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7120205c7680>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:20:28.832394",
+        "additional info": {
+            "prompt": "industry benchmarks for margin performance analysis 2023"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x712021151070>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T23:19:47.867996",
+        "additional info": {
+            "prompt": "Children of which age will be tried as adults?"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x77aa4f0904d0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T22:28:30.581960",
+        "additional info": {
+            "prompt": "Children of which age will be tried as adults?"
+        }
+    },
+    {
+        "tool": "query_documents",
+        "error_message": "HTTPConnectionPool(host='localhost', port=4005): Max retries exceeded with url: /generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7236a9ae3740>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+        "timestamp": "2024-12-03T22:11:20.435016",
+        "additional info": {
+            "prompt": "Children of which age will be tried as adults?"
+        }
+    },
+    {
+        "tool": "query_documents",
         "error_message": "500 Server Error: Internal Server Error for url: http://localhost:4005/generate",
         "timestamp": "2024-12-03T12:06:14.727686",
         "additional info": {

@@ -1,6 +1,6 @@
 import os
 import getpass
-import dotenv
+from dotenv import load_dotenv
 import google.generativeai as genai
 from openai import OpenAI
 from operator import itemgetter
@@ -22,7 +22,7 @@ from langchain_openai import ChatOpenAI
 
 
 
-dotenv.load_dotenv('.env')
+load_dotenv('../../.env')
 
 def conciseAns_vanilla(query, api_key, LLM, tools_list):
     os.environ["OPENAI_API_KEY"] = api_key
@@ -57,4 +57,5 @@ def conciseAns_vanilla(query, api_key, LLM, tools_list):
 
 
 def conciseAns_rag(query,rag_context, text, api_key, LLM):
-    return response
+    # return response #TODO: Implement this function
+    return "Not Implemented Yet"

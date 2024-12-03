@@ -1,10 +1,14 @@
 import google.generativeai as genai
 import os
 from datetime import datetime
-
+from dotenv import load_dotenv
 from openai import OpenAI
 
-def drafterAgent_vanilla(query, text, api_key, LLM):
+load_dotenv('../../.env')
+GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY_30')
+OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
+
+def drafterAgent_vanilla(query, text, api_key=GOOGLE_API_KEY, LLM="GEMINI"):
     system_prompt = f'''
     Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. 
     All your searches and responses must be with respect to this time frame.
@@ -29,7 +33,7 @@ def drafterAgent_vanilla(query, text, api_key, LLM):
 
 
     You are an analyst who takes raw data and compiles it into comprehensive answers with detailed analysis.
-    Note that the analysis must contain tables, numbers, case laws, facts and in depth reasonings behind all the 
+    Note that the analysis must contain tables, numbers, case laws, facts and in depth reasoning behind all the 
     conclusions and inferences. If there is a comparison between 2 or more entities, do a comprehensive analysis
     along with SWOT analysis. Include specific analysis comparison metrics, and divide the report into subsections
     in order to make the readability comprehensive.
@@ -52,8 +56,8 @@ def drafterAgent_vanilla(query, text, api_key, LLM):
     7.Please use active sentences when answering the user's query.
     8.You don't need to mention the detail of each intermediary step, but provide all your research and supporting information. 
     9. You don't have to mention what sub - tasks you have done to achieve that .
-    10. At the end of the report, provide a thourough conclusion that  covers all the main points,or any results infered from the data and what all can we conclude, what are the financial decisions , what are the key takeaways from the data, and what are the possible next steps.This should be very detailed
-    11. If there is an error or inconsistence in the query, then highlight it and respond according to true facts.
+    10. At the end of the report, provide a thorough conclusion that  covers all the main points,or any results inferred from the data and what all can we conclude, what are the financial decisions , what are the key takeaways from the data, and what are the possible next steps.This should be very detailed
+    11. If there is an error or inconsistency in the query, then highlight it and respond according to true facts.
     12. Ensure that your response provides a direct answer to the given query and does not deviate from the actual question asked.
     13. Analyze from a multi-dimensional aspect, for instance interdependency between multiple domains like
     finance, microeconomics, macroeconomics, public policy, politics, law, environment etc, Large Scale considerations v/s Small Scale considerations, 
@@ -86,7 +90,7 @@ def drafterAgent_vanilla(query, text, api_key, LLM):
         response = model.generate_content(system_prompt+user_prompt).text
         
     elif LLM == "OPENAI":
-        client = OpenAI()
+        client = OpenAI(api_key=api_key)
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -107,7 +111,7 @@ def drafterAgent_rag(query,rag_context, text, api_key, LLM):
     system_prompt = f'''
 
     You are an analyst who takes raw data and compiles it into comprehensive answers with detailed analysis.
-    Note that the analysis must contain tables, numbers, case laws, facts and in depth reasonings behind all the 
+    Note that the analysis must contain tables, numbers, case laws, facts and in depth reasoning behind all the 
     conclusions and inferences. If there is a comparison between 2 or more entities, do a comprehensive analysis
     along with SWOT analysis.Include specific analysis comparison metrics, and divide the report into subsections
     in order to make the readability comprehensive.
@@ -124,7 +128,7 @@ def drafterAgent_rag(query,rag_context, text, api_key, LLM):
     ==================================================
 
     Prioritize the following information while formulating the answer, try to use as much facts, information, numbers,
-    financial metrics, legal statements, case laws etc from the following information. If there is any conflect between the 
+    financial metrics, legal statements, case laws etc from the following information. If there is any conflict between the 
     information given below and the information at the end, then prioritize the following information
 
     ==================================================
@@ -141,8 +145,8 @@ def drafterAgent_rag(query,rag_context, text, api_key, LLM):
     7.Please use active sentences when answering the user's query.
     8.You don't need to mention the detail of each intermediary step, but provide all your research and supporting information. 
     9. You don't have to mention what sub - tasks you have done to achieve that .
-    10. At the end of the report, provide a thourough conclusion that  covers all the main points,or any results infered from the data and what all can we conclude, what are the financial decisions , what are the key takeaways from the data, and what are the possible next steps.This should be very detailed
-    11. If there is an error or inconsistence in the query, then highlight it and respond according to true facts.
+    10. At the end of the report, provide a thorough conclusion that  covers all the main points,or any results inferred from the data and what all can we conclude, what are the financial decisions , what are the key takeaways from the data, and what are the possible next steps.This should be very detailed
+    11. If there is an error or inconsistency in the query, then highlight it and respond according to true facts.
     12. Ensure that your response provides a direct answer to the given query and does not deviate from the actual question asked.
     13. Analyze from a multi-dimensional aspect, for instance interdependency between multiple domains like
     finance, microeconomics, macroeconomics, public policy, politics, law, environment etc, Large Scale considerations v/s Small Scale considerations, 
@@ -158,12 +162,12 @@ def drafterAgent_rag(query,rag_context, text, api_key, LLM):
     '''
 
     if LLM == "GEMINI":
-        genai.configure(api_key=api_key)
+        genai.configure(api_key=GOOGLE_API_KEY)
         model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(system_prompt+user_prompt).text
         
     elif LLM == "OPENAI":
-        client = OpenAI()
+        client = OpenAI(api_key=OPENAI_API_KEY)
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             temperature=0.2,

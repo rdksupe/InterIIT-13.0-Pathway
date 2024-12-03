@@ -5,7 +5,7 @@ from Agents.LATS.generate_candiates import custom_expand
 from langgraph.graph import END, StateGraph, START
 from Agents.LATS.NewTools import *
 from dotenv import load_dotenv
-load_dotenv('.env')
+load_dotenv('../../../.env')
 
 def should_loop(state: TreeState):
     """Determine whether to continue the tree search."""

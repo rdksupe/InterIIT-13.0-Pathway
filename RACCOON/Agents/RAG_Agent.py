@@ -2,7 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 import time
-load_dotenv('.env')
+load_dotenv('../../.env')
 
 from datetime import datetime
 import google.generativeai as genai
@@ -28,7 +28,7 @@ def ragAgent(query, api_key, LLM, state):
         fin_context += f'{rag_result} \n'
         sys_prompt =  '''
         Extract the Key Words, Jargons and Important Concepts from the information given below and make queries in order to query a 
-        documennt retriever to extract more context about the extract and query. Make at most 3 queries which encompass all the 
+        document retriever to extract more context about the extract and query. Make at most 3 queries which encompass all the 
         concepts and jargons. Strictly format is like a dictionary with schema:
         {
             "query_1": "...",
@@ -40,7 +40,7 @@ def ragAgent(query, api_key, LLM, state):
         '''
 
         prompt = f"""Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses must be with respect to this time frame""" + sys_prompt + rag_result
-        client = OpenAI()
+        client = OpenAI(api_key = os.getenv('OPEN_AI_API_KEY_30'))
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -61,7 +61,7 @@ def ragAgent(query, api_key, LLM, state):
         must be with respect to this time frame
         
         Based on the given main query, 3 sub-queries, and given context, conduct intensive research from 
-        a multi-domain perspective (such as finance, economics, law, market research, consumer researc, compliance etc)
+        a multi-domain perspective (such as finance, economics, law, market research, consumer research, compliance etc)
         and generate a comprehensive answer to the main query.
         The main query is: {query}
         The sub-queries are: {dic}

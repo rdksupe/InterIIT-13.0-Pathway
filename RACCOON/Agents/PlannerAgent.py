@@ -2,7 +2,13 @@ import os
 import json
 from dotenv import load_dotenv
 import time
-load_dotenv('.env')
+
+
+load_dotenv('../../.env')
+GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY_30')
+OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
+
+
 
 import google.generativeai as genai
 
@@ -18,7 +24,7 @@ def clean(text):
     return text[text.index('{'):text.rfind('}')+1]
 
 
-def plannerAgent(query, api_key, LLM):
+def plannerAgent(query,api_key =OPENAI_API_KEY, LLM="OPENAI"):
     
     sys = f'''Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses
         must be with respect to this time frame.'''
@@ -30,7 +36,7 @@ def plannerAgent(query, api_key, LLM):
     between multiple domains like finance, microeconomics, macroeconomics, public policy, politics, law, environment etc,
     Large Scale considerations v/s Small Scale considerations, Long Term Considerations v/s Short Term Considerations etc. 
     For each of these domains like economics, public policy, finance, law, antitrust issues, management, consultancy, market 
-    strategy etc, generate an individual agents which do intensive research on these specific topics, levaraging the tools provided. 
+    strategy etc, generate an individual agents which do intensive research on these specific topics, leveraging the tools provided. 
 
     Each subtask should only cover one domain/aspect of the problem, and only one entity related to the problem, hence there
     can be many subtasks for a complex problem, and single or low number of tasks for a unidimensional problem.
@@ -70,7 +76,7 @@ def plannerAgent(query, api_key, LLM):
     about related domains, topics and issues in order to take an interdisciplinary
     and holistic approach. 
     
-    Try to maximize the number of independent tasks so that we can run them parallely but
+    Try to maximize the number of independent tasks so that we can run them parallelly but
     where dependence from previous tasks is necessary, do add dependence.
     
     Before filling in the template , you must first understand the user ’ s 
@@ -112,14 +118,14 @@ def plannerAgent(query, api_key, LLM):
     only be one agent.Please use the original name of the agent synthesized.
     . This list cannot be empty . If you could not think of any agent to
     perform this sub - task , please do not write this sub - task.
-    Examples of agents might include: Environmental Researcher, Microeconomist, 
+    Examples of agents might include: Environmental Researcher, Macroeconomist, 
     Macroeconomist, Public Policy Researcher, ParaLegal Researcher, Financial Analyst,
     Quantitative Researches, Fundamental Researcher, Data Collection Agent, Data Interpreter,
     Market Researcher, General Researcher, Political Analyst, News Researcher, 
     Mergers Specialist, Acquisitions Specialist, Investment Banker etc. Note that this is not an exhaustive list and you can 
     make other agents on the same lines. 
     
-    "agent_role_description" is the detailed job role  desctiption of the agent and
+    "agent_role_description" is the detailed job role  description of the agent and
     it's specializations which are required to solve the specific task. This is a 
     detailed string which describes what the agent is supposed to do and what output
     and specialization is expected from that agent.
@@ -182,7 +188,7 @@ def plannerAgent(query, api_key, LLM):
 
 
     tools_prompt = f'''
-    The information about tools is encoded in a list of dicitonaries, each dictionary having four keys: with 4 keys: first key being the 'name' where you enter the name of the function, second being 'docstring', where you fill the docstring of the function and third being 'parameters', fourth being output where you mention the output and output type. 
+    The information about tools is encoded in a list of dictionaries, each dictionary having four keys: with 4 keys: first key being the 'name' where you enter the name of the function, second being 'docstring', where you fill the docstring of the function and third being 'parameters', fourth being output where you mention the output and output type. 
     NOTE that you can only use these tools and not anything apart from these. The names of the following tools are the only names valid for any of the tools. 
     The tools available to us are as follows:
 
@@ -193,12 +199,12 @@ def plannerAgent(query, api_key, LLM):
 
 
     if LLM == "GEMINI":
-        genai.configure(api_key=api_key)
+        genai.configure(api_key=GOOGLE_API_KEY)
         model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(prompt).text
         dic =  json.loads(clean(response.split("```")[-2].split("json")[1]))
     elif LLM == "OPENAI":
-        client = OpenAI()
+        client = OpenAI(api_key=OPENAI_API_KEY)
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -220,9 +226,9 @@ def plannerAgent(query, api_key, LLM):
         json.dump(dic, f)
 
     return dic
-'''
-start = time.time()
-query = 'Analyze the impact of US-China trade wars on multiple financial assets'
-out = plannerAgent(query, api_key)
-print("Complete")
-print(f"Time for planning: {time.time()-start}")'''
+if __name__ == "__main__":
+    start = time.time()
+    query = 'Analyze the impact of US-China trade wars on multiple financial assets'
+    out = plannerAgent(query)
+    print("Complete")
+    print(f"Time for planning: {time.time()-start}")
