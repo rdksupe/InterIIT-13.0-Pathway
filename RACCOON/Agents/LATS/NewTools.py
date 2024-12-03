@@ -128,7 +128,7 @@ def web_scrape(url, query) -> Union[Dict, str]:
     Returns the scraped data as JSON if successful, else move on to the next best site in case of errors like required login, captcha etc.
     """
     #url, query = tup
-    api_url = f'http://127.0.0.1:3000/{url}'
+    api_url = f'htttp://35.184.195.118/:3000/{url}'
     headers = {
         'Accept': 'application/json',
         'X-Respond-With':'markdown',
@@ -445,7 +445,7 @@ def get_indian_kanoon(query: str):
         title = doc_result['title']
         date = doc_result['publishdate']
         doc = clean_text(doc_result['doc'])
-        output_folder = "../../../temp_rag_space"
+        output_folder = "./temp_rag_space"
 
         os.makedirs(output_folder, exist_ok=True)        
         # Generate filename based on URL and timestamp
@@ -503,7 +503,7 @@ def get_us_case_law(query: str) -> Tuple[str, str]:
         doc = opinion_result['html_lawbox']
         cleaned_doc = clean_text(doc)
 
-        output_folder = "../../../temp_rag_space"
+        output_folder = "./temp_rag_space"
 
 
             
@@ -541,7 +541,7 @@ def query_documents(prompt: str) -> Dict:
     try :    
         start = time.time()
         response = requests.post(
-            "http://0.0.0.0:4005/generate",
+            "http://localhost:4005/generate",
             headers={"Content-Type": "application/json"},
             json={"query": prompt}
         )
