@@ -18,7 +18,7 @@ load_dotenv()
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=800)
 
 class DocumentProcessor:
-    def __init__(self, host: str = "0.0.0.0", port: int = 8001):
+    def __init__(self, host: str = "127.0.0.1", port: int = 8001):
         # Configure environment and logging
         os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata"
         logging.basicConfig(

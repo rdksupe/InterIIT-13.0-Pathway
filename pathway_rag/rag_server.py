@@ -155,7 +155,7 @@ if __name__ == "__main__":
             return self.application
 
     options = {
-        'bind': '0.0.0.0:4005',
+        'bind': '127.0.0.1:4005',
         'workers': 6,
         'worker_class': 'uvicorn.workers.UvicornWorker',
         'timeout': 120,
