@@ -133,8 +133,8 @@ def web_scrape(url, query) -> Union[Dict, str]:
         
     }
     output_folder = 'temp_rag_space'
-    print(os.getcwd())
-    print(output_folder)
+    #print(os.getcwd())
+    #print(output_folder)
     try:
         # Create output folder if it doesn't exist
         os.makedirs(output_folder, exist_ok=True)
@@ -176,19 +176,21 @@ def web_search(query: str):
     This should be followed by web scraping the most relevant page to get detailed response.
     """
     tavily_search = TavilySearchResults(
-        max_results=3,
+        max_results=2,
         search_depth="basic",
         include_answer=False,
         include_raw_content=False,
         include_images=False,
     )
     try:
+        res = []
         search_results = tavily_search.invoke({"query": query})
         try:
             for search_result in search_results:
                 url = search_result['url']
                 content = search_result['content']
-                web_scrape.invoke({"url": url, "query": query})
+                res.append(web_scrape.invoke({"url": url, "query": query}))
+            return res
         except Exception as e:
             # If both fail, return error message
             log_error(
@@ -256,22 +258,21 @@ def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form:
         end_year = int(end_date[:4])
         try:
             filing =  company.get_filings().filter(ticker = f"{ticker}",form = f"{form}",date = f"{start_date}:{end_date}")[0].markdown()
-            print(filing)
         except Exception as e:
             return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
-            
-        if not filing:
-            return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
-        output_folder = "/home/rdk/kb_sec"
-        filename = f"{ticker+datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
-        print(filename)
-        filepath = os.path.join(output_folder, filename)
-        with open(filepath,"w",encoding = "utf-8") as f:
-            f.write(filing)
-    
-        delay = 2
-        time.sleep(delay)
-        return query_documents.invoke(query)
+        finally:
+            if not filing:
+                return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
+            output_folder = "/home/rdk/kb_sec"
+            filename = f"{ticker+datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+            print(filename)
+            filepath = os.path.join(output_folder, filename)
+            with open(filepath,"w",encoding = "utf-8") as f:
+                f.write(filing)
+        
+            delay = 2
+            time.sleep(delay)
+            return query_documents.invoke(query)
     except:
         return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
     # return ""
