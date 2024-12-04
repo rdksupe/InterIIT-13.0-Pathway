@@ -121,93 +121,68 @@ async def mainBackend(query, websocket):
                 agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
                 agentsList.append(agent)
             
-            async def executeComplexPipeline(agentsList):
-                smack = Smack(agentsList)
-                taskResultsDict = smack.executeSmack()
-                for task in taskResultsDict:
-                    out_str += f'{taskResultsDict[task]} \n'
-
-                resp = ''
-                #Need to test this later
-                if IS_RAG == True:
-                    rag_context, rag_processed_response = ragAgent(query, key_dict[LLM], LLM, state = 'report')
-                    out_str = f'{rag_processed_response}\n \n{out_str}'
-                    resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
-                    resp = str(resp)
-                    await asyncio.sleep(1)
-                    await websocket.send(json.dumps({"type": "response", "response": resp}))
-                #Tested multiple times
-                else:
-                    resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
-                    
-
-                with open ('./output/drafted_response.md', 'w') as f:
-                    if LLM=='GEMINI':
-                        resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                        resp = generate_chart(resp)
-                        f.write(str(resp))
-                    elif LLM=='OPENAI':
-                        resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                        resp = generate_chart(resp)
-                        f.write(str(resp))
-
-            async def generateAddnQuestions(addn_questions):
-                final_questions = []
-                for question in addn_questions:
-                    refinedQuestion = genQuestionComplex(query, question)
-                    final_questions.append(question)
-                return final_questions
-
+            
+            smack = Smack(agentsList)
+            taskResultsDict = smack.executeSmack()
+            for task in taskResultsDict:
+                out_str += f'{taskResultsDict[task]} \n'
             resp = ''
-            additionalQuestions = []
-
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                future_one = executor.submit(executeComplexPipeline, agentsList)
-                future_two = executor.submit(generateAddnQuestions, addn_questions)
-
-                resp = future_one.result()
-                additionalQuestions = future_two.result()
+            #Need to test this later
+            if IS_RAG == True:
+                rag_context, rag_processed_response = ragAgent(query, key_dict[LLM], LLM, state = 'report')
+                out_str = f'{rag_processed_response}\n \n{out_str}'
+                resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
+                resp = str(resp)
+                await asyncio.sleep(1)
+                await websocket.send(json.dumps({"type": "response", "response": resp}))
+            #Tested multiple times
+            else:
+                resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
                 
+            with open ('./output/drafted_response.md', 'w') as f:
+                if LLM=='GEMINI':
+                    resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+                    resp = generate_chart(resp)
+                    f.write(str(resp))
+                elif LLM=='OPENAI':
+                    resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+                    resp = generate_chart(resp)
+                    f.write(str(resp))
+
+            final_questions = []
+            for question in addn_questions:
+                refinedQuestion = genQuestionComplex(query, question)
+                final_questions.append(question)
+
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
-            await websocket.send(json.dumps({"type": "questions", "response": additionalQuestions}))
+            await websocket.send(json.dumps({"type": "questions", "response": '\n'.join(final_questions)}))
             
         elif query_type == 'simple':
             print("RUNNING SIMPLE TASK PIPELINE")
-            tools_list = [get_stock_data, web_search_simple, get_company_profile, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
             
-            #Need to test this later
             async def executeSimplePipeline(query):
+                resp = ''
                 if IS_RAG == True:
                     rag_context = ragAgent(query, key_dict[LLM], LLM, state = "concise")
                     resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
-                    await asyncio.sleep(1)
-                    await websocket.send(json.dumps({"type": "response", "response": resp}))
-                    return resp
 
                 else:
-                    async def run_parallel():
-                        with ThreadPoolExecutor() as executor:
-                            # Define the tasks
-                            future_resp_lats = executor.submit(conciseAns_vanilla_LATS, query, tools_list)
-                            future_resp = executor.submit(conciseAns_vanilla, query, key_dict[LLM], LLM, tools_list)
-                            # Get the results
-                            resp = future_resp.result()['output']
-                            resp_lats = future_resp_lats.result()
-                        return resp, resp_lats
-                    
-                    resp, resp_lats = run_parallel()
-                    resp = str(resp)
+                    tools_list = [get_stock_data, web_search_simple, get_company_profile, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
+                    resp = conciseAns_vanilla(query, tools_list)
+                    resp = resp['output']
+                return str(resp)
 
-                    return resp, resp_lats
+            async def run_parallel(query):
+                resp, additionalQuestions = await asyncio.gather(
+                    executeSimplePipeline(query),
+                    genQuestionSimple(query)
+                )
                 
-            with ThreadPoolExecutor() as executor:
-                future_one = executor.submit(executeSimplePipeline, query)
-                future_two = executor.submit(genQuestionSimple, query)
+                return (str(resp), str(additionalQuestions))
+            resp, additionalQuestions = await run_parallel(query)
+            #additionalQuestions = '\n'.join(additionalQuestions.values())
 
-                resp = future_one.result()
-                additionalQuestions = future_two.result().values()
-                
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
             await websocket.send(json.dumps({"type": "questions", "response": additionalQuestions}))
@@ -223,18 +198,18 @@ async def mainBackend(query, websocket):
         await websocket.send(json.dumps({"type": "response", "response": resp}))
 
 async def handle_connection(websocket):
-    try:
+    #try:
         # observer_thread = threading.Thread(target=start_observer,args=(websocket), daemon=True)
         # observer_thread.start()
-        async for message in websocket:
-            data = json.loads(message)
-            if data['type'] == 'query':
-                print(f"Received query: {data['query']}")
-                await mainBackend(data['query'], websocket)
-                # resp = str(fin_resp)
-                # await asyncio.sleep(1)
-                # await websocket.send(json.dumps({"type": "response", "response": resp}))
-            if data['type'] == 'cred':
+    async for message in websocket:
+        data = json.loads(message)
+        if data['type'] == 'query':
+            print(f"Received query: {data['query']}")
+            await mainBackend(data['query'], websocket)
+            # resp = str(fin_resp)
+            # await asyncio.sleep(1)
+            # await websocket.send(json.dumps({"type": "response", "response": resp}))
+        if data['type'] == 'cred':
                 print(f"Received credentials: {data['formData']}")
                         # Read the current .env file
                 env_file_path = '../.env'
@@ -266,10 +241,10 @@ async def handle_connection(websocket):
                         fp.write(f"{key}=\"{value}\"\n")
 
                 print(".env file has been updated.")
-    except websockets.exceptions.ConnectionClosed:
-        print("Client connection closed")
-    except Exception as e:
-        print(f"Error handling connection: {e}")
+    #except websockets.exceptions.ConnectionClosed:
+    #    print("Client connection closed")
+    #except Exception as e:
+    #    print(f"Error handling connection: {e}")
 
 async def main():
     print("WebSocket server starting on ws://0.0.0.0:8080")

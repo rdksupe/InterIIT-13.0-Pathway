@@ -25,9 +25,8 @@ from LLMs import GPT4o_mini_LATS
 
 load_dotenv('../../.env')
 
-def conciseAns_vanilla(query, api_key, LLM, tools_list):
+def conciseAns_vanilla(query, tools_list):
     print("RUNNING conciseAns_vanilla")
-    os.environ["OPENAI_API_KEY"] = api_key
     finalQuery = f'''
         Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses
         must be with respect to this time frame. Whenever an agent is called, use this date time as the current date time
@@ -42,15 +41,19 @@ def conciseAns_vanilla(query, api_key, LLM, tools_list):
         extra information, and don't provide detailed analysis. Only answer what is asked
         with the NECESSARY information backing it.
     '''
-
+    print('.')
     prompt = hub.pull("hwchase17/openai-tools-agent")
+    print('.')
     agent = create_tool_calling_agent(GPT4o_mini_LATS, tools_list, prompt)
+    print('.')
     agent_executor = AgentExecutor(agent=agent, tools=tools_list, verbose=True)
+    print('.')
     response = agent_executor.invoke(
         {
             "input": {finalQuery}
         }
     )
+    print('.')
     with open("conciseResponse.md", "w") as f:
         f.write(response['output'])
     print("COMPLETED conciseAns_vanilla")

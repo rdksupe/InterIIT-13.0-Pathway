@@ -45,7 +45,7 @@ def genQuestionComplex(main_query, sub_task):
 
     return response
 
-def genQuestionSimple(query):
+async def genQuestionSimple(query):
     print("Executing genQuestionSimple")
     system_prompt = '''
         Synthesize 5 Questions Related to the given query. 
@@ -72,6 +72,7 @@ def genQuestionSimple(query):
 
     prompt = f'''{system_prompt}\n\n {user_prompt}'''
     response = conversation_complex.run(f'''{prompt}''')
+    print(response)
     
     '''client = OpenAI(api_key=api_key)
     completion = client.chat.completions.create(
@@ -86,4 +87,4 @@ def genQuestionSimple(query):
     )
     response = completion.choices[0].message.content.strip()'''
     print("Executed genQuestionSimple")
-    return json.loads(response)
+    return '\n'.join(json.loads(response).values())
