@@ -50,19 +50,17 @@ const Main = () => {
 
 	const [markdownContent, setMarkdownContent] = useState('');
 	const [reccQs, setReccQs] = useState([])
+	const [isChecked, setIsChecked] = useState(true);
 
 	const ToggleSwitch = ({ label }) => {
-		 // State to track whether the checkbox is checked or not
-		 const isChecked = useRef(true)
 
-		 // Function to handle the toggle switch change
 		 const handleToggle = () => {
-			isChecked.current = !isChecked.current; // Toggle the checkbox state
-			let query = isChecked.current
+			// isChecked.current = !isChecked.current; // Toggle the checkbox state
+			setIsChecked(!isChecked);
+			let query = !isChecked
 			if (socket && socket.readyState === WebSocket.OPEN) {
 				socket.send(JSON.stringify({ type: 'toggleRag', query }));
 			}
-
 		 };
 	   
 		return (
@@ -222,7 +220,7 @@ const Main = () => {
 
 			try {
 				// Send a POST request
-				const response = await fetch('http://35.184.195.118:8000/upload', {
+				const response = await fetch('http://localhost:8000/upload', {
 					method: 'POST',
 					body: formData,
 				});
