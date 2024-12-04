@@ -14,7 +14,7 @@ const ContextProvider = (props) => {
 	const [socket, setSocket] = useState(null);
 	const [evenData, setEvenData] = useState();
 	const [downloadData, setDownloadData] = useState(false);
-
+	const [chatNo, setChatNo] = useState(0);
 	const displayedCharsRef = useRef(0); // Use a ref to track displayed characters count
 	const totalCharsRef = useRef(0); // Use a ref for total characters
 
@@ -40,6 +40,7 @@ const ContextProvider = (props) => {
 		setLoading(false);
 		setShowResults(false);
 		setDownloadData(false);
+		setChatNo(0);
 		displayedCharsRef.current = 0; // Reset ref for displayed characters
 	};
 
@@ -89,7 +90,6 @@ const ContextProvider = (props) => {
 	const onRender = async (data) => {
 		setResultData("");
 		let response = data;
-
 		try {
 			let responseArray = response.split("**");
 			let newResponse = "";
@@ -140,6 +140,8 @@ const ContextProvider = (props) => {
 		setSocket,
 		downloadData,
 		setDownloadData,
+		chatNo,
+		setChatNo
 	};
 
 	return <Context.Provider value={contextValue}>{props.children}</Context.Provider>;
