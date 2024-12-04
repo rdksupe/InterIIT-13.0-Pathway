@@ -10,9 +10,9 @@ import google.generativeai as genai
 from langchain.globals import set_verbose
 set_verbose(True)
 
-from openai import OpenAI
-
 from Agents.LATS.NewTools import *
+
+from LLMs import conversation_complex
 
 
 
@@ -40,7 +40,7 @@ def ragAgent(query, api_key, LLM, state):
         '''
 
         prompt = f"""Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses must be with respect to this time frame""" + sys_prompt + rag_result
-        client = OpenAI(api_key = os.getenv('OPEN_AI_API_KEY_30'))
+        '''client = OpenAI(api_key = os.getenv('OPEN_AI_API_KEY_30'))
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -51,6 +51,9 @@ def ragAgent(query, api_key, LLM, state):
             ]
         )
         response = completion.choices[0].message.content.strip()
+        '''
+        response = conversation_complex.predict(input = f'''{prompt}''')
+        
         dic =  dict(json.loads(clean(response.split("```")[-2].split("json")[1])))
         for p in dic:
             rag_resp = query_documents.invoke(query)
@@ -69,7 +72,7 @@ def ragAgent(query, api_key, LLM, state):
         The answer should be backed by all the facts gathered and research conducted, hence the answer should be extremely detailed.
         \n
         '''
-        completion_2 = client.chat.completions.create(
+        '''completion_2 = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {
@@ -78,7 +81,11 @@ def ragAgent(query, api_key, LLM, state):
                 }
             ]
         )
-        fin_response = completion_2.choices[0].message.content.strip()
+        fin_response = completion_2.choices[0].message.content.strip()'''
+
+        fin_response = conversation_complex.predict(input = f'''{prompt_2}''')
+
         return fin_context, fin_response
+        
     elif state == "concise":
         return rag_result
