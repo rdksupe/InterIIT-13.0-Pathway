@@ -196,10 +196,11 @@ const Main = () => {
 						
 						console.log("agents data", data);
 						if(agent.current === true){
+
 						onRenderAgent(data.response);
-						setRecentPrompt(prompt)
-					setPrevResults(prev=>[...prev,data.response]);
-					// console.log(data.response);
+						setPrevResults(prev=>[...prev,data.response]);
+						setRecentPrompt(prevPrompts)
+						console.log(data.response);
 						setMarkdownContent(data.response);}
 					}
 				} catch (error) {
