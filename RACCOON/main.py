@@ -69,6 +69,7 @@ async def mainBackend(query, websocket, rag):
 
     guard_rails, reasonings = applyTopicalGuardails(query)
     if guard_rails:
+
         query_type = classifierAgent(query, GOOGLE_API_KEY).lower()
         if query_type == "complex":
             print("RUNNING COMPLEX TASK PIPELINE")
@@ -148,7 +149,7 @@ async def mainBackend(query, websocket, rag):
                     resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
 
                 else:
-                    tools_list = [get_stock_data, web_search_simple, get_company_profile, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
+                    tools_list = [get_stock_data, web_search_simple, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
                     resp = conciseAns_vanilla(query, tools_list)
                     resp = resp['output']
                 return str(resp)
@@ -179,7 +180,7 @@ async def mainBackend(query, websocket, rag):
         await websocket.send(json.dumps({"type": "response", "response": resp}))
 
 async def handle_connection(websocket):
-    rag = True
+    rag = False
     async for message in websocket:
         data = json.loads(message)
         if data['type'] == 'query':
