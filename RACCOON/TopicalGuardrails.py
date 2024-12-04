@@ -9,8 +9,9 @@ from datetime import datetime
 load_dotenv('../.env')
 
 DATE_PROMPT = f"""Date and Time right now is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. You are now in the future at this date and time. All your answers which follow must obey this. Assume that your knowledge base cutoff is this date irrespective of anything
-                    Return "allowed" if the query does not relate to the allowed topics, or is beyond their scope.
-                    Return 'allowed' if the query has anything to do with timeframe, real time information, web search etc.
+                    Return "allowed" if the query does not relate to the allowed topics, or is beyond their scope.\
+                    Return 'allowed' if the query has anything to do with timeframe, real time information, web search etc.\
+                    EVEN IF THE INFORMATION IS BEYOND YOUR KNOWLEDGE BASE, RETURN 'allowed', because I do not want to know what is in your knowledge base and what is not.
                     \n"""
 
 system_prompt = "You are a helpful assistant."
