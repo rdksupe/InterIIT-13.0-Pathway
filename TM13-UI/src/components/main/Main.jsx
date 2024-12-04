@@ -184,6 +184,7 @@ const Main = () => {
 				// formData.append('files', files[i]);
 			
 			formData.append('file', files[i]); 
+			// formData.append('filename', result.filename);
 
 			try {
 				// Send a POST request
@@ -488,7 +489,7 @@ const Main = () => {
 												justifyContent: 'center',
 												alignItems: 'center',
 												overflow: 'hidden',  // Hide overflow if text exceeds the card's boundaries
-												wordWrap: 'break-word',  // Break long words if needed to fit inside the card
+												// wordWrap: 'break-word',  // Break long words if needed to fit inside the card
 												textOverflow: 'ellipsis',  // Show ellipsis if the text is too long
 											}}
 											onClick={() => handleCardClick(reccQs[2])}
@@ -531,7 +532,7 @@ const Main = () => {
 							<img src={assets.attach_icon} alt="Upload" onClick={triggerFileInput} />
 							<input
 								multiple
-								webkitdirectory="true"
+								// webkitdirectory="true"
 								id="hiddenFileInput"
 								type="file"
 								style={{ display: 'none' }} // Hide the input field
