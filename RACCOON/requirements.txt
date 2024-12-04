@@ -218,3 +218,4 @@ yfinance==0.2.49
 langchain-google-community
 google-auth-oauthlib
 praw
+watchdog

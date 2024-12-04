@@ -34,6 +34,10 @@ class AnswerResponse(BaseModel):
 
 def rerank_documents(query: str, documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Rerank documents using VoyageAI reranker."""
+    if not is_rerank_service_available():
+        print("Reranking service is not available. Using original document order.")
+        return documents
+
     try:
         # Extract text from documents
         doc_texts = [doc.get('text', '') for doc in documents]
@@ -71,7 +75,7 @@ def query_retrieval_service(query: str, k: int = 5) -> List[Dict[str, Any]]:
     """Query the local retrieval service for relevant documents."""
     try:
         encoded_query = quote(query)
-        response = requests.get(f"http://localhost:4004/v1/retrieve?query={encoded_query}&k={k}")
+        response = requests.get(f"http://0.0.0.0:4004/v1/retrieve?query={encoded_query}&k={k}")
         response.raise_for_status()
         return response.json()
     except Exception as e:
@@ -118,7 +122,25 @@ def generate_answer_openai(query: str, retrieved_docs: List[Dict[str, Any]], max
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating answer with OpenAI: {str(e)}")
-
+def is_rerank_service_available() -> bool:
+    """Check if the VoyageAI reranking service is available."""
+    try:
+        headers = {
+            "Authorization": f"Bearer {VOYAGE_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "query": "test query",
+            "documents": ["test document"],
+            "model": "rerank-2",
+            "return_documents": True
+        }
+        
+        response = requests.post(VOYAGE_RERANK_URL, headers=headers, json=payload, timeout=5)
+        return response.status_code == 200
+    except Exception:
+        return False
 @app.post("/generate", response_model=AnswerResponse)
 async def generate(query_request: Query):
     """
@@ -157,8 +179,8 @@ if __name__ == "__main__":
             return self.application
 
     options = {
-        'bind': '127.0.0.1:4005',
-        'workers': 6,
+        'bind': '0.0.0.0:4005',
+        'workers': 12,
         'worker_class': 'uvicorn.workers.UvicornWorker',
         'timeout': 120,
         'graceful_timeout': 60,

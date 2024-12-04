@@ -12,3 +12,16 @@ lib64/
 parts/
 sdist/
 var/add 
+RACCOON/Agents/plan.txt
+RACCOON/Agents/plan.json
+chart_generation.log
+RACCOON/assets/*
+RACCOON/output/*
+error_logs.json
+temp_rag_space
+Graph.json
+ProcessingLogs.md
+response-withCharts.md
+tickers.txt
+pathway_rag/persistence_data
+ProcessLogs.md
