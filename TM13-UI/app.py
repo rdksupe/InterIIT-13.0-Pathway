@@ -7,7 +7,7 @@ import json
 app = Flask(__name__)
 CORS(app)  
 
-with open('TM13-UI/companies.json', 'w') as file:
+with open('companies.json', 'w') as file:
     json.dump([], file)
 
 @app.route('/query', methods=['POST'])
