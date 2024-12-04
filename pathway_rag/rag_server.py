@@ -26,6 +26,7 @@ VOYAGE_RERANK_URL = "https://api.voyageai.com/v1/rerank"
 
 class Query(BaseModel):
     query: str
+    source : str
     max_tokens: int = 1000
     num_docs: int = 5
 
@@ -34,6 +35,10 @@ class AnswerResponse(BaseModel):
 
 def rerank_documents(query: str, documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Rerank documents using VoyageAI reranker."""
+    if not is_rerank_service_available():
+        print("Reranking service is not available. Using original document order.")
+        return documents
+
     try:
         # Extract text from documents
         doc_texts = [doc.get('text', '') for doc in documents]
@@ -84,10 +89,11 @@ def format_context(documents: List[Dict[str, Any]]) -> str:
         formatted_docs.append(f"Document {i} (Score: {doc.get('relevance_score', 'N/A')}):\n{doc.get('text', '')}")
     return "\n\n".join(formatted_docs)
 
-def generate_answer_openai(query: str, retrieved_docs: List[Dict[str, Any]], max_tokens: int = 1000) -> str:
+def generate_answer_openai(query: str, source: str,retrieved_docs: List[Dict[str, Any]], max_tokens: int = 1000) -> str:
     """Generate an answer using OpenAI model."""
     try:
         context = format_context(retrieved_docs)
+        print(source)
         
         response = client.chat.completions.create(
             messages=[
@@ -96,16 +102,14 @@ def generate_answer_openai(query: str, retrieved_docs: List[Dict[str, Any]], max
                     "content": """You are a precise and factual research assistant. Answer questions based solely on the provided context.
                     Important Instructions:
                     - Base your answer ONLY on the provided context documents
-                    - Give citation at the end of the response using filename and page-range 
                     - Use quotes when directly quoting text
-                    - Give citations like if the filepath is 'path': '/home/rdk/tech-meet-13/RACCOON/Agents/LATS/temp_rag_space/20241202_233458.txt then the document should be cited as 20241202_233458.txt and if in the metadat you find pages give page range like (35-36) in the end.
                     - If information isn't available in the context, state: "This information is not available in the provided documents."
                     - If you find conflicting information, point it out"""
 
                 },
                 {
                     "role": "user",
-                    "content": f"""Context:\n{context}\n\nQuestion: {query}\n\nProvide a well-structured answer with clear citations:"""
+                    "content": f"""Context:\n{context}\n\nQuestion: {query}\n\n This from {source} always add this.if its a url like https://bbcnews.com/ give it completely. If not a url then just mention the {source}  with relevant context from provided else dont add ANYTHING."""
                 }
             ],
             temperature=0.3,
@@ -118,7 +122,25 @@ def generate_answer_openai(query: str, retrieved_docs: List[Dict[str, Any]], max
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating answer with OpenAI: {str(e)}")
-
+def is_rerank_service_available() -> bool:
+    """Check if the VoyageAI reranking service is available."""
+    try:
+        headers = {
+            "Authorization": f"Bearer {VOYAGE_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "query": "test query",
+            "documents": ["test document"],
+            "model": "rerank-2",
+            "return_documents": True
+        }
+        
+        response = requests.post(VOYAGE_RERANK_URL, headers=headers, json=payload, timeout=5)
+        return response.status_code == 200
+    except Exception:
+        return False
 @app.post("/generate", response_model=AnswerResponse)
 async def generate(query_request: Query):
     """
@@ -134,7 +156,8 @@ async def generate(query_request: Query):
     # Generate answer using OpenAI with reranked documents
     answer = generate_answer_openai(
         query_request.query, 
-        reranked_docs, 
+        query_request.source, 
+        reranked_docs,
         query_request.max_tokens
     )
     end = time.time()
@@ -157,8 +180,8 @@ if __name__ == "__main__":
             return self.application
 
     options = {
-        'bind': '127.0.0.1:4005',
-        'workers': 6,
+        'bind': '0.0.0.0:4005',
+        'workers': 12,
         'worker_class': 'uvicorn.workers.UvicornWorker',
         'timeout': 120,
         'graceful_timeout': 60,
