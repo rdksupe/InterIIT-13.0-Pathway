@@ -121,7 +121,7 @@ async def mainBackend(query, websocket):
                 agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
                 agentsList.append(agent)
             
-            def executeComplexPipeline(agentsList):
+            async def executeComplexPipeline(agentsList):
                 smack = Smack(agentsList)
                 taskResultsDict = smack.executeSmack()
                 for task in taskResultsDict:
@@ -151,7 +151,7 @@ async def mainBackend(query, websocket):
                         resp = generate_chart(resp)
                         f.write(str(resp))
 
-            def generateAddnQuestions(addn_questions):
+            async def generateAddnQuestions(addn_questions):
                 final_questions = []
                 for question in addn_questions:
                     refinedQuestion = genQuestionComplex(question)
@@ -177,7 +177,7 @@ async def mainBackend(query, websocket):
             tools_list = [get_stock_data, web_search_simple, get_company_profile, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
             
             #Need to test this later
-            def executeSimplePipeline(query):
+            async def executeSimplePipeline(query):
                 if IS_RAG == True:
                     rag_context = ragAgent(query, key_dict[LLM], LLM, state = "concise")
                     resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
@@ -186,7 +186,7 @@ async def mainBackend(query, websocket):
                     return resp
 
                 else:
-                    def run_parallel():
+                    async def run_parallel():
                         with ThreadPoolExecutor() as executor:
                             # Define the tasks
                             future_resp_lats = executor.submit(conciseAns_vanilla_LATS, query, tools_list)
