@@ -20,7 +20,7 @@ from Agents.LATS.Solve_subquery import SolveSubQuery
 from Agents.conciseLatsAgent import conciseAns_vanilla_LATS
 from langchain_community.callbacks import get_openai_callback
 from langchain_openai import ChatOpenAI
-from GenerateQuestions import genQuestion
+from GenerateQuestions import genQuestionComplex, genQuestionSimple
 
 from Agents.LATS.NewTools import *
 import json
@@ -49,6 +49,7 @@ key_dict = {
     'OPENAI': OPENAI_API_KEY,
     'GEMINI': GOOGLE_API_KEY
 }
+api_key = key_dict[LLM]
 
 IS_RAG = False
 
@@ -58,7 +59,7 @@ with open("tickers.txt", "a") as f_ticker:
     f_ticker.write('')
 
 query = '''
-Evaluate the financial performance of BTG's key product lines in the last two years, highlighting any segments experiencing significant revenue decline or margin
+What would be the impacts between a hypothetical merger between Google and Microsoft
 '''
 
 guard_rails, reasonings = applyTopicalGuardails(query)
@@ -67,7 +68,7 @@ if guard_rails:
     query_type = classifierAgent(query, GOOGLE_API_KEY).lower()
     if query_type == "complex":
         print("RUNNING COMPLEX TASK PIPELINE")
-        api_key = key_dict[LLM]
+        
         plan = plannerAgent(query, api_key, LLM)
 
         #This is the dictionary for UI Graph Construction
@@ -125,38 +126,71 @@ if guard_rails:
         def generateAddnQuestions(addn_questions):
             final_questions = []
             for question in addn_questions:
-                refinedQuestion = genQuestion(question)
+                refinedQuestion = genQuestionComplex(question)
                 final_questions.append(question)
             return final_questions
 
+        resp = ''
+        additionalQuestions = []
+
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            future_one = executor.submit(executeComplexPipeline)
-            future_two = executor.submit(generateAddnQuestions)
+            future_one = executor.submit(executeComplexPipeline, agentsList)
+            future_two = executor.submit(generateAddnQuestions, addn_questions)
 
             resp = future_one.result()
             additionalQuestions = future_two.result()
+        
+        for q in additionalQuestions:
+            print(q)
 
 
         
     elif query_type == 'simple':
+        print("RUNNING SIMPLE TASK PIPELINE")
         tools_list = [get_stock_data, web_search_simple, get_company_profile, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
+        
         #Need to test this later
-        if IS_RAG == True:
-            rag_context = ragAgent(query, key_dict[LLM], LLM, state = "concise")
-            fin_resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
-
-        else:
-            def run_parallel():
-                with ThreadPoolExecutor() as executor:
-                    # Define the tasks
-                    future_resp_lats = executor.submit(conciseAns_vanilla_LATS, query, tools_list)
-                    future_resp = executor.submit(conciseAns_vanilla, query, key_dict[LLM], LLM, tools_list)
-                    # Get the results
-                    fin_resp = future_resp.result()['output']
-                    fin_resp_lats = future_resp_lats.result()
-                return fin_resp, fin_resp_lats
+        def executeSimplePipeline(query):
+            print("Executing Simple Pipeline")
+            if IS_RAG == True:
+                rag_context = ragAgent(query, key_dict[LLM], LLM, state = "concise")
+                resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
+                print("Executed Simple Pipeline")
+                return resp
+                
+            else:
+                def run_parallel():
+                    with ThreadPoolExecutor() as executor:
+                        # Define the tasks
+                        future_resp_lats = executor.submit(conciseAns_vanilla_LATS, query, tools_list)
+                        future_resp = executor.submit(conciseAns_vanilla, query, key_dict[LLM], LLM, tools_list)
+                        # Get the results
+                        resp = future_resp.result()['output']
+                        resp_lats = future_resp_lats.result()
+                    return resp, resp_lats
+                
+                resp, resp_lats = run_parallel()
+                resp = str(resp)
+                with open("conciseResponse.md", "w") as f1:
+                    f1.write(resp)
+                with open("conciseResponse_LATS.md", "w") as f2:
+                    f2.write(resp_lats)
+                    print("Executed Simple Pipeline")
+                return resp, resp_lats
             
-            fin_resp, fin_resp_lats = run_parallel()
+        resp = ""
+        additionalQuestions = []
+
+        with ThreadPoolExecutor() as executor:
+            future_one = executor.submit(executeSimplePipeline, query)
+            future_two = executor.submit(genQuestionSimple, query, api_key, LLM)
+            resp = future_one.result()
+            additionalQuestions = future_two.result().values()
+
+        for q in additionalQuestions:
+            print(q)
+        
+                
 else:
     resp = ''''''
     for key in reasonings:

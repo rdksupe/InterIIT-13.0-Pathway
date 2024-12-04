@@ -1,7 +1,0 @@
-The Nirbhaya Rape case had a significant psychological impact on the Indian stock market, primarily reflecting heightened public sentiment and socio-political factors rather than direct financial metrics. Following the incident in December 2012, the Indian stock market experienced volatility, with a notable decline in the Nifty 50 index shortly after the public outcry began. 
-
-- **Market Reaction**: The Nifty 50 index dropped approximately 2.5% in the days following the incident as investor sentiment turned negative due to concerns about law and order, stability, and governance issues. 
-- **Long-term Effects**: Over the longer term, the case prompted reforms in women's safety laws, which, while not directly impacting stock prices, contributed to a shift in consumer sentiment and investor confidence regarding India's socio-political environment.
-- **Legal Reforms**: The case led to the establishment of the Justice Verma Committee and subsequent amendments to laws regarding sexual crimes, which were intended to improve women's safety and address societal issues, indirectly influencing sectors such as insurance and safety products.
-
-Overall, the Nirbhaya case highlighted societal issues that resonated through public sentiment, reflected in stock market reactions, particularly in sectors sensitive to consumer confidence and safety perceptions.

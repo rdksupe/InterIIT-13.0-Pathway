@@ -3,12 +3,13 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 from openai import OpenAI
+import json
 
 load_dotenv('../.env')
 
 OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
 
-def genQuestion(main_query, sub_task, api_key, LLM):
+def genQuestionComplex(main_query, sub_task, api_key, LLM):
     system_prompt = f'''
     Rephrase the following User Prompt without dependance on all task_n or any document. Ensure that there is no phrase like "based on...":
 
@@ -38,3 +39,43 @@ def genQuestion(main_query, sub_task, api_key, LLM):
     response = completion.choices[0].message.content.strip()
 
     return response
+
+def genQuestionSimple(query, api_key, LLM):
+    print("Executing genQuestionSimple")
+    system_prompt = '''
+        Synthesize 5 Questions Related to the given query. 
+        Instructions to make the questions:
+        - The questions should be such that their answers can be detailed reports, this means that the answering those questions would require in depth research and reasoning
+        - The questions should be related to the following domains: finance, economics, law, markets, technology, politics, environment, consumers etc. Questions can also be multidisciplinary, combining facts from multiple domains.
+        - Try to make the questions as diverse as possible, but you must not deviate from the original query given. 
+        - The questions should be *at least* 20 words long
+        - Output the questions according to the schema:
+        {
+        "question1": "...",
+        "question2": "...",
+        "question3": "...",
+        "question4": "...",
+        "question5": "..."
+        }
+    '''
+
+    user_prompt = f'''
+    The User Prompt is
+
+    {query}
+    '''
+    
+    client = OpenAI(api_key=api_key)
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {
+                "role": "user",
+                "content": user_prompt
+            }
+        ]
+    )
+    response = completion.choices[0].message.content.strip()
+    print("Executed genQuestionSimple")
+    return json.loads(response)

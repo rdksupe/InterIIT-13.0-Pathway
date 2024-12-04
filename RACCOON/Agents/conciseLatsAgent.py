@@ -34,9 +34,11 @@ def drafterAgentSimplified(text, query):
     return response
 
 def conciseAns_vanilla_LATS(query, tools_list):
+    print("RUNNING conciseAns_vanilla_LATS")
     CombinedResearch = [SolveSubQuery(query,tools=tools_list)]
     CombinedResearch_json = json.dumps(CombinedResearch,indent=2)
     fin_resp = drafterAgentSimplified(CombinedResearch_json,query)
     with open("conciseResponse_LATS.md", "w") as f1:
         f1.write(fin_resp)
+    print("COMPLETED conciseAns_vanilla_LATS")
     return fin_resp

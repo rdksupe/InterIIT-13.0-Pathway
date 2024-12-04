@@ -24,3 +24,11 @@ ProcessingLogs.md
 response-withCharts.md
 tickers.txt
 pathway_rag/persistence_data
+RACCOON/usage_metadata-self_messages_fromReflection_content.txt
+RACCOON/tool_calls-self_messages_fromReflection_content.txt
+RACCOON/tickers.txt
+RACCOON/self_messages_fromReflection.txt
+RACCOON/response_metadata-self_messages_fromReflection_content.txt
+RACCOON/content-self_messages_fromReflection.txt
+RACCOON/Bad_Question.md
+RACCOON/additional_kwargs-self_messages_fromReflection.txt
