@@ -216,7 +216,7 @@ def plannerAgent(query,api_key =OPENAI_API_KEY, LLM="OPENAI"):
         )
 
         response = completion.choices[0].message.content.strip()'''
-        response = conversation_complex.run(f'''{prompt}''')
+        response = conversation_complex.predict(input = f'''{prompt}''')
         dic =  json.loads(clean(response.split("```")[-2].split("json")[1]))
 
 

@@ -52,7 +52,7 @@ def ragAgent(query, api_key, LLM, state):
         )
         response = completion.choices[0].message.content.strip()
         '''
-        response = conversation_complex.run(f'''{prompt}''')
+        response = conversation_complex.predict(input = f'''{prompt}''')
         
         dic =  dict(json.loads(clean(response.split("```")[-2].split("json")[1])))
         for p in dic:
@@ -83,7 +83,7 @@ def ragAgent(query, api_key, LLM, state):
         )
         fin_response = completion_2.choices[0].message.content.strip()'''
 
-        fin_response = conversation_complex.run(f'''{prompt_2}''')
+        fin_response = conversation_complex.predict(input = f'''{prompt_2}''')
 
         return fin_context, fin_response
         
