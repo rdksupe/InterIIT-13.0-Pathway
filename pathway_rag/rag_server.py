@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import time 
 import multiprocessing
 import gunicorn.app.base
-
+from typing import Optional
 app = FastAPI()
 load_dotenv('../.env')
 
@@ -26,7 +26,7 @@ VOYAGE_RERANK_URL = "https://api.voyageai.com/v1/rerank"
 
 class Query(BaseModel):
     query: str
-    source : str
+    source: Optional[str] = "Find the source from the chunk"
     max_tokens: int = 1000
     num_docs: int = 5
 
@@ -109,7 +109,7 @@ def generate_answer_openai(query: str, source: str,retrieved_docs: List[Dict[str
                 },
                 {
                     "role": "user",
-                    "content": f"""Context:\n{context}\n\nQuestion: {query}\n\n This from {source} always add this.if its a url like https://bbcnews.com/ give it completely. If not a url then just mention the {source}  with relevant context from provided else dont add ANYTHING."""
+                    "content": f"""Context:\n{context}\n\nQuestion: {query}\n\n  {source} .if its a url like https://bbcnews.com/ give it completely. If not a url then just mention the {source}  with relevant context from provided else dont add ANYTHING."""
                 }
             ],
             temperature=0.3,
