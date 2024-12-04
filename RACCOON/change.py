@@ -23,8 +23,8 @@ class MyHandler(FileSystemEventHandler):
             "response": f'Event type: {event.event_type} path: {event.src_path}'
         }
         print(f'event type: {event.event_type} path : {event.src_path}')
-        if(event.src_path == ".\ProcessLogs.md"):
-            print(f'Pizza lelo')
+        if(event.src_path == "./ProcessLogs.md"):
+            print(f'Running')
             with open("ProcessLogs.md", 'r') as file:
                 current_content = file.read()
 
