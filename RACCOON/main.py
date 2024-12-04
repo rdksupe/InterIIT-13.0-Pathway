@@ -34,41 +34,15 @@ from typing import Dict, List, Any
 from collections import defaultdict
 
 from makeGraphJSON import makeGraphJSON
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
 
 from TopicalGuardrails import applyTopicalGuardails
 from GenerateQuestions import genQuestionComplex, genQuestionSimple
-class  MyHandler(FileSystemEventHandler):
-    def __init__(self, websocket_connection) -> None:
-        super().__init__()
-        self.websocket = websocket_connection  # WebSocket connection passed here
-
-    async def on_modified(self, event):
-        # Printing the event type and path
-        print(f'Event type: {event.event_type} path: {event.src_path}')
-        
-        # Sending the event details over the WebSocket connection asynchronously
-        message = {
-            "type": "agents",
-            "response": f'Event type: {event.event_type} path: {event.src_path}'
-        }
-        
-        if self.websocket.open:
-            await self.websocket.send(json.dumps(message))
-
-    def  on_created(self,  event):
-         print(f'event type: {event.event_type} path : {event.src_path}')
-    def  on_deleted(self,  event):
-         print(f'event type: {event.event_type} path : {event.src_path}')
 
 set_verbose(True)
 now = time.time()
 
-query = '''
-hello
-'''
-async def mainBackend(query, websocket):
+
+async def mainBackend(query, websocket, rag):
     print("Running mainBackend, ", query)
     GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY_30')
     OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
@@ -81,7 +55,12 @@ async def mainBackend(query, websocket):
     api_key = key_dict[LLM]
 
 
-    IS_RAG = False
+    IS_RAG = rag
+
+    if IS_RAG == True:
+        print("RAG is ON")
+    else:
+        print("RAG is OFF")
 
     with open("ProcessLogs.md", "w") as f:
         f.write("")
@@ -149,14 +128,15 @@ async def mainBackend(query, websocket):
                     resp = generate_chart(resp)
                     f.write(str(resp))
 
-            final_questions = []
-            for question in addn_questions:
-                refinedQuestion = genQuestionComplex(query, question)
-                final_questions.append(question)
+            # final_questions = []
+            # for question in addn_questions:
+            #     refinedQuestion = genQuestionComplex(query, question)
+            #     final_questions.append(question)
 
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
-            await websocket.send(json.dumps({"type": "questions", "questions": final_questions[:3]}))
+            # await asyncio.sleep(1)
+            # await websocket.send(json.dumps({"type": "questions", "questions": final_questions[:3]}))
             
         elif query_type == 'simple':
             print("RUNNING SIMPLE TASK PIPELINE")
@@ -180,12 +160,13 @@ async def mainBackend(query, websocket):
                 )
                 
                 return (str(resp), str(additionalQuestions))
-            resp, additionalQuestions = await run_parallel(query)
+            # resp, additionalQuestions = await run_parallel(query)
+            resp = await executeSimplePipeline(query)
             #additionalQuestions = '\n'.join(additionalQuestions.values())
 
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
-            await websocket.send(json.dumps({"type": "questions", "questions": additionalQuestions[:3]}))
+            # await websocket.send(json.dumps({"type": "questions", "questions": additionalQuestions[:3]}))
     else:
         resp = ''''''
         for key in reasonings:
@@ -198,20 +179,20 @@ async def mainBackend(query, websocket):
         await websocket.send(json.dumps({"type": "response", "response": resp}))
 
 async def handle_connection(websocket):
-    #try:
-        # observer_thread = threading.Thread(target=start_observer,args=(websocket), daemon=True)
-        # observer_thread.start()
+    rag = True
     async for message in websocket:
         data = json.loads(message)
         if data['type'] == 'query':
             print(f"Received query: {data['query']}")
-            await mainBackend(data['query'], websocket)
-            # resp = str(fin_resp)
-            # await asyncio.sleep(1)
-            # await websocket.send(json.dumps({"type": "response", "response": resp}))
+            await mainBackend(data['query'], websocket, rag)
+
+        if data['type'] == 'toggleRag':
+            print(f"Received query: {data['query']}")
+            # await mainBackend(data['query'], websocket, rag)
+            rag = not rag
+
         if data['type'] == 'cred':
                 print(f"Received credentials: {data['formData']}")
-                        # Read the current .env file
                 env_file_path = '../.env'
                 with open(env_file_path, 'r') as fp:
                     env_content = fp.readlines()
@@ -241,44 +222,12 @@ async def handle_connection(websocket):
                         fp.write(f"{key}=\"{value}\"\n")
 
                 print(".env file has been updated.")
-    #except websockets.exceptions.ConnectionClosed:
-    #    print("Client connection closed")
-    #except Exception as e:
-    #    print(f"Error handling connection: {e}")
 
 async def main():
     print("WebSocket server starting on ws://0.0.0.0:8080")
     async with websockets.serve(handle_connection, "localhost", 8080):
         await asyncio.Future()  # run forever
 
-def start_observer(websocket):
-    event_handler = MyHandler(websocket)
-    observer = Observer()
-    observer.schedule(event_handler,  path='C:\\temp\\flask\\final\\tech-meet-13\\RACCOON\\LOG',  recursive=False)
-    observer.start()
-
-    try:
-        while  True:
-            time.sleep(1)
-            print("Running")
-    except  KeyboardInterrupt:
-        observer.stop()
-    observer.join()
-
-def run_observer_in_thread():
-    observer_thread = threading.Thread(target=start_observer, daemon=True)
-    observer_thread.start()
-    return observer_thread
-
-async def start():
-    # Run WebSocket server
-    websocket_task = asyncio.create_task(main())
-
-    # Run the observer in a separate thread
-    observer_thread = run_observer_in_thread()
-
-    # Wait for the WebSocket server to finish (this will run forever)
-    await websocket_task
 
 if __name__ == "__main__":
     try:
