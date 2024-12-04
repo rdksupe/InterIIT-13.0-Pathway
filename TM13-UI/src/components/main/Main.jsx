@@ -49,6 +49,7 @@ const Main = () => {
 	const agent = useRef(true);
 
 	const [markdownContent, setMarkdownContent] = useState('');
+	const [reccQs, setReccQs] = useState([])
 
 
 	const handleMarkdownChange = (e) => {
@@ -122,6 +123,7 @@ const Main = () => {
 		setResultData("")
 		setShowResults(true);
 		setLoading(true);
+		setDownloadData(false)
 		setRecentPrompt(input);
 		if (chatNo == 0)
 			setPrevPrompts(prev => [...prev, input]);
@@ -259,7 +261,6 @@ const Main = () => {
 			ws.onmessage = (event) => {
 				try {
 					const data = JSON.parse(event.data);
-
 					if (data.type === 'graph') {
 
 						const graph = JSON.parse(data.response);
@@ -271,6 +272,10 @@ const Main = () => {
 						onRender(data.response);
 						console.log(data.response);
 						setMarkdownContent(data.response);
+					}
+					else if (data.type === 'questions') {
+						console.log(data.questions);
+						setReccQs(data.questions);
 					}
 				} catch (error) {
 					console.error('Error parsing WebSocket message:', error);
@@ -421,11 +426,81 @@ const Main = () => {
 											)}
 										</div>
 									)}
+								{downloadData &&
+									<div className="result-data" ref={agentDataRef} style={{ overflow: 'auto' }}>
+										<img src={assets.download_icon} onClick={generatePDF} style={{ width: '20px', marginTop: '1vh', marginLeft: '7vh' }} />
+									</div>
+
+								}
+
+								{downloadData && <h1 className="result-data" style={{ marginBottom: '10px' }}>Recommended Questions</h1>}
+								<div className="result-data" ref={agentDataRef} style={{ display: 'flex', gap: '10px' }}>
+									{downloadData &&
+										<div
+											className="card"
+											style={{
+												minHeight: '10vh',
+												width: '33%',  // Allow each card to take up to 33% of the width
+												marginRight: '20px',
+												display: 'flex',  // Ensure the card uses flexbox
+												flexDirection: 'column',  // Align content vertically
+												justifyContent: 'center',  // Center the text vertically within the card
+												alignItems: 'center',  // Center text horizontally
+												overflow: 'hidden',  // Hide overflow if text exceeds the card's boundaries
+												//wordWrap: 'break-word',  // Break long words if needed to fit inside the card
+												textOverflow: 'ellipsis',  // Show ellipsis if the text is too long
+											}}
+											onClick={() => handleCardClick(reccQs[0])}
+										>
+											<p style={{ textAlign: "justify", margin: '0px 10px', padding: '10px' }}>{reccQs[0]}</p>
+										</div>
+									}
+
+									{downloadData &&
+										<div
+											className="card"
+											style={{
+												minHeight: '10vh',
+												width: '33%',  // Allow each card to take up to 33% of the width
+												marginRight: '20px',
+												display: 'flex',
+												flexDirection: 'column',
+												justifyContent: 'center',
+												alignItems: 'center',
+												overflow: 'hidden',  // Hide overflow if text exceeds the card's boundaries
+												//wordWrap: 'break-word',  // Break long words if needed to fit inside the card
+												textOverflow: 'ellipsis',  // Show ellipsis if the text is too long
+											}}
+											onClick={() => handleCardClick(reccQs[1])}
+										>
+											<p style={{ textAlign: "justify", margin: '0px 10px', padding: '10px' }}>{reccQs[1]}</p>
+										</div>
+									}
+
+									{downloadData &&
+										<div
+											className="card"
+											style={{
+												minHeight: '10vh',
+												width: '33%',  // Allow each card to take up to 33% of the width
+												display: 'flex',
+												flexDirection: 'column',
+												justifyContent: 'center',
+												alignItems: 'center',
+												overflow: 'hidden',  // Hide overflow if text exceeds the card's boundaries
+												wordWrap: 'break-word',  // Break long words if needed to fit inside the card
+												textOverflow: 'ellipsis',  // Show ellipsis if the text is too long
+											}}
+											onClick={() => handleCardClick(reccQs[2])}
+										>
+											<p style={{ textAlign: "justify", margin: '0px 10px', padding: '10px' }}>{reccQs[2]}</p>
+										</div>
+									}
+								</div>
+
 							</div>
-							{downloadData && (
-								<img src={assets.download_icon} onClick={generatePDF} style={{ width: '20px', marginTop: '1vh', marginLeft: '7vh' }}>
-								</img>
-							)}
+
+
 						</div>
 					)}
 				</div>
@@ -449,7 +524,7 @@ const Main = () => {
 								overflow: 'hidden', // Hide overflow to prevent scrollbars
 								fontSize: '16px', // Adjust font size as needed
 								borderRadius: '5px', // Rounded corners for style
-								overflowY: 'auto'
+								// overflowY: 'auto'
 							}}
 						/>
 						<div>
