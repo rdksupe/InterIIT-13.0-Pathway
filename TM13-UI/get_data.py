@@ -1,112 +1,101 @@
 import yfinance as yf
-import dotenv
+import requests
+import json
 import logging
 import os
-import json
-# import google.generativeai as genai
-# from langchain_huggingface import HuggingFaceEndpoint
-# from langchain.chains import LLMChain
-# from langchain.prompts import PromptTemplate
-# import json
 import re
-from openai import OpenAI
-client = OpenAI(api_key="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")
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+load_dotenv('../.env')
+api_gemini = os.getenv("GEMINI_API_KEY_30")
 
 def extract_and_convert_to_json(text):
-    # Using regex to find the company name and ticker symbol pattern
-    pattern = r'"company_name":\s*"([^"]+)",\s*"ticker_symbol":\s*"([^"]+)"'
+    """
+    Extract company names from text, get ticker symbols using `get_ticker`,
+    and fetch stock data. Save the data into a JSON file.
+    """
+    # Extract company names using Gemini (simulated as a placeholder here)
+    company_names = gemini_extract_companies(text)
     
-    # Find all matches for company data
-    matches = re.findall(pattern, text)
-    
-    # Prepare a list of dictionaries for the JSON structure
+    # Prepare the JSON structure
     companies = []
-    for match in matches:
-        start_date = '2023-05-01'
-        end_date = '2024-11-30'
-        company = {
-            "company_name": match[0],
-            "ticker_symbol": match[1],
-            "file_path": f"src/{match[0]}_stock_data.csv"
-        }
-        get_stock_data(match[1], start_date, end_date, company["file_path"])
-        companies.append(company)
+    start_date = '2023-05-01'
+    end_date = '2024-11-30'
+
+    for company_name in company_names:
+        ticker_symbol = get_ticker(company_name)
+        print(ticker_symbol)
+        if ticker_symbol:
+            file_path = f"src/{company_name.replace(' ', '_')}_stock_data.csv"
+            get_stock_data(ticker_symbol, start_date, end_date, file_path)
+            companies.append({
+                "company_name": company_name,
+                "ticker_symbol": ticker_symbol,
+                "file_path": file_path
+            })
     
-    # Create a valid JSON structure
+    # Save the data to a JSON file
     json_data = json.dumps(companies, indent=4)
-    
-    # Save it to a JSON file
     with open('companies.json', 'w') as f:
         f.write(json_data)
     print(json_data)
-    # Loop through each company
-    # for company in json_data:
-    #     ticker_symbol = company["ticker_symbol"]
-    #     company_name = company['company_name']
-        
-    #     # Call the get_stock_data function for the current company
-    #     start_date = '2023-05-01'
-    #     end_date = '2024-11-30'
-    #     output_file = f'src/{company_name}_stock_data.csv'
-    #     get_stock_data(ticker_symbol, start_date, end_date, output_file)
-    
 
+def gemini_extract_companies(query):
+    genai.configure(api_key=api_gemini)
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    message = f"""SYSTEM: you are a helpful AI assistant. you are given a query. your job is to carefully analyze the query, and extract the name of companies mentioned in the query\
+    Return the name of the companies in the format: company1|company2|company3.
+    Strictly follow this format. Do not return any other redundant text. Only return this answer in plaim text.
+    HUMAN: {query}"""
 
+    ai_msg = model.generate_content(message)
+    print(ai_msg.text)
+    company_names = ai_msg.text.split("|")
 
-logging.basicConfig(level=logging.INFO)
-def get_data(query : str):
+    company_names = [name.rstrip('\n') for name in company_names]
+    print(company_names)
+    # Simulated company names for demonstration
+    return company_names
 
-    message = f"""SYSTEM: You are a helpful AI assistant. You are being given a query. Your job is to extract the names of the company and their ticker symbols so that data from yfinance can be scrapped.
-    Return your answer in a JSON format in the following format:
-    [
-        [
-            "company_name": "Apple Inc.",
-            "ticker_symbol": "AAPL"
-        ]
-    ]
-    
-    Do not return any other redundant information. Only return the company name and the ticker symbol, as mentioned above. Do not give any code block. Only return plain text. Do not write json on the top. Give details for all comapnies mentioed in the query. Do not return any other information. Make sure the company name does not have any kinf of spaces in betweem.
-
+def get_ticker(company_name):
     """
+    Retrieve the ticker symbol for a company name using the Yahoo Finance API.
+    """
+    yfinance_url = "https://query2.finance.yahoo.com/v1/finance/search"
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+    params = {"q": company_name, "quotes_count": 1, "country": "United States"}
 
-    # repo_id = "meta-llama/Meta-Llama-3-8B-Instruct"
-    # llm = HuggingFaceEndpoint(repo_id = repo_id , temperature = 0.5)
-    # output = llm.invoke(message)
-    completion = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": message},
-                {
-                    "role": "user",
-                    "content": f"{query}"
-                }
-            ]
-        )
+    try:
+        res = requests.get(url=yfinance_url, params=params, headers={'User-Agent': user_agent})
+        res.raise_for_status()
+        data = res.json()
 
-    output = completion.choices[0].message.content.strip()
-    extract_and_convert_to_json(output)
+        if "quotes" in data and len(data["quotes"]) > 0:
+            return data["quotes"][0]["symbol"]
+        else:
+            logging.warning(f"No ticker found for {company_name}.")
+            return None
+    except Exception as e:
+        logging.error(f"Error fetching ticker for {company_name}: {e}")
+        return None
 
 def get_stock_data(ticker_symbol, start_date, end_date, output_file):
-    stock = yf.Ticker(ticker_symbol)
-    df = stock.history(start=start_date, end=end_date)
-    
-    df.to_csv(output_file)
-    return df
+    """
+    Fetch stock data for a given ticker and save it to a CSV file.
+    """
+    try:
+        stock = yf.Ticker(ticker_symbol)
+        df = stock.history(start=start_date, end=end_date)
+        if not df.empty:
+            df.to_csv(output_file)
+            logging.info(f"Stock data for {ticker_symbol} saved to {output_file}.")
+        else:
+            logging.warning(f"No stock data available for {ticker_symbol}.")
+    except Exception as e:
+        logging.error(f"Error fetching stock data for {ticker_symbol}: {e}")
 
-# query = "Give me a detailed report on the impacts of Alibaba acquiring eBay  . Would that be a reasonable acquisition? If so, what are the potential consequences of that company from a financial and consumer based perspective."
-# get_data(query)
 
-# # Read the companies.json file
-# with open('companies.json', 'r') as f:
-#     companies_data = json.load(f)
-
-# # Loop through each company
-# for company in companies_data:
-#     ticker_symbol = company['ticker_symbol']
-#     company_name = company['company_name']
-    
-#     # Call the get_stock_data function for the current company
-#     start_date = '2023-05-01'
-#     end_date = '2024-11-30'
-#     output_file = f'src/{company_name}_stock_data.csv'
-#     get_stock_data(ticker_symbol, start_date, end_date, output_file)
+# Example usage
+query = "Fetch the stock data for Apple, Microsoft, and Amazon."
+extract_and_convert_to_json(query)
