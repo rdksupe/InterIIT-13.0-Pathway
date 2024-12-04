@@ -9,9 +9,11 @@ from datetime import datetime
 load_dotenv('../.env')
 
 DATE_PROMPT = f"""Date and Time right now is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. You are now in the future at this date and time. All your answers which follow must obey this. Assume that your knowledge base cutoff is this date irrespective of anything
-                    Return "allowed" if the query does not relate to the allowed topics, or is beyond their scope.\
-                    Return 'allowed' if the query has anything to do with timeframe, real time information, web search etc.\
-                    EVEN IF THE INFORMATION IS BEYOND YOUR KNOWLEDGE BASE, RETURN 'allowed', because I do not want to know what is in your knowledge base and what is not.
+                    Return "True" if the query does not relate to the True topics, or is beyond their scope.\
+                    Return 'True' if the query has anything to do with timeframe, real time information, web search etc.\
+                    EVEN IF THE INFORMATION IS BEYOND YOUR KNOWLEDGE BASE, RETURN 'True', because I do not want to know what is in your knowledge base and what is not.\
+                    If you do not have enough information to classify, classify as 'True'.\
+                    If it does not correlate with any information, then return 'True'\
                     \n"""
 
 system_prompt = "You are a helpful assistant."
@@ -37,17 +39,17 @@ def topical_guardrail_1(user_request):
     messages = [
         {
             "role": "system",
-            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
-                            If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is True or not. 
+                            If the topic is True, say 'True' otherwise say 'False'.
 
-                            A question is not allowed if:
-                            It commands to give information about illegal activities. Questions like: Questiions like 'How to synthesize cocaine', 'From where to acquire an AK47 for civilian usage' is not allowed
+                            A question is not True if:
+                            It commands to give information about illegal activities. Questions like: Questiions like 'How to synthesize cocaine', 'From where to acquire an AK47 for civilian usage' is not True
 
-                            A question is ALLOWED if:
+                            A question is True if:
                             - it does not violate the guideline (even if it is not related to it)
-                            - It asks information about the legality of an illegal activity. For instance, questions like "Is it legal to synthesize cocaine for recreational purposes" is allowed because it asks a legitimate query about the legality of an activity.
+                            - It asks information about the legality of an illegal activity. For instance, questions like "Is it legal to synthesize cocaine for recreational purposes" is True because it asks a legitimate query about the legality of an activity.
 
-                            Also provide the reasoning. In response section, provide the classification into 'allowed' or 'not_allowed'
+                            Also provide the reasoning. In response section, provide the classification into 'True' or 'False'
                             Strictly answer in the following format:
 
                             {
@@ -68,18 +70,18 @@ def topical_guardrail_2(user_request):
     messages = [
         {
             "role": "system",
-            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
-                            If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is True or not. 
+                            If the topic is True, say 'True' otherwise say 'False'.
 
-                            A question is not allowed if:
+                            A question is not True if:
                             It offends a particular community on the basis of factors like nationality, race, gender, religion, sexual orientation, disability etc. For example: Questions like 'Explain why Blacks are inferior to Whites'
 
-                            A question is ALLOWED if:
+                            A question is True if:
                             - it does not violate the guideline (even if it is not related to it)
-                            - It asks about the history of the persecution of a community. For instace, questions like 'Give information about the history of abuse faced by Jews in Nazi Germany', 'Explain the history of Slavery of Black People by the British' are ALLOWED.
-                            - It's main goal is to understand stereotypes, history, exploitaion etc. For instance, questions like 'How are women discriminated in workspaces', 'In what ways can I prevent myself from getting Bullied in college?' are ALLOWED. 
+                            - It asks about the history of the persecution of a community. For instace, questions like 'Give information about the history of abuse faced by Jews in Nazi Germany', 'Explain the history of Slavery of Black People by the British' are True.
+                            - It's main goal is to understand stereotypes, history, exploitaion etc. For instance, questions like 'How are women discriminated in workspaces', 'In what ways can I prevent myself from getting Bullied in college?' are True. 
 
-                            Also provide the reasoning. In response section, provide the classification into 'allowed' or 'not_allowed'
+                            Also provide the reasoning. In response section, provide the classification into 'True' or 'False'
                             Strictly answer in the following format:
 
                             {
@@ -100,18 +102,18 @@ def topical_guardrail_3(user_request):
     messages = [
         {
             "role": "system",
-            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
-                            If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is True or not. 
+                            If the topic is True, say 'True' otherwise say 'False'.
 
-                            A question is not allowed if:
+                            A question is not True if:
                             It conforms to exteme stereotypes which can be taken as an offence by communities.
 
-                            A question is ALLOWED if:
+                            A question is True if:
                             - it does not violate the guideline (even if it is not related to it)
-                            - It asks about the history of the persecution of a community. For instace, questions like 'Give information about the history of abuse faced by Jews in Nazi Germany', 'Explain the history of Slavery of Black People by the British' are ALLOWED.
-                            - It's main goal is to understand stereotypes, history, exploitaion etc. For instance, questions like 'How are women discriminated in workspaces', 'In what ways can I prevent myself from getting Bullied in college?' are ALLOWED. 
+                            - It asks about the history of the persecution of a community. For instace, questions like 'Give information about the history of abuse faced by Jews in Nazi Germany', 'Explain the history of Slavery of Black People by the British' are True.
+                            - It's main goal is to understand stereotypes, history, exploitaion etc. For instance, questions like 'How are women discriminated in workspaces', 'In what ways can I prevent myself from getting Bullied in college?' are True. 
 
-                            Also provide the reasoning. In response section, provide the classification into 'allowed' or 'not_allowed'
+                            Also provide the reasoning. In response section, provide the classification into 'True' or 'False'
                             Strictly answer in the following format:
 
                             {
@@ -132,16 +134,16 @@ def topical_guardrail_4(user_request):
     messages = [
         {
             "role": "system",
-            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
-                            If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is True or not. 
+                            If the topic is True, say 'True' otherwise say 'False'.
 
-                            A question is not allowed if:
-                            - It does not make sense, for instance it is gibberish and has no coherent language structure attached to it. For example: Questions like 'srygkizufehaIFVyecb',  'Who Buy What No Bruh Golem Yes Yes Yes' etc are not allowed.
+                            A question is not True if:
+                            - It does not make sense, for instance it is gibberish and has no coherent language structure attached to it. For example: Questions like 'srygkizufehaIFVyecb',  'Who Buy What No Bruh Golem Yes Yes Yes' etc are not True.
 
-                            A question is allowed if:
+                            A question is True if:
                             - it does not violate the guideline (even if it is not related to it)
 
-                            Also provide the reasoning. In response section, provide the classification into 'allowed' or 'not_allowed'
+                            Also provide the reasoning. In response section, provide the classification into 'True' or 'False'
                             Strictly answer in the following format:
 
                             {
@@ -162,14 +164,14 @@ def topical_guardrail_5(user_request):
     messages = [
         {
             "role": "system",
-            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
-                            If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is True or not. 
+                            If the topic is True, say 'True' otherwise say 'False'.
 
-                            A question is not allowed if:
+                            A question is not True if:
                             - It contains extremely graphic and offensive language in a bad context, which can be taken as an offense by people, groups etc.
-                            A question is allowed if:
+                            A question is True if:
                             - it does not violate the guideline (even if it is not related to it)
-                            Also provide the reasoning. In response section, provide the classification into 'allowed' or 'not_allowed'
+                            Also provide the reasoning. In response section, provide the classification into 'True' or 'False'
                             Strictly answer in the following format:
 
                             {
@@ -207,7 +209,7 @@ def run_parallel_with_early_exit(query, *functions):
             result = json.loads(result)
             reasoning = result["reasoning"]
             result = result["response"]
-            if result == 'allowed':
+            if result == 'True':
                 result = True
             else:
                 print(func.__name__)
