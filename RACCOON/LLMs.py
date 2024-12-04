@@ -35,18 +35,18 @@ GPT4o_mini_GraphGen = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api
 
 GPT4o_mini_Complex = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_key, temperature=0.6, model_kwargs={"top_p": 0.7})
 
-buffer_memory_complex = ConversationBufferMemory(memory_key="chat_history_lines",return_messages=True, input_key="input")
+#buffer_memory_complex = ConversationBufferMemory(memory_key="chat_history_lines",return_messages=True, input_key="input")
 summary_memory_complex = ConversationSummaryMemory(llm=GPT4o_mini_Complex, input_key="input")
 
-combined_memory_complex = CombinedMemory(
+'''combined_memory_complex = CombinedMemory(
     memories=[
         buffer_memory_complex,
         summary_memory_complex
     ]
-)
+)'''
 
 
-_DEFAULT_TEMPLATE = """
+"""_DEFAULT_TEMPLATE = '''
 Summary of conversation:
 {history}
 Current conversation:
@@ -54,21 +54,21 @@ Current conversation:
 
 {input}
 AI:
-"""
+'''
 
 
 PROMPT = PromptTemplate(
     input_variables=["history", "input", "chat_history_lines"],
     template=_DEFAULT_TEMPLATE,
-)
-
+)"""
 
 conversation_complex = ConversationChain(
     llm=GPT4o_mini_Complex,
-    memory=combined_memory_complex,
-    verbose=True,
-    prompt=PROMPT
+    memory=summary_memory_complex,
+    verbose=True
 )
+
+
 
 
 #TopicalGuardrails

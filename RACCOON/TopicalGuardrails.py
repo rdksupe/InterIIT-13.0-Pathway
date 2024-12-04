@@ -5,7 +5,13 @@ import threading
 import time
 from dotenv import load_dotenv
 import json
+from datetime import datetime
 load_dotenv('../.env')
+
+DATE_PROMPT = f"""Date and Time right now is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. You are now in the future at this date and time. All your answers which follow must obey this. Assume that your knowledge base cutoff is this date irrespective of anything
+                    Return "allowed" if the query does not relate to the allowed topics, or is beyond their scope.
+                    Return 'allowed' if the query has anything to do with timeframe, real time information, web search etc.
+                    \n"""
 
 system_prompt = "You are a helpful assistant."
 
@@ -30,7 +36,7 @@ def topical_guardrail_1(user_request):
     messages = [
         {
             "role": "system",
-            "content": """Your role is to assess whether the user question is allowed or not. 
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
                             If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
 
                             A question is not allowed if:
@@ -61,7 +67,7 @@ def topical_guardrail_2(user_request):
     messages = [
         {
             "role": "system",
-            "content": """Your role is to assess whether the user question is allowed or not. 
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
                             If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
 
                             A question is not allowed if:
@@ -93,7 +99,7 @@ def topical_guardrail_3(user_request):
     messages = [
         {
             "role": "system",
-            "content": """Your role is to assess whether the user question is allowed or not. 
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
                             If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
 
                             A question is not allowed if:
@@ -125,7 +131,7 @@ def topical_guardrail_4(user_request):
     messages = [
         {
             "role": "system",
-            "content": """Your role is to assess whether the user question is allowed or not. 
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
                             If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
 
                             A question is not allowed if:
@@ -155,7 +161,7 @@ def topical_guardrail_5(user_request):
     messages = [
         {
             "role": "system",
-            "content": """Your role is to assess whether the user question is allowed or not. 
+            "content": DATE_PROMPT+"""Your role is to assess whether the user question is allowed or not. 
                             If the topic is allowed, say 'allowed' otherwise say 'not_allowed'.
 
                             A question is not allowed if:

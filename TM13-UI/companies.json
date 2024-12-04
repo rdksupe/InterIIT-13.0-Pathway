@@ -1,12 +1,7 @@
 [
     {
-        "company_name": "Aramco",
-        "ticker_symbol": "2222.SR",
-        "file_path": "src/Aramco_stock_data.csv"
-    },
-    {
-        "company_name": "Lukoil",
-        "ticker_symbol": "LKOH.ME",
-        "file_path": "src/Lukoil_stock_data.csv"
+        "company_name": "AppleInc.",
+        "ticker_symbol": "AAPL",
+        "file_path": "src/AppleInc._stock_data.csv"
     }
 ]

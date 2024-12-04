@@ -92,7 +92,7 @@ def drafterAgent_vanilla(query, text, api_key, LLM):
         response = model.generate_content(system_prompt+user_prompt).text
         
     elif LLM == "OPENAI":
-        response = conversation_complex.run(f'''{system_prompt}\n\n+{user_prompt}''')
+        response = conversation_complex.predict(input = f'''{system_prompt}\n\n+{user_prompt}''')
         '''client = OpenAI(api_key=api_key)
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -170,7 +170,7 @@ def drafterAgent_rag(query,rag_context, text, api_key, LLM):
         response = model.generate_content(system_prompt+user_prompt).text
         
     elif LLM == "OPENAI":
-        response = conversation_complex.run(f'''{system_prompt}\n\n+{user_prompt}''')
+        response = conversation_complex.predict(input = f'''{system_prompt}\n\n+{user_prompt}''')
         '''client = OpenAI(api_key=OPENAI_API_KEY)
         completion = client.chat.completions.create(
             model="gpt-4o-mini",

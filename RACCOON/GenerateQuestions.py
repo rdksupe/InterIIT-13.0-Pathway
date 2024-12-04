@@ -41,7 +41,7 @@ def genQuestionComplex(main_query, sub_task):
     )
     response = completion.choices[0].message.content.strip()'''
 
-    response = conversation_complex.run(f'''{prompt}''')
+    response = conversation_complex.predict(input = f'''{prompt}''')
 
     return response
 
@@ -71,7 +71,7 @@ async def genQuestionSimple(query):
     '''
 
     prompt = f'''{system_prompt}\n\n {user_prompt}'''
-    response = conversation_complex.run(f'''{prompt}''')
+    response = conversation_complex.predict(input = f'''{prompt}''')
     print(response)
     
     '''client = OpenAI(api_key=api_key)
@@ -87,4 +87,4 @@ async def genQuestionSimple(query):
     )
     response = completion.choices[0].message.content.strip()'''
     print("Executed genQuestionSimple")
-    return '\n'.join(json.loads(response).values())
+    return json.loads(response).values()

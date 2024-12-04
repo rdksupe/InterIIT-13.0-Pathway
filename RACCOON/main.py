@@ -66,7 +66,7 @@ set_verbose(True)
 now = time.time()
 
 query = '''
-Evaluate the financial performance of BTG's key product lines in the last two years, highlighting any segments experiencing significant revenue decline or margin
+hello
 '''
 async def mainBackend(query, websocket):
     print("Running mainBackend, ", query)
@@ -156,7 +156,7 @@ async def mainBackend(query, websocket):
 
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
-            await websocket.send(json.dumps({"type": "questions", "response": '\n'.join(final_questions)}))
+            await websocket.send(json.dumps({"type": "questions", "response": final_questions[:3]}))
             
         elif query_type == 'simple':
             print("RUNNING SIMPLE TASK PIPELINE")
@@ -185,7 +185,7 @@ async def mainBackend(query, websocket):
 
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
-            await websocket.send(json.dumps({"type": "questions", "response": additionalQuestions}))
+            await websocket.send(json.dumps({"type": "questions", "response": additionalQuestions[:3]}))
     else:
         resp = ''''''
         for key in reasonings:

@@ -22,7 +22,7 @@ client = OpenAI(api_key=api_key)
 
 # Add VoyageAI configuration
 VOYAGE_API_KEY = os.getenv("VOYAGE_API_KEY")
-VOYAGE_RERANK_URL = "https://ap.voyageai.com/v1/rerank"
+VOYAGE_RERANK_URL = "https://api.voyageai.com/v1/rerank"
 
 class Query(BaseModel):
     query: str
