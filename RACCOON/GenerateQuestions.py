@@ -10,7 +10,7 @@ load_dotenv('../.env')
 
 OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
 
-def genQuestionComplex(main_query, sub_task, api_key, LLM):
+def genQuestionComplex(main_query, sub_task):
     system_prompt = f'''
     Rephrase the following User Prompt without dependance on all task_n or any document. Ensure that there is no phrase like "based on...":
 
@@ -45,7 +45,7 @@ def genQuestionComplex(main_query, sub_task, api_key, LLM):
 
     return response
 
-def genQuestionSimple(query, api_key, LLM):
+def genQuestionSimple(query):
     print("Executing genQuestionSimple")
     system_prompt = '''
         Synthesize 5 Questions Related to the given query. 
