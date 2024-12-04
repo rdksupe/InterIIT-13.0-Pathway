@@ -7,6 +7,7 @@ const ContextProvider = (props) => {
 	const [input, setInput] = useState("");
 	const [recentPrompt, setRecentPrompt] = useState("");
 	const [prevPrompts, setPrevPrompts] = useState([]);
+	const [prevResults, setPrevResults] = useState([]);  // Store responses for previous prompts
 	const [showResults, setShowResults] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [resultData, setResultData] = useState("");
@@ -16,61 +17,19 @@ const ContextProvider = (props) => {
 			setResultData((prev) => prev + nextWord);
 		}, 10 * index);
 	};
-    const newChat = () =>{
+    
+    const newChat = () => {
         setLoading(false);
-        setShowResults(false)
+        setShowResults(false);
+        setInput("");
+        setResultData("");  // Clear the results when starting a new chat
     }
-
-	const onSent = async (prompt, isAgent) => {
-		setResultData("");
-		setLoading(true);
-		setShowResults(true);
-        let response;
-		if(isAgent === undefined){
-			if(prompt !== undefined){
-				response = await runChat(prompt);
-				setRecentPrompt(prompt)
-			}else{
-				setPrevPrompts(prev=>[...prev,input]);
-				setRecentPrompt(input);
-				response=await runChat(input);
-			}
-		}
-		
-		try {
-			
-			
-			let responseArray = response.split("**");
-            let newResponse = "";
-			for (let i = 0; i < responseArray.length; i++) {
-				if (i === 0 || i % 2 !== 1) {
-					newResponse += responseArray[i];
-				} else {
-					newResponse += "<b>" + responseArray[i] + "</b>";
-				}
-			}
-			let newResponse2 = newResponse.split("*").join("<br/>");
-			let newResponseArray = newResponse2.split("");
-			for (let i = 0; i < newResponseArray.length; i++) {
-				const nextWord = newResponseArray[i];
-				delayPara(i, nextWord + "");
-			}
-		} catch (error) {
-			console.error("Error while running chat:", error);
-			// Handle error appropriately
-		} finally {
-			setLoading(false);
-			setInput("");
-		}
-	};
 
 	const onRender = async (data) => {
 		setResultData("");
         let response = data;
 		
 		try {
-			
-			
 			let responseArray = response.split("**");
             let newResponse = "";
 			for (let i = 0; i < responseArray.length; i++) {
@@ -95,13 +54,19 @@ const ContextProvider = (props) => {
 		}
 	};
 
+	const loadPreviousResponse = (index) => {
+		// Set the result data from previous results
+		setResultData(prevResults[index]);
+		setShowResults(true); // Ensure the result is displayed
+	};
+
 	const contextValue = {
 		prevPrompts,
 		setPrevPrompts,
-		onSent,
+		prevResults,
+		setPrevResults,
 		setRecentPrompt,
 		setShowResults,
-		setRecentPrompt,
 		setResultData,
 		recentPrompt,
 		input,
@@ -112,6 +77,7 @@ const ContextProvider = (props) => {
 		loading,
 		resultData,
 		newChat,
+		loadPreviousResponse,  // Add this function to load previous response
 	};
 
 	return (

@@ -15,6 +15,7 @@ const Main = () => {
 	const {
 		onSent,
 		onRender,
+		newChat,
 		recentPrompt,
 		showResults,
 		setRecentPrompt,
@@ -33,12 +34,17 @@ const Main = () => {
 		setDownloadData,
 		socket,
 		setSocket,
+		prevPrompts,
+		setPrevPrompts,
+		chatNo,
+		setChatNo
 	} = useContext(Context);
 	const [socket1, setSocket1] = useState(null);
 
 	const resultDataRef = useRef(null); // Reference to the result-data container for auto scrolling
 
 	const [markdownContent, setMarkdownContent] = useState('');
+	const [selectedChat, setSelectedChat] = useState(null); // State to track selected chat
 
 
 	const handleMarkdownChange = (e) => {
@@ -102,9 +108,15 @@ const Main = () => {
 	};
 
 	const handleClick = () => {
+		setInput("");
+		setResultData("")
 		setShowResults(true);
 		setLoading(true);
 		setRecentPrompt(input);
+		if(chatNo == 0)
+			setPrevPrompts(prev=>[...prev,input]);
+		setChatNo(chatNo+1);
+		
 		let query = input;
 		if (socket && socket.readyState === WebSocket.OPEN) {
 			socket.send(JSON.stringify({ type: 'query', query }));
@@ -119,7 +131,7 @@ const Main = () => {
 			});
 		
 			console.log('Query sent successfully!');
-			setLoading(false);
+
 		  } catch (error) {
 			console.error('Error sending query to backend:', error);
 			setLoading(false);
@@ -169,6 +181,8 @@ const Main = () => {
 				if (data.type === 'agents') {
 					console.log("agents data", data);
 					onRender(data.response);
+					setRecentPrompt(prompt)
+					setPrevResults(prev=>[...prev,data.response]);
 					// console.log(data.response);
 					setMarkdownContent(data.response);
 				}
@@ -300,6 +314,7 @@ const Main = () => {
 								<p>{recentPrompt}</p>
 							</div>
 							<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto' }}>
+								
 								<img src={assets.pway_icon} className="pway-res" alt="" />
 								{loading ? (
 									<div className="loader">
@@ -336,12 +351,6 @@ const Main = () => {
 							onChange={(e) => setInput(e.target.value)}
 							value={input}
 							placeholder="Enter the Prompt Here"
-							// onKeyDown={(e) => {
-							// 	if (e.key === 'Enter') {
-							// 		e.preventDefault();
-							// 		handleClick();
-							// 	}
-							// }}
 							rows={1} // Start with 1 row
 							style={{
 								position: 'relative',
