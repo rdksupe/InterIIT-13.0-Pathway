@@ -25,6 +25,7 @@ from langchain_openai import ChatOpenAI
 load_dotenv('../../.env')
 
 def conciseAns_vanilla(query, api_key, LLM, tools_list):
+    print("RUNNING conciseAns_vanilla")
     os.environ["OPENAI_API_KEY"] = api_key
     finalQuery = f'''
         Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses
@@ -52,7 +53,7 @@ def conciseAns_vanilla(query, api_key, LLM, tools_list):
     )
     with open("conciseResponse.md", "w") as f:
         f.write(response['output'])
-
+    print("COMPLETED conciseAns_vanilla")
     return response
 
 

@@ -38,6 +38,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 from TopicalGuardrails import applyTopicalGuardails
+from GenerateQuestions import genQuestionComplex, genQuestionSimple
 
 class  MyHandler(FileSystemEventHandler):
 
@@ -75,11 +76,12 @@ async def mainBackend(query, websocket):
     OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
     os.makedirs('./output', exist_ok=True)
     LLM = 'OPENAI'
-
     key_dict = {
         'OPENAI': OPENAI_API_KEY,
         'GEMINI': GOOGLE_API_KEY
     }
+    api_key = key_dict[LLM]
+
 
     IS_RAG = False
 
@@ -93,7 +95,6 @@ async def mainBackend(query, websocket):
         query_type = classifierAgent(query, GOOGLE_API_KEY).lower()
         if query_type == "complex":
             print("RUNNING COMPLEX TASK PIPELINE")
-            api_key = key_dict[LLM]
             plan = plannerAgent(query, api_key, LLM)
 
             #This is the dictionary for UI Graph Construction
@@ -155,7 +156,7 @@ async def mainBackend(query, websocket):
             def generateAddnQuestions(addn_questions):
                 final_questions = []
                 for question in addn_questions:
-                    refinedQuestion = genQuestion(question)
+                    refinedQuestion = genQuestionComplex(question)
                     final_questions.append(question)
                 return final_questions
 
@@ -163,8 +164,8 @@ async def mainBackend(query, websocket):
             additionalQuestions = []
 
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                future_one = executor.submit(executeComplexPipeline)
-                future_two = executor.submit(generateAddnQuestions)
+                future_one = executor.submit(executeComplexPipeline, agentsList)
+                future_two = executor.submit(generateAddnQuestions, addn_questions)
 
                 resp = future_one.result()
                 additionalQuestions = future_two.result()
@@ -178,28 +179,40 @@ async def mainBackend(query, websocket):
             tools_list = [get_stock_data, web_search_simple, get_company_profile, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
             
             #Need to test this later
-            if IS_RAG == True:
-                rag_context = ragAgent(query, key_dict[LLM], LLM, state = "concise")
-                resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
-                await asyncio.sleep(1)
-                await websocket.send(json.dumps({"type": "response", "response": resp}))
+            def executeSimplePipeline(query):
+                if IS_RAG == True:
+                    rag_context = ragAgent(query, key_dict[LLM], LLM, state = "concise")
+                    resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
+                    await asyncio.sleep(1)
+                    await websocket.send(json.dumps({"type": "response", "response": resp}))
+                    return resp
 
-            else:
-                def run_parallel():
-                    with ThreadPoolExecutor() as executor:
-                        # Define the tasks
-                        # future_resp_lats = executor.submit(conciseAns_vanilla_LATS, query, tools_list)
-                        future_resp = executor.submit(conciseAns_vanilla, query, key_dict[LLM], LLM, tools_list)
-                        # Get the results
-                        resp = future_resp.result()['output']
-                        # fin_resp_lats = future_resp_lats.result()
-                        fin_resp_lats = ''
-                    return resp, fin_resp_lats
+                else:
+                    def run_parallel():
+                        with ThreadPoolExecutor() as executor:
+                            # Define the tasks
+                            future_resp_lats = executor.submit(conciseAns_vanilla_LATS, query, tools_list)
+                            future_resp = executor.submit(conciseAns_vanilla, query, key_dict[LLM], LLM, tools_list)
+                            # Get the results
+                            resp = future_resp.result()['output']
+                            resp_lats = future_resp_lats.result()
+                        return resp, resp_lats
+                    
+                    resp, resp_lats = run_parallel()
+                    resp = str(resp)
+
+                    return resp, resp_lats
                 
-                resp, fin_resp_lats = run_parallel()
-                resp = str(resp)
-                await asyncio.sleep(1)
-                await websocket.send(json.dumps({"type": "response", "response": resp}))
+            with ThreadPoolExecutor() as executor:
+                future_one = executor.submit(executeSimplePipeline, query)
+                future_two = executor.submit(genQuestionSimple, query, api_key, LLM)
+
+                resp = future_one.result()
+                additionalQuestions = future_two.result().values()
+                
+            await asyncio.sleep(1)
+            await websocket.send(json.dumps({"type": "response", "response": resp}))
+            await websocket.send(json.dumps({"type": "questions", "response": additionalQuestions}))
     else:
         resp = ''''''
         for key in reasonings:
@@ -293,8 +306,6 @@ async def start():
 
     # Wait for the WebSocket server to finish (this will run forever)
     await websocket_task
-
-
 
 if __name__ == "__main__":
     try:
