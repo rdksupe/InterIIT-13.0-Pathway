@@ -3,8 +3,12 @@ from flask_cors import CORS
 from get_data import get_stock_data,get_data,extract_and_convert_to_json
 from convert import convert
 import os
+import json
 app = Flask(__name__)
 CORS(app)  
+
+with open('TM13-UI/companies.json', 'w') as file:
+    json.dump([], file)
 
 @app.route('/query', methods=['POST'])
 def handle_query():
@@ -14,7 +18,7 @@ def handle_query():
 
     # Log or process the received query
     print(f"Received query: {query}")
-    # get_data(query)
+    get_data(query)
     return '',204
 
 

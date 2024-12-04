@@ -4,6 +4,9 @@ websockets
 asyncio
 watchdog
 langgraph
+flask
+flask_cors
+markdown_pdf
 matplotlib
 python-dotenv
 numpy
@@ -218,3 +221,4 @@ yfinance==0.2.49
 langchain-google-community
 google-auth-oauthlib
 praw
+watchdog

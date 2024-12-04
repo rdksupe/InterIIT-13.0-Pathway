@@ -7,7 +7,7 @@ import Viewer from "../file/fileSystem";
 
 const Sidebar = () => {
 	const [extended, setExtended] = useState(true);
-	const { onSent, prevPrompts, setRecentPrompt, newChat, socket, setSocket } = useContext(Context);
+	const { prevPrompts, prevResults, setRecentPrompt, newChat, socket, setSocket } = useContext(Context);
 	const [isPopupVisible, setPopupVisible] = useState(false);
 	const [isFilePopupVisible, setFilePopupVisible] = useState(false);
 
@@ -23,7 +23,7 @@ const Sidebar = () => {
 		JINA_API_KEY_30: '',
 		INDIAN_KANOON_API_KEY_30: '',
 		jsonFile: null
-	  });
+	});
 
 	// Function to close the popup
 	const closePopup = () => {
@@ -41,8 +41,10 @@ const Sidebar = () => {
 	};
 
 	const loadPreviousPrompt = async (prompt) => {
+		alert(result)
 		setRecentPrompt(prompt);
-		await onSent(prompt);
+	
+		await onRender(prompt);
 	};
 
 
@@ -57,35 +59,35 @@ const Sidebar = () => {
 
 	const handleFileChange = (e) => {
 		const { name, files } = e.target;
-	  
+
 		// Ensure the file exists and is of type JSON
 		if (files && files[0] && files[0].type === 'application/json') {
-		  const file = files[0];
-	  
-		  // Create a FileReader to read the file
-		  const reader = new FileReader();
-	  
-		  reader.onload = () => {
-			try {
-			  // Parse the JSON data from the file
-			  const parsedData = JSON.parse(reader.result);
-	  
-			  // Set the parsed data into the formData
-			  setFormData((prevData) => ({
-				...prevData,
-				[name]: parsedData // Store parsed JSON data
-			  }));
-			} catch (error) {
-			  console.error('Error parsing JSON:', error);
-			}
-		  };
-	  
-		  // Read the file as text (string)
-		  reader.readAsText(file);
+			const file = files[0];
+
+			// Create a FileReader to read the file
+			const reader = new FileReader();
+
+			reader.onload = () => {
+				try {
+					// Parse the JSON data from the file
+					const parsedData = JSON.parse(reader.result);
+
+					// Set the parsed data into the formData
+					setFormData((prevData) => ({
+						...prevData,
+						[name]: parsedData // Store parsed JSON data
+					}));
+				} catch (error) {
+					console.error('Error parsing JSON:', error);
+				}
+			};
+
+			// Read the file as text (string)
+			reader.readAsText(file);
 		} else {
-		  console.error('Please upload a valid JSON file');
+			console.error('Please upload a valid JSON file');
 		}
-	  };
+	};
 
 	// Handle form submission
 	const handleSubmit = (e) => {
@@ -129,14 +131,13 @@ const Sidebar = () => {
 					<p className="recent-title">Recent</p>
 					{prevPrompts.slice().reverse().map((item, index) => {
 						return (
-							<div onClick={() => {
-								loadPreviousPrompt(item)
-							}} className="recent-entry">
+							<div key={index} onClick={() => loadPreviousPrompt(item)} className="recent-entry">
 								<img src={assets.message_icon} alt="" />
 								<p>{item.slice(0, 10)}...</p>
 							</div>
 						);
 					})}
+
 				</div>
 				<div className="bottom">
 					<div className="bottom-item recent-entry" onClick={openFilePopup}>
@@ -163,114 +164,114 @@ const Sidebar = () => {
 						<form className="custom-form">
 							<div>
 
-							
-							<label htmlFor="GoogleDrive">Google Drive (Credentials.json and ObjectID)</label>
-							<input
-								type=""
-								id="GoogleDrive_ObjectId"
-								name="GoogleDrive_ObjectId"
-								value={formData.GoogleDrive_ObjectId}
-								onChange={handleChange}
-								placeholder="Object ID for Google Drive Folder"
 
-							/>
-							<input
-								type="file"
-								id="jsonFile"
-								name="jsonFile"
-								onChange={handleFileChange}
-								accept="application/json"
+								<label htmlFor="GoogleDrive">Google Drive (Credentials.json and ObjectID)</label>
+								<input
+									type=""
+									id="GoogleDrive_ObjectId"
+									name="GoogleDrive_ObjectId"
+									value={formData.GoogleDrive_ObjectId}
+									onChange={handleChange}
+									placeholder="Object ID for Google Drive Folder"
 
-							/>
-							<label htmlFor="GEMINI_API_KEY_30">Gemini API Key</label>
-							<input
-							type="text"
-							id="GEMINI_API_KEY_30"
-							name="GEMINI_API_KEY_30"
-							value={formData.GEMINI_API_KEY_30}
-							onChange={handleChange}
-							placeholder="API key for Gemini"
-							/>
+								/>
+								<input
+									type="file"
+									id="jsonFile"
+									name="jsonFile"
+									onChange={handleFileChange}
+									accept="application/json"
 
-							<label htmlFor="OPEN_AI_API_KEY_30">OpenAI API Key</label>
-							<input
-							type="text"
-							id="OPEN_AI_API_KEY_30"
-							name="OPEN_AI_API_KEY_30"
-							value={formData.OPEN_AI_API_KEY_30}
-							onChange={handleChange}
-							placeholder="API key for OpenAI"
-							/>
+								/>
+								<label htmlFor="GEMINI_API_KEY_30">Gemini API Key</label>
+								<input
+									type="text"
+									id="GEMINI_API_KEY_30"
+									name="GEMINI_API_KEY_30"
+									value={formData.GEMINI_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Gemini"
+								/>
 
-							<label htmlFor="FINNHUB_API_KEY_30">Finnhub API Key</label>
-							<input
-							type="text"
-							id="FINNHUB_API_KEY_30"
-							name="FINNHUB_API_KEY_30"
-							value={formData.FINNHUB_API_KEY_30}
-							onChange={handleChange}
-							placeholder="API key for Finnhub"
-							/>
+								<label htmlFor="OPEN_AI_API_KEY_30">OpenAI API Key</label>
+								<input
+									type="text"
+									id="OPEN_AI_API_KEY_30"
+									name="OPEN_AI_API_KEY_30"
+									value={formData.OPEN_AI_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for OpenAI"
+								/>
 
-							<label htmlFor="GOOGLE_CSE_ID_30">Google Custom Search Engine ID</label>
-							<input
-							type="text"
-							id="GOOGLE_CSE_ID_30"
-							name="GOOGLE_CSE_ID_30"
-							value={formData.GOOGLE_CSE_ID_30}
-							onChange={handleChange}
-							placeholder="CSE ID for Google Custom Search"
-							/>
+								<label htmlFor="FINNHUB_API_KEY_30">Finnhub API Key</label>
+								<input
+									type="text"
+									id="FINNHUB_API_KEY_30"
+									name="FINNHUB_API_KEY_30"
+									value={formData.FINNHUB_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Finnhub"
+								/>
 
-							<label htmlFor="TAVILY_API_KEY_30">Tavily API Key</label>
-							<input
-							type="text"
-							id="TAVILY_API_KEY_30"
-							name="TAVILY_API_KEY_30"
-							value={formData.TAVILY_API_KEY_30}
-							onChange={handleChange}
-							placeholder="API key for Tavily"
-							/>
+								<label htmlFor="GOOGLE_CSE_ID_30">Google Custom Search Engine ID</label>
+								<input
+									type="text"
+									id="GOOGLE_CSE_ID_30"
+									name="GOOGLE_CSE_ID_30"
+									value={formData.GOOGLE_CSE_ID_30}
+									onChange={handleChange}
+									placeholder="CSE ID for Google Custom Search"
+								/>
 
-							<label htmlFor="GOOGLE_API_KEY_30">Google API Key</label>
-							<input
-							type="text"
-							id="GOOGLE_API_KEY_30"
-							name="GOOGLE_API_KEY_30"
-							value={formData.GOOGLE_API_KEY_30}
-							onChange={handleChange}
-							placeholder="API key for Google"
-							/>
+								<label htmlFor="TAVILY_API_KEY_30">Tavily API Key</label>
+								<input
+									type="text"
+									id="TAVILY_API_KEY_30"
+									name="TAVILY_API_KEY_30"
+									value={formData.TAVILY_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Tavily"
+								/>
 
-							<label htmlFor="JINA_API_KEY_30">Jina API Key</label>
-							<input
-							type="text"
-							id="JINA_API_KEY_30"
-							name="JINA_API_KEY_30"
-							value={formData.JINA_API_KEY_30}
-							onChange={handleChange}
-							placeholder="API key for Jina"
-							/>
+								<label htmlFor="GOOGLE_API_KEY_30">Google API Key</label>
+								<input
+									type="text"
+									id="GOOGLE_API_KEY_30"
+									name="GOOGLE_API_KEY_30"
+									value={formData.GOOGLE_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Google"
+								/>
 
-							<label htmlFor="INDIAN_KANOON_API_KEY_30">Indian Kanoon API Key</label>
-							<input
-							type="text"
-							id="INDIAN_KANOON_API_KEY_30"
-							name="INDIAN_KANOON_API_KEY_30"
-							value={formData.INDIAN_KANOON_API_KEY_30}
-							onChange={handleChange}
-							placeholder="API key for Indian Kanoon"
-							/>
-							<label htmlFor="File">File Link</label>
-							<input
-								type="text"
-								id="File"
-								name="File_Link"
-								value={formData.File_Link}
-								onChange={handleChange}
-								placeholder="File Link"
+								<label htmlFor="JINA_API_KEY_30">Jina API Key</label>
+								<input
+									type="text"
+									id="JINA_API_KEY_30"
+									name="JINA_API_KEY_30"
+									value={formData.JINA_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Jina"
+								/>
 
-							/>
+								<label htmlFor="INDIAN_KANOON_API_KEY_30">Indian Kanoon API Key</label>
+								<input
+									type="text"
+									id="INDIAN_KANOON_API_KEY_30"
+									name="INDIAN_KANOON_API_KEY_30"
+									value={formData.INDIAN_KANOON_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Indian Kanoon"
+								/>
+								<label htmlFor="File">File Link</label>
+								<input
+									type="text"
+									id="File"
+									name="File_Link"
+									value={formData.File_Link}
+									onChange={handleChange}
+									placeholder="File Link"
+
+								/>
 							</div>
 
 							<button type="submit" onClick={handleSubmit}>Submit</button>

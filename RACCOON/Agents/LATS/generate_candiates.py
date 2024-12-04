@@ -11,7 +11,6 @@ from langchain_core.output_parsers.openai_tools import (
     JsonOutputToolsParser,
     PydanticToolsParser,
 )
-from Agents.LATS.utils import llm_to_check
 
 from collections import defaultdict
 from langgraph.prebuilt import ToolNode
@@ -20,10 +19,12 @@ from dotenv import load_dotenv
 load_dotenv('../../../.env')
 parser = JsonOutputToolsParser(return_id=True)
 
+from LLMs import GPT4o_mini_LATS
+
 def custom_generate_candidates(tools):
     def generate_candidates(messages: ChatPromptValue, config: RunnableConfig):
-        bound_kwargs = llm_to_check.bind_tools(tools=tools).kwargs
-        chat_result = llm_to_check.generate(
+        bound_kwargs = GPT4o_mini_LATS.bind_tools(tools=tools).kwargs
+        chat_result = GPT4o_mini_LATS.generate(
             [messages.to_messages()],
             callbacks=config["callbacks"],
             run_name="GenerateCandidates",

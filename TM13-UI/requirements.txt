@@ -1,0 +1,6 @@
+python-dotenv
+openai
+markdown_pdf
+flask
+flask_cors
+yfinance

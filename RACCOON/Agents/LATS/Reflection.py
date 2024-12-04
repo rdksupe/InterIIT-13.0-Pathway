@@ -13,11 +13,11 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 load_dotenv('../../../.env')
-from Agents.LATS.utils import llm_to_check
-
 
 import os
 from langchain_openai import ChatOpenAI
+
+from LLMs import GPT4o_mini_LATS
 
 
 class Reflection(BaseModel):
@@ -209,11 +209,10 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-llm_to_check = ChatOpenAI(model="gpt-4o-mini",openai_api_key=os.getenv("OPEN_AI_API_KEY_30_TEST"))
 
 reflection_llm_chain = (
     prompt
-    | llm_to_check.bind_tools(tools=[Reflection], tool_choice="Reflection").with_config(
+    | GPT4o_mini_LATS.bind_tools(tools=[Reflection], tool_choice="Reflection").with_config(
         run_name="Reflection"
     )
     | PydanticToolsParser(tools=[Reflection])
@@ -226,6 +225,8 @@ def reflection_chain(inputs) -> Reflection:
         f.write(str(tool_choices))
         f.write("\n\n")'''
     reflection = tool_choices[0]
+    if reflection.score >= 7:
+        reflection.found_solution = True
     #This has to be commented
     #if not isinstance(inputs["candidate"][-1], AIMessage):
     #    reflection.found_solution = False
