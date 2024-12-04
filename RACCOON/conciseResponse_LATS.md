@@ -1,8 +1,34 @@
-As of the latest available data, the stock price of Apple Inc. (AAPL) is approximately $241.84. Here are some additional details regarding Apple's stock performance:
+From October 1st to October 5th, 2022, the prices of Bitcoin experienced notable fluctuations. Here is a detailed breakdown of the Bitcoin prices during this period:
 
-1. **Year-to-Date Performance**: Apple’s stock has seen a significant increase, up about 28.6% for the year.
-2. **Recent Closing Prices**: The closing price for Apple on November 14, 2024, was reported at $228.22, with an all-time high of $236.22 reached on October 21, 2024.
-3. **52-Week Range**: The stock has a 52-week high of $237.49, which is 4.1% above the current share price, and a 52-week low of $164.07, which is 28.1% below the current share price.
-4. **Average Price**: The average stock price for Apple over the last 52 weeks stands at $201.13.
+- **October 1, 2022**: 
+  - **Open**: $19,431.11
+  - **High**: $19,471.15
+  - **Low**: $19,231.08
+  - **Close**: $19,312.10
+  - **Volume**: 18,719,537,670
 
-For ongoing updates and detailed historical data, you can refer to financial news platforms and Apple's investor relations website.
+- **October 2, 2022**: 
+  - **Open**: $19,311.85
+  - **High**: $19,370.31
+  - **Low**: $18,970.62
+  - **Close**: $19,044.11
+  - **Volume**: 20,765,955,327
+
+- **October 3, 2022**: 
+  - **Open**: $19,044.07
+  - **High**: $19,653.54
+  - **Low**: $19,025.23
+  - **Close**: $19,623.58
+  - **Volume**: 30,484,729,489
+
+- **October 4, 2022**: 
+  - **Open**: $19,623.58
+  - **High**: $20,380.34
+  - **Low**: $19,523.84
+  - **Close**: $20,336.84
+  - **Volume**: 35,887,278,685
+
+- **October 5, 2022**: 
+  - (Data for this date was not provided in the input.)
+
+In summary, the prices of Bitcoin started at approximately $19,431 on October 1st, fluctuated to a low of about $18,970 on October 2nd, and then rose significantly to close at around $20,336 on October 4th. The trading volume also increased notably over this period, indicating heightened market activity.

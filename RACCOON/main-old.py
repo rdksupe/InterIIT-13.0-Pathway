@@ -59,7 +59,7 @@ with open("tickers.txt", "a") as f_ticker:
     f_ticker.write('')
 
 query = '''
-What would be the impacts between a hypothetical merger between Google and Microsoft
+What were the prices of Bitcoin from 1st to 5th Oct 2022
 '''
 
 guard_rails, reasonings = applyTopicalGuardails(query)
@@ -126,8 +126,8 @@ if guard_rails:
         def generateAddnQuestions(addn_questions):
             final_questions = []
             for question in addn_questions:
-                refinedQuestion = genQuestionComplex(question)
-                final_questions.append(question)
+                refinedQuestion = genQuestionComplex(query, question)
+                final_questions.append(refinedQuestion)
             return final_questions
 
         resp = ''
@@ -183,7 +183,7 @@ if guard_rails:
 
         with ThreadPoolExecutor() as executor:
             future_one = executor.submit(executeSimplePipeline, query)
-            future_two = executor.submit(genQuestionSimple, query, api_key, LLM)
+            future_two = executor.submit(genQuestionSimple, query)
             resp = future_one.result()
             additionalQuestions = future_two.result().values()
 

@@ -154,7 +154,7 @@ async def mainBackend(query, websocket):
             async def generateAddnQuestions(addn_questions):
                 final_questions = []
                 for question in addn_questions:
-                    refinedQuestion = genQuestionComplex(question)
+                    refinedQuestion = genQuestionComplex(query, question)
                     final_questions.append(question)
                 return final_questions
 
@@ -203,7 +203,7 @@ async def mainBackend(query, websocket):
                 
             with ThreadPoolExecutor() as executor:
                 future_one = executor.submit(executeSimplePipeline, query)
-                future_two = executor.submit(genQuestionSimple, query, api_key, LLM)
+                future_two = executor.submit(genQuestionSimple, query)
 
                 resp = future_one.result()
                 additionalQuestions = future_two.result().values()
