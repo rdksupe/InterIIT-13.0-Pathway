@@ -31,7 +31,7 @@ class Reflection(BaseModel):
         lte=10,
     )
     found_solution: bool = Field(
-        description="Whether the response has fully solved the question or task and the response is detailed and backed by numbers tables and sources including full WEB-LINKS[THE FULL URL] next to the relevant information in each response. If you do not have links to the relevant information in the response, you can use web search to get the detailed response.  Do not give found_solution=True if the response is not detailed and backed by numbers and sources."
+        description="Whether the response has fully solved the question or task and the response is detailed and backed by numbers tables and sources including full WEB-LINKS[THE FULL URL] next to the relevant information in each response. If you do not have links to the relevant information in the response, you can use web search to get the detailed response."
     )
 
     def as_message(self):
@@ -202,7 +202,7 @@ prompt = ChatPromptTemplate.from_messages(
         ),
         (
             "system",
-            "If the response includes websites, please scrape the most relevant website to get the detailed response."
+            "Do not call the same tool if the tool returns the message that it has failed, instead call another relevant tool to get the response.If you do not have any relevant tool to call, you have to use web search to get the detailed response.",
         ),
         ("user", "{input}"),
         MessagesPlaceholder(variable_name="candidate"),

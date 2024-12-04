@@ -14,32 +14,7 @@
         "description": "SEC filing to be sent to RAG endpoint for retrieval."
       }
     },
-  
-    {
-        "name": "get_company_profile",
-        "docstring": "Get a company's profile information using the Finnhub API.",
-        "parameters": {
-            "symbol": "str"
-        },
-        "output": {
-            "type": "str",
-            "description": "A formatted string containing company profile information."
-        }
-    },
-    {
-        "name": "get_company_news",
-        "docstring": "Retrieve market news related to a designated company using Finnhub API.",
-        "parameters": {
-            "symbol": "str",
-            "start_date": "str",
-            "end_date": "str",
-            "max_news_num": "int"
-        },
-        "output": {
-            "type": "dict",
-            "description": "A dictionary containing company news data."
-        }
-    },
+
     {
         "name": "get_indian_kanoon",
         "docstring": "Retrieves Indian LEGAL data and CASE LAWs from Indian Kanoon based on the query",
