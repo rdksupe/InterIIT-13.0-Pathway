@@ -267,7 +267,7 @@ def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form:
         finally:
             if not filing:
                 return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
-            output_folder = "/home/rdk/kb_sec"
+            output_folder = "temp_rag_space"
             filename = f"{ticker+datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
             print(filename)
             filepath = os.path.join(output_folder, filename)
