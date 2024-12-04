@@ -17,7 +17,10 @@ RACCOON/Agents/plan.json
 chart_generation.log
 RACCOON/assets/*
 RACCOON/output/*
+error_logs.log
 error_logs.json
+RACCOON/conciseResponse.md
+RACCOON/ProcessLogs.md
 temp_rag_space
 Graph.json
 response-withCharts.md

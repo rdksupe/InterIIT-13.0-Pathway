@@ -52,10 +52,16 @@ from langchain.llms import OpenAI
 from langchain.agents import initialize_agent, AgentType
 from typing import Dict
 
-ERROR_LOG_FILE = "error_logs.json"
+ERROR_LOG_FILE = "./error_logs.log"
 load_dotenv('../../../.env')
 
-
+# Step 1: Create a logger
+logger = logging.getLogger('my_logger')
+file_Handler = logging.FileHandler(ERROR_LOG_FILE)
+logger.setLevel(logging.DEBUG)  # Set the base logging level
+file_Handler.setLevel(logging.ERROR)  # Set the handler logging level
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger.addHandler(file_Handler)
 def log_error(tool_name, error_message, additional_info=None):
     error_entry = {
         "tool" : tool_name,
@@ -63,26 +69,7 @@ def log_error(tool_name, error_message, additional_info=None):
         "timestamp" : datetime.now().isoformat(),
         "additional info" : additional_info or {}
     }
-    
-    
-    try:
-        # Read the existing log file if it exists, otherwise start with an empty list
-        if os.path.exists(ERROR_LOG_FILE):
-            with open(ERROR_LOG_FILE, "r") as f:
-                error_logs = json.load(f)
-        else:
-            error_logs = []
-
-        # Prepend the new error entry to the list
-        error_logs.insert(0, error_entry)
-
-        # Write the updated log back to the file
-        with open(ERROR_LOG_FILE, "w") as f:
-            json.dump(error_logs, f, indent=4)
-
-    except Exception as e:
-        print(f"Failed to log error: {e}") 
-        
+    logger.error(json.dumps(error_entry, indent=4))
 
 
 os.environ["GOOGLE_API_KEY"]= os.getenv('GEMINI_API_KEY_30')
@@ -262,7 +249,12 @@ def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form:
         try:
             filing =  company.get_filings().filter(ticker = f"{ticker}",form = f"{form}",date = f"{start_date}:{end_date}")[0].markdown()
         except Exception as e:
-            return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
+            log_error(
+                tool_name="get_sec_filings",
+                error_message=str(e),
+                additional_info={"ticker": ticker, "start_date": start_date, "end_date": end_date, "form": form}
+            )
+            return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
         finally:
             if not filing:
@@ -278,8 +270,13 @@ def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form:
             time.sleep(delay)
             return query_documents.invoke(query)
 
-    except:
-        return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
+    except Exception as e:
+        log_error(
+            tool_name="get_sec_filings",
+            error_message=str(e),
+            additional_info={"ticker": ticker, "start_date": start_date, "end_date": end_date, "form": form}
+        )
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
     # return ""
 
 @tool
@@ -331,10 +328,10 @@ def get_and_download_annual_report(query:str,ticker: str, financial_year: str) -
     
     except requests.RequestException as e:
         log_error("get_and_download_annual_report", str(e), {"ticker": ticker, "financial_year": financial_year})
-        return web_search.invoke(f"Annual report of {ticker} for Financial Year {financial_year}")
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
     except Exception as e:
         log_error("get_and_download_annual_report", str(e), {"ticker": ticker, "financial_year": financial_year})
-        return web_search.invoke(f"Annual report of {ticker} for Financial Year {financial_year}")
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 #================
 # NOT USING THIS
@@ -386,8 +383,30 @@ def break_query_into_subqueries(query: str) -> str:
             error_message=str(e),
             additional_info={"query": query}
         )
-        return ''
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
         
+@tool
+def get_ticker(company_name : str) -> str :
+    """
+    Get the annual report URL and download the PDF for a given company ticker and financial year.
+    Args:
+    company_name (str): Company name like Apple whose ticker is to be retrieved
+    Returns:
+    str: Ticker of the company
+    """
+    yfinance_url = "https://query2.finance.yahoo.com/v1/finance/search"
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+    params = {"q": company_name, "quotes_count": 1}
+    
+    res = requests.get(url=yfinance_url, params=params, headers={'User-Agent': user_agent})
+    data = res.json()
+    
+    if 'quotes' in data and len(data['quotes']) > 0:
+        company_code = data['quotes'][0]['symbol']
+        return company_code
+    else:
+        return "Either the company is not listed on any public exchanges or the company does not exist"
+
 @tool
 def get_indian_kanoon(query: str):
     """
@@ -434,9 +453,11 @@ def get_indian_kanoon(query: str):
         delay = 2
         time.sleep(delay)
         source = 'Indian Kanoon'
-        return query_documents.invoke({"prompt":query,"source": source})
-
-
+        response_query_document = query_documents.invoke({"prompt":query,"source": source}) 
+        if response_query_document == "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!":
+            return doc
+        else:
+            return response_query_document
 
     except Exception as e:
         log_error(
@@ -444,8 +465,8 @@ def get_indian_kanoon(query: str):
             error_message=str(e),
             additional_info={"query": query}
         )
-        return web_search.invoke(f'What are the relevant Indian LAWs and CASE LAWs for: {query}')
-        
+        # return web_search.invoke(f'What are the relevant Indian LAWs and CASE LAWs for: {query}') #TODO: Check if this is of any problem.
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 
 @tool
@@ -497,14 +518,18 @@ def get_us_case_law(query: str) -> Tuple[str, str]:
         delay = 2
         time.sleep(delay)
         source = "US Case Law"
-        return query_documents.invoke(query,source)
+        response_query_document = query_documents.invoke(query,source)
+        if response_query_document == "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!":
+            return title+ cleaned_doc
+        else:
+            return response_query_document
     except Exception as e:
         log_error(
             tool_name="get_us_case_law",
             error_message=str(e),
             additional_info={"query": query}
         )
-        return web_search.invoke(f'What are the relevant American LAWs and CASE LAWs for: {query}')
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
         
 @tool
 def query_documents(prompt: str, source: str) -> Dict:
@@ -559,114 +584,115 @@ def query_documents(prompt: str, source: str) -> Dict:
             error_message=str(e),
             additional_info={"prompt": prompt, "source": source}
         )
-        return web_search_simple.invoke(prompt)
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 
 
         
-@tool
-def get_company_profile(symbol: str) -> str:
-    """
-    Get a company's profile information using the Finnhub API.
+# @tool
+# def get_company_profile(company: str) -> str:
+#     """
+#     Get a company's profile information using the Finnhub API.
     
-    Args:
-        symbol (str): The ticker symbol of the company
+#     Args:
+#         company (str): This is the company's name
         
-    Returns:
-        str: A formatted string containing company profile information
-    """
-    try:
-        profile = finnhub_client.company_profile2(symbol=symbol)
-        if not profile:
-            log_error(
-            tool_name="get_company_news",
-            error_message=f"Failed to find company profile for symbol {symbol} from finnhub!",
-            additional_info={"query": symbol}
-            )
+#     Returns:
+#         str: A formatted string containing company profile information
+#     """
+#     try:
+#         symbol = get_ticker.invoke(company)
+#         profile = finnhub_client.company_profile2(symbol=symbol)
+#         if not profile:
+#             log_error(
+#             tool_name="get_company_news",
+#             error_message=f"Failed to find company profile for symbol {symbol} from finnhub!",
+#             additional_info={"query": symbol}
+#             )
             
-            return web_search_simple.invoke(f"Find a Company Profile Information for {symbol}")
-        else:
+#             return web_search_simple.invoke(f"Find a Company Profile Information for {symbol}")
+#         else:
 
-            formatted_str = (
-                "[Company Introduction]:\n\n{name} is a leading entity in the {finnhubIndustry} sector. "
-                "Incorporated and publicly traded since {ipo}, the company has established its reputation as "
-                "one of the key players in the market. As of today, {name} has a market capitalization "
-                "of {marketCapitalization:.2f} in {currency}, with {shareOutstanding:.2f} shares outstanding."
-                "\n\n{name} operates primarily in the {country}, trading under the ticker {ticker} on the {exchange}. "
-                "As a dominant force in the {finnhubIndustry} space, the company continues to innovate and drive "
-                "progress within the industry."
-            ).format(**profile)
+#             formatted_str = (
+#                 "[Company Introduction]:\n\n{name} is a entity in the {finnhubIndustry} sector. "
+#                 "Incorporated and publicly traded since {ipo}, the company has established its reputation as "
+#                 "one of the key players in the market. As of today, {name} has a market capitalization "
+#                 "of {marketCapitalization:.2f} in {currency}, with {shareOutstanding:.2f} shares outstanding."
+#                 "\n\n{name} operates primarily in the {country}, trading under the ticker {ticker} on the {exchange}. "
+#                 "progress within the industry."
+#             ).format(**profile)
 
-            return formatted_str
+#             return formatted_str
     
-    except Exception as e:
-        log_error(
-            tool_name="get_company_profile",
-            error_message=str(e),
-            additional_info={"symbol": symbol}
-        )
-        return web_search_simple.invoke(f"Find a Company Profile Information for {symbol}")
+#     except Exception as e:
+#         log_error(
+#             tool_name="get_company_profile",
+#             error_message=str(e),
+#             additional_info={"symbol": symbol}
+#         )
+#         return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
         
     
+
+# @tool
+# def get_company_news(company: str, start_date: str, end_date: str, max_news_num: int = 10) -> dict:
+#     """
+#     Retrieve market news related to a designated company using Finnhub API.
+    
+#     Args:
+#         company (str): The company's name
+#         start_date (str): Start date in YYYY-MM-DD format
+#         end_date (str): End date in YYYY-MM-DD format
+#         max_news_num (int): Maximum number of news articles to return
+        
+#     Returns:
+#         dict: A dictionary containing company news data
+#     """
+#     try:
+#         symbol = get_ticker.invoke(company)
+#         news = finnhub_client.company_news(symbol, _from=start_date, to=end_date)
+#         if len(news) == 0:
+#             log_error(
+#             tool_name="get_company_news",
+#             error_message=f"error: No company news found for symbol {symbol} from finnhub!",
+#             additional_info={"query": symbol}
+#             )
+        
+#             return web_search_simple.invoke(f"Retrieve market news related to {symbol} from date {start_date} to {end_date}")
+
+#         else:
+#             news = [
+#                 {
+#                     "date": datetime.fromtimestamp(n["datetime"]).strftime("%Y%m%d%H%M%S"),
+#                     "headline": n["headline"],
+#                     "summary": n["summary"],
+#                 }
+#                 for n in news
+#             ]
+            
+#             if len(news) > max_news_num:
+#                 news = random.choices(news, k=max_news_num)
+#             news.sort(key=lambda x: x["date"])
+            
+#             return {"news": news}
+    
+#     except Exception as e:
+#         log_error(
+#             tool_name="get_company_news",
+#             error_message=str(e),
+#             additional_info={"symbol": symbol}
+#         )
+        
+#         return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 @tool
-def get_company_news(symbol: str, start_date: str, end_date: str, max_news_num: int = 10) -> dict:
-    """
-    Retrieve market news related to a designated company using Finnhub API.
-    
-    Args:
-        symbol (str): The ticker symbol of the company
-        start_date (str): Start date in YYYY-MM-DD format
-        end_date (str): End date in YYYY-MM-DD format
-        max_news_num (int): Maximum number of news articles to return
-        
-    Returns:
-        dict: A dictionary containing company news data
-    """
-    try:
-        news = finnhub_client.company_news(symbol, _from=start_date, to=end_date)
-        if len(news) == 0:
-            log_error(
-            tool_name="get_company_news",
-            error_message=f"error: No company news found for symbol {symbol} from finnhub!",
-            additional_info={"query": symbol}
-            )
-        
-            return web_search_simple.invoke(f"Retrieve market news related to {symbol} from date {start_date} to {end_date}")
-
-        else:
-            news = [
-                {
-                    "date": datetime.fromtimestamp(n["datetime"]).strftime("%Y%m%d%H%M%S"),
-                    "headline": n["headline"],
-                    "summary": n["summary"],
-                }
-                for n in news
-            ]
-            
-            if len(news) > max_news_num:
-                news = random.choices(news, k=max_news_num)
-            news.sort(key=lambda x: x["date"])
-            
-            return {"news": news}
-    
-    except Exception as e:
-        log_error(
-            tool_name="get_company_news",
-            error_message=str(e),
-            additional_info={"symbol": symbol}
-        )
-        
-        return web_search_simple.invoke(f"Retrieve market news related to {symbol} from date {start_date} to {end_date}")
-
-@tool
-def get_basic_financials_history(symbol: str, freq: str, start_date: str, end_date: str, selected_columns: list = None,query=None) -> dict:
+def get_basic_financials_history(company: str, freq: str, start_date: str, end_date: str, selected_columns: list = None,query=None) -> dict:
     """
     Get historical basic financials for a company using Finnhub API.
     
     Args:
-        symbol (str): The ticker symbol of the company
+        company (str): The company's name
         freq (str): Reporting frequency ('annual' or 'quarterly')
         start_date (str): Start date in YYYY-MM-DD format
         end_date (str): End date in YYYY-MM-DD format
@@ -677,6 +703,7 @@ def get_basic_financials_history(symbol: str, freq: str, start_date: str, end_da
         dict: Historical financial data for the company
     """
     try:
+        symbol = get_ticker.invoke(company)
         if freq not in ["annual", "quarterly"]:
             log_error(
             tool_name="get_basic_financial_history",
@@ -714,21 +741,22 @@ def get_basic_financials_history(symbol: str, freq: str, start_date: str, end_da
             additional_info={"query": symbol}
         )
         
-        return web_search_simple.invoke(f"Fetch the historical basic financials for {symbol} from {start_date} to {end_date}")
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 @tool
-def get_basic_financials(symbol: str, selected_columns: list = None) -> str:
+def get_basic_financials(company: str, selected_columns: list = None) -> str:
     """
     Get latest basic financials for a company using Finnhub API.
     
     Args:
-        symbol (str): The ticker symbol of the company
+        company (str): The company's name
         selected_columns (list): List of specific financial metrics to return
         
     Returns:
         str: JSON string containing the latest financial metrics
     """
     try:
+        symbol = get_ticker.invoke(company)
         basic_financials = finnhub_client.company_basic_financials(symbol, "all")
         if not basic_financials["series"]:
             return web_search_simple.invoke(f"Get latest basic financials for {symbol}")
@@ -749,17 +777,17 @@ def get_basic_financials(symbol: str, selected_columns: list = None) -> str:
             error_message=str(e),
             additional_info={"query": symbol}
         )
-        return web_search_simple.invoke(f"Get latest basic financials for {symbol}")
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 @tool
 def get_stock_data(
-    symbol: Annotated[str, "ticker symbol"],
+    company: Annotated[str, "company name"],
     start_date: Annotated[str, "start date for retrieving stock price data, YYYY-mm-dd"],
     end_date: Annotated[str, "end date for retrieving stock price data, YYYY-mm-dd"]
 ) -> DataFrame:
-    """Retrieve stock price data for designated ticker symbol."""
-    
+    """Retrieve stock price data for designated company."""
     try:
+        symbol = get_ticker.invoke(company)
         ticker = yf.Ticker(symbol)
         return ticker.history(start=start_date, end=end_date)
     except Exception as e:
@@ -768,113 +796,150 @@ def get_stock_data(
             error_message=str(e),
             additional_info={"query": symbol}
         )
-        return web_search_simple.invoke(f"Retrieve stock price data for {symbol}")
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 
 @tool
-def get_stock_info(symbol: Annotated[str, "ticker symbol"]) -> dict:
+def get_stock_info(company: Annotated[str, "company name"]) -> dict:
     """Fetches and returns the latest stock information."""
-    
-    ticker = yf.Ticker(symbol)
-    info = ticker.info 
-    if info['trailingPegRatio'] is None:
+    try:
+        symbol = get_ticker.invoke(company)
+        ticker = yf.Ticker(symbol)
+        info = ticker.info 
+        if info['trailingPegRatio'] is None:
+            log_error(
+                tool_name="get_stock_info",
+                error_message="Empty DataFrame: Invalid symbol or no data available.",
+                additional_info={"query": symbol}
+            )
+            return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
+        else:
+            return ticker.info
+    except Exception as e:
         log_error(
             tool_name="get_stock_info",
-            error_message="Empty DataFrame: Invalid symbol or no data available.",
+            error_message=str(e),
             additional_info={"query": symbol}
         )
-        return web_search_simple.invoke(f"Return the latest stock information for {symbol}")
-    else:
-        return ticker.info
-   
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 
 @tool
-def get_company_info(symbol: Annotated[str, "ticker symbol"]) -> dict:
+def get_company_info(company: Annotated[str, "company name"]) -> dict:
     """Fetches and returns company information like Company Name, Industry, Sector, Country, Website"""
-    
-    ticker = yf.Ticker(symbol)
-    info = ticker.info
-    if info['trailingPegRatio'] is None:
+    try:
+        symbol = get_ticker.invoke(company)
+        ticker = yf.Ticker(symbol)
+        info = ticker.info
+        if info['trailingPegRatio'] is None:
+            log_error(
+                tool_name="get_company_info",
+                error_message="Empty DataFrame: Invalid symbol or no data available.",
+                additional_info={"query": symbol}
+            )
+            return web_search_simple.invoke(f"Give detailed company information for {symbol}")
+        else:
+            return {
+                "Company Name": info.get("shortName", "N/A"),
+                "Industry": info.get("industry", "N/A"),
+                "Sector": info.get("sector", "N/A"),
+                "Country": info.get("country", "N/A"),
+                "Website": info.get("website", "N/A"),
+            }
+    except Exception as e:
         log_error(
             tool_name="get_company_info",
-            error_message="Empty DataFrame: Invalid symbol or no data available.",
+            error_message=str(e),
             additional_info={"query": symbol}
         )
-        return web_search_simple.invoke(f"Give detailed company information for {symbol}")
-    else:
-        return {
-            "Company Name": info.get("shortName", "N/A"),
-            "Industry": info.get("industry", "N/A"),
-            "Sector": info.get("sector", "N/A"),
-            "Country": info.get("country", "N/A"),
-            "Website": info.get("website", "N/A"),
-        }
-    
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
     
 
 
 @tool
-def get_stock_dividends(symbol: Annotated[str, "ticker symbol"]) -> DataFrame:
+def get_stock_dividends(company: Annotated[str, "company name"]) -> DataFrame:
     """Fetches and returns the latest dividends data."""
-    
-    ticker = yf.Ticker(symbol)
-    dividends = ticker.dividends
-    if dividends.empty:
+    try:
+        symbol = get_ticker.invoke(company)
+        ticker = yf.Ticker(symbol)
+        dividends = ticker.dividends
+        if dividends.empty:
+            log_error(
+                tool_name="get_stock_dividends",
+                error_message="Empty DataFrame: Invalid symbol or no data available.",
+                additional_info={"query": symbol}
+            )
+            return web_search_simple.invoke(f"What are the latest dividends for {symbol}")
+            
+        else:
+            return dividends
+    except Exception as e:
         log_error(
             tool_name="get_stock_dividends",
-            error_message="Empty DataFrame: Invalid symbol or no data available.",
+            error_message=str(e),
             additional_info={"query": symbol}
         )
-        return web_search_simple.invoke(f"What are the latest dividends for {symbol}")
-        
-    else:
-        return dividends
-    
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
+
+
 
 @tool
-def get_income_stmt(symbol: Annotated[str, "ticker symbol"]) -> DataFrame:
+def get_income_stmt(company: Annotated[str, "company name"]) -> DataFrame:
     """Fetches and returns the latest income statement of the company."""
-    
-    ticker = yf.Ticker(symbol)
-    financials = ticker.financials
-    
-    if financials.empty:
+    try:
+        symbol = get_ticker.invoke(company)
+        ticker = yf.Ticker(symbol)
+        financials = ticker.financials
+        
+        if financials.empty:
+            log_error(
+                tool_name="get_income_stmt",
+                error_message="Empty DataFrame: Invalid symbol or no data available.",
+                additional_info={"query": symbol}
+            )
+            return web_search_simple.invoke(f"Provide the latest income statement of {symbol}")
+        else:
+            return financials 
+    except Exception as e:
         log_error(
             tool_name="get_income_stmt",
-            error_message="Empty DataFrame: Invalid symbol or no data available.",
+            error_message=str(e),
             additional_info={"query": symbol}
         )
         return web_search_simple.invoke(f"Provide the latest income statement of {symbol}")
-    else:
-        return financials 
-    
     
 
 @tool
-def get_balance_sheet(symbol: Annotated[str, "ticker symbol"]) -> DataFrame:
+def get_balance_sheet(company: Annotated[str, "company name"]) -> DataFrame:
     """Fetches and returns the latest balance sheet of the company."""
-    
-    ticker = yf.Ticker(symbol)
-    balance_sheet = ticker.balance_sheet
-    
-    if balance_sheet.empty:
+    try:
+        symbol = get_ticker.invoke(company)
+        ticker = yf.Ticker(symbol)
+        balance_sheet = ticker.balance_sheet
+        
+        if balance_sheet.empty:
+            log_error(
+                tool_name="get_balance_sheet",
+                error_message="Empty DataFrame: Symbol Error",
+                additional_info={"query": symbol}
+            )
+            return web_search_simple.invoke(f"Official Balance Sheet of {symbol}")
+        else:
+            return balance_sheet
+    except Exception as e:
         log_error(
             tool_name="get_balance_sheet",
-            error_message="Empty DataFrame: Symbol Error",
+            error_message=str(e),
             additional_info={"query": symbol}
         )
-        return web_search_simple.invoke(f"Official Balance Sheet of {symbol}")
-    else:
-        return balance_sheet
-
-
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 
 @tool
-def get_cash_flow(symbol: Annotated[str, "ticker symbol"]) -> DataFrame:
+def get_cash_flow(company: Annotated[str, "company name"]) -> DataFrame:
     """Fetches and returns the latest cash flow statement of the company."""
     try:
+        symbol = get_ticker.invoke(company)
         ticker = yf.Ticker(symbol)
         return ticker.cashflow
     
@@ -884,13 +949,14 @@ def get_cash_flow(symbol: Annotated[str, "ticker symbol"]) -> DataFrame:
             error_message=str(e),
             additional_info={"query": symbol}
         )
-        return web_search_simple.invoke(f"Clash Flow Statement of {symbol}")
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
         
 
 @tool
-def get_analyst_recommendations(symbol: Annotated[str, "ticker symbol"]) -> tuple:
+def get_analyst_recommendations(company: Annotated[str, "company name"]) -> tuple:
     """Fetches the latest analyst recommendations and returns the most common recommendation and its count."""
     try:
+        symbol = get_ticker.invoke(company)
         ticker = yf.Ticker(symbol)
         recommendations = ticker.recommendations
         if recommendations.empty:
@@ -915,7 +981,7 @@ def get_analyst_recommendations(symbol: Annotated[str, "ticker symbol"]) -> tupl
             additional_info={"query": symbol}
         )
         
-        return web_search_simple.invoke(f"What are the latest analyst recommendations for {symbol} company")
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 @tool
 def get_wikipedia_summary(query: str) -> str:
@@ -948,7 +1014,13 @@ def get_wikipedia_summary(query: str) -> str:
             additional_info={"query": query}
         )
         
-        return web_search_simple.invoke(query)
+        return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
+
+
+# ========================
+# NOT MODIFIED AFTER THIS
+# ========================
+
 
 @tool
 def get_discord(channel_id):
@@ -1361,3 +1433,7 @@ def get_reddit_search(query, limit=5):
 #     except Exception as e:
 #         print(f"Error in `web_scrape`: {e}")
 #         pass
+
+if __name__ == "__main__":
+    # Testing logging
+    log_error("Test Tool", "This is a test error message", {"key": "value"})

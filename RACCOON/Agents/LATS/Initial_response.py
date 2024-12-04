@@ -26,7 +26,7 @@ prompt_template = ChatPromptTemplate.from_messages(
                 3. For anything related to legal, use Indian Kanoon or US Case Law API to get the detailed response, if the API fails to generate a satisfactory response, then use web search to get the detailed response, this can be followed by using web scraper tools to get the detailed response,from the relevant webpages.
                 Cite the sources,the link of the exact webpage  next to there relevant information in each response,used to get that information
                 4. A detailed section dedicated to all the tools called earlier, and the count the number of times for the tools that failed to generate a satisfactory response.
-                4. Clearly state any tool that failed ,if fails more than 2 times do not use that tool again in the response.
+                4. If a tool says it has failed, switch to the next tool, if all tools fail,YOU HAVE TO use web search to get the detailed response.
                 """,
             ),
             ("user", "{input}"),
