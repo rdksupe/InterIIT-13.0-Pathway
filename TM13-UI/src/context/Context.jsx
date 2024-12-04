@@ -33,7 +33,7 @@ const ContextProvider = (props) => {
 				setDownloadData(true);
 				// setAgent(false);
 			}
-		}, 1 * index); // Slower pace for better visibility
+		}, 0.5 * index); // Slower pace for better visibility
 	};
 	const delayParaAgent = (index, nextWord) => {
 		setTimeout(function () {
@@ -138,7 +138,11 @@ const ContextProvider = (props) => {
 			for (let i = 0; i < newResponseArray.length; i++) {
 				const nextWord = newResponseArray[i];
 				delayPara(i, nextWord + "");
+				
 			}
+
+			displayedCharsRef.current = 0
+			setTotalDisplayedCharsRef(0)
 		} catch (error) {
 			console.error("Error while running chat:", error);
 		} finally {
@@ -177,9 +181,6 @@ const ContextProvider = (props) => {
 		}
 	};
 
-	// References to track rendering progress
-; // Total characters to display
-	// const pendingDataRef = useRef([]); // Queue for pending data
 	const contextValue = {
 		prevPrompts,
 		setPrevPrompts,
