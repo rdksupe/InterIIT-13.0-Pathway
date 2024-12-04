@@ -49,6 +49,7 @@ const Main = () => {
 	const agent = useRef(true);
 
 	const [markdownContent, setMarkdownContent] = useState('');
+	const [reccQs, setReccQs] = useState([])
 
 
 	const handleMarkdownChange = (e) => {
@@ -66,38 +67,38 @@ const Main = () => {
 			},
 			body: JSON.stringify({ content: markdownContent }),
 		})
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Failed to send data to the backend');
-			}
-			return response.json();  // Expecting a JSON response
-		})
-		.then(data => {
-			console.log('Markdown content sent successfully to backend:', data.message);
-	
-			// Now fetch the generated PDF from the backend after it's processed
-			return fetch('http://localhost:5000/download-pdf', {
-				method: 'GET',
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Failed to send data to the backend');
+				}
+				return response.json();  // Expecting a JSON response
+			})
+			.then(data => {
+				console.log('Markdown content sent successfully to backend:', data.message);
+
+				// Now fetch the generated PDF from the backend after it's processed
+				return fetch('http://localhost:5000/download-pdf', {
+					method: 'GET',
+				});
+			})
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Failed to fetch the generated PDF');
+				}
+				return response.blob(); // Convert the response to a blob
+			})
+			.then(blob => {
+				// Create a download link and trigger the download
+				const link = document.createElement('a');
+				link.href = window.URL.createObjectURL(blob);
+				link.download = 'generated_output.pdf'; // Specify the filename
+				document.body.appendChild(link);
+				link.click();
+				link.remove();
+			})
+			.catch(error => {
+				console.error('Error during the process:', error);
 			});
-		})
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Failed to fetch the generated PDF');
-			}
-			return response.blob(); // Convert the response to a blob
-		})
-		.then(blob => {
-			// Create a download link and trigger the download
-			const link = document.createElement('a');
-			link.href = window.URL.createObjectURL(blob);
-			link.download = 'generated_output.pdf'; // Specify the filename
-			document.body.appendChild(link);
-			link.click();
-			link.remove();
-		})
-		.catch(error => {
-			console.error('Error during the process:', error);
-		});
 	};
 
 	// Auto-scrolling effect when resultData changes
@@ -122,30 +123,31 @@ const Main = () => {
 		setResultData("")
 		setShowResults(true);
 		setLoading(true);
+		setDownloadData(false)
 		setRecentPrompt(input);
-		if(chatNo == 0)
-			setPrevPrompts(prev=>[...prev,input]);
-		setChatNo(chatNo+1);
-		
+		if (chatNo == 0)
+			setPrevPrompts(prev => [...prev, input]);
+		setChatNo(chatNo + 1);
+
 		let query = input;
 		if (socket && socket.readyState === WebSocket.OPEN) {
 			socket.send(JSON.stringify({ type: 'query', query }));
 		}
 		try {
 			fetch('http://localhost:5000/query', {
-			  method: 'POST',
-			  headers: {
-				'Content-Type': 'application/json',
-			  },
-			  body: JSON.stringify({ query: input }), // Send input to the Flask backend
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ query: input }), // Send input to the Flask backend
 			});
-		
+
 			console.log('Query sent successfully!');
 
-		  } catch (error) {
+		} catch (error) {
 			console.error('Error sending query to backend:', error);
 			setLoading(false);
-		  }
+		}
 	}
 
 	// Adjust textarea height dynamically
@@ -181,27 +183,28 @@ const Main = () => {
 
 	useEffect(() => {
 
-		try{
+		try {
 			const ws = new WebSocket('ws://localhost:8090');
 
 			ws.onopen = () => {
 				console.log('WebSocket connected to agent server');
-				
+
 			};
 			ws.onmessage = (event) => {
 				try {
 					const data = JSON.parse(event.data);
 
 					if (data.type === 'agents') {
-						
-						console.log("agents data", data);
-						if(agent.current === true){
 
-						onRenderAgent(data.response);
-						setPrevResults(prev=>[...prev,data.response]);
-						setRecentPrompt(prevPrompts)
-						console.log(data.response);
-						setMarkdownContent(data.response);}
+						console.log("agents data", data);
+						if (agent.current === true) {
+
+							onRenderAgent(data.response);
+							setPrevResults(prev => [...prev, data.response]);
+							setRecentPrompt(prevPrompts)
+							console.log(data.response);
+							setMarkdownContent(data.response);
+						}
 					}
 				} catch (error) {
 					console.error('Error parsing WebSocket message:', error);
@@ -215,32 +218,35 @@ const Main = () => {
 				ws.close();
 			};
 		}
-		catch(error){
+		catch (error) {
 			console.error('Verbose WebSocket Server Not Connected', error);
 		}
 	}, []);
 
 	useEffect(() => {
 		const ws = new WebSocket('ws://localhost:8080');
-		try{	
+		try {
 			ws.onopen = () => {
 				console.log('WebSocket connected');
 			};
 			ws.onmessage = (event) => {
 				try {
 					const data = JSON.parse(event.data);
-
 					if (data.type === 'graph') {
-						
+
 						const graph = JSON.parse(data.response);
 						console.log(graph);
 						setGraphData(graph);
-					
+
 					} else if (data.type === 'response') {
 						agent.current = false;
 						onRender(data.response);
 						console.log(data.response);
 						setMarkdownContent(data.response);
+					}
+					else if (data.type === 'questions') {
+						console.log(data.questions);
+						setReccQs(data.questions);
 					}
 				} catch (error) {
 					console.error('Error parsing WebSocket message:', error);
@@ -254,7 +260,7 @@ const Main = () => {
 				ws.close();
 			};
 		}
-		catch(error){
+		catch (error) {
 			console.error('Main WebSocket Server Not Connected', error);
 		}
 	}, []);
@@ -339,63 +345,131 @@ const Main = () => {
 								<p>{recentPrompt}</p>
 							</div>
 							<div>
-							{!agent.current ?	
-								(<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
-									
-								<img src={assets.pway_icon} className="pway-res" alt="" />
-									{loading ? (
-										<div className="loader">
-											<hr />
-											<hr />
-											<hr />
-										</div>
-									) : (
-										<div className="markdown-content" >
-											<ReactMarkdown
-											rehypePlugins={[rehypeRaw]} 
-											remarkPlugins={[remarkGfm]}
-											components={{
-												a: ({ href, children }) => (
-												<a href={href} target="_blank" rel="noopener noreferrer">
-													{children}
-												</a>
-												)
-											}}>{resultData}</ReactMarkdown>
-										</div>
-									)}
-								</div>):(
-								<div className="result-data" ref={agentDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
-									<img src={assets.pway_icon} className="pway-res" alt="" />
-									{loading ? (
-										<div className="loader">
-											<hr />
-											<hr />
-											<hr />
-										</div>
-									) : (
-										
+								{!agent.current ?
+									(<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
 
-										<div className="markdown-content" style={{color: 'grey'}}>
-											<ReactMarkdown
-											rehypePlugins={[rehypeRaw]} 
-											remarkPlugins={[remarkGfm]}
-											components={{
-												a: ({ href, children }) => (
-												<a href={href} target="_blank" rel="noopener noreferrer">
-													{children}
-												</a>
-												)
-											}}>{agentData}</ReactMarkdown>
+										<img src={assets.pway_icon} className="pway-res" alt="" />
+										{loading ? (
+											<div className="loader">
+												<hr />
+												<hr />
+												<hr />
+											</div>
+										) : (
+											<div className="markdown-content" >
+												<ReactMarkdown
+													rehypePlugins={[rehypeRaw]}
+													remarkPlugins={[remarkGfm]}
+													components={{
+														a: ({ href, children }) => (
+															<a href={href} target="_blank" rel="noopener noreferrer">
+																{children}
+															</a>
+														)
+													}}>{resultData}</ReactMarkdown>
+											</div>
+										)}
+									</div>) : (
+										<div className="result-data" ref={agentDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
+											<img src={assets.pway_icon} className="pway-res" alt="" />
+											{loading ? (
+												<div className="loader">
+													<hr />
+													<hr />
+													<hr />
+												</div>
+											) : (
+												<div className="markdown-content" style={{ color: 'grey' }}>
+													<ReactMarkdown
+														rehypePlugins={[rehypeRaw]}
+														remarkPlugins={[remarkGfm]}
+														components={{
+															a: ({ href, children }) => (
+																<a href={href} target="_blank" rel="noopener noreferrer">
+																	{children}
+																</a>
+															)
+														}}>{agentData}</ReactMarkdown>
+												</div>
+
+											)}
 										</div>
-										
 									)}
+								{downloadData &&
+									<div className="result-data" ref={agentDataRef} style={{ overflow: 'auto' }}>
+										<img src={assets.download_icon} onClick={generatePDF} style={{ width: '20px', marginTop: '1vh', marginLeft: '7vh' }} />
+									</div>
+
+								}
+
+								{downloadData && <h1 className="result-data" style={{ marginBottom: '10px' }}>Recommended Questions</h1>}
+								<div className="result-data" ref={agentDataRef} style={{ display: 'flex', gap: '10px' }}>
+									{downloadData &&
+										<div
+											className="card"
+											style={{
+												minHeight: '10vh',
+												width: '33%',  // Allow each card to take up to 33% of the width
+												marginRight: '20px',
+												display: 'flex',  // Ensure the card uses flexbox
+												flexDirection: 'column',  // Align content vertically
+												justifyContent: 'center',  // Center the text vertically within the card
+												alignItems: 'center',  // Center text horizontally
+												overflow: 'hidden',  // Hide overflow if text exceeds the card's boundaries
+												//wordWrap: 'break-word',  // Break long words if needed to fit inside the card
+												textOverflow: 'ellipsis',  // Show ellipsis if the text is too long
+											}}
+											onClick={() => handleCardClick(reccQs[0])}
+										>
+											<p style={{ textAlign: "justify", margin: '0px 10px', padding: '10px' }}>{reccQs[0]}</p>
+										</div>
+									}
+
+									{downloadData &&
+										<div
+											className="card"
+											style={{
+												minHeight: '10vh',
+												width: '33%',  // Allow each card to take up to 33% of the width
+												marginRight: '20px',
+												display: 'flex',
+												flexDirection: 'column',
+												justifyContent: 'center',
+												alignItems: 'center',
+												overflow: 'hidden',  // Hide overflow if text exceeds the card's boundaries
+												//wordWrap: 'break-word',  // Break long words if needed to fit inside the card
+												textOverflow: 'ellipsis',  // Show ellipsis if the text is too long
+											}}
+											onClick={() => handleCardClick(reccQs[1])}
+										>
+											<p style={{ textAlign: "justify", margin: '0px 10px', padding: '10px' }}>{reccQs[1]}</p>
+										</div>
+									}
+
+									{downloadData &&
+										<div
+											className="card"
+											style={{
+												minHeight: '10vh',
+												width: '33%',  // Allow each card to take up to 33% of the width
+												display: 'flex',
+												flexDirection: 'column',
+												justifyContent: 'center',
+												alignItems: 'center',
+												overflow: 'hidden',  // Hide overflow if text exceeds the card's boundaries
+												wordWrap: 'break-word',  // Break long words if needed to fit inside the card
+												textOverflow: 'ellipsis',  // Show ellipsis if the text is too long
+											}}
+											onClick={() => handleCardClick(reccQs[2])}
+										>
+											<p style={{ textAlign: "justify", margin: '0px 10px', padding: '10px' }}>{reccQs[2]}</p>
+										</div>
+									}
 								</div>
-							)}
+
 							</div>
-							{downloadData && (
-								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', marginTop: '1vh', marginLeft:'7vh'}}>
-								</img>
-							)}
+
+
 						</div>
 					)}
 				</div>
@@ -419,7 +493,7 @@ const Main = () => {
 								overflow: 'hidden', // Hide overflow to prevent scrollbars
 								fontSize: '16px', // Adjust font size as needed
 								borderRadius: '5px', // Rounded corners for style
-								overflowY: 'auto'
+								// overflowY: 'auto'
 							}}
 						/>
 						<div>
@@ -442,7 +516,7 @@ const Main = () => {
 						<p></p>
 					</div>
 				</div>
-			
+
 			</div>
 		</div>
 	);

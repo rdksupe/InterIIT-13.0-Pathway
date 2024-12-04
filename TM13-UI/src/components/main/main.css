@@ -14,7 +14,7 @@
     width: 100%;
     padding: 40px;
     margin: auto;
-    overflow: hidden;
+    overflow-y: scroll;
 }
 
 .main .nav{
@@ -42,6 +42,7 @@
 .main-container{
     position: relative;
     top: 0vh;
+    overflow: auto;
 }
 
 
@@ -78,7 +79,7 @@
 }
 .main .card{
     display: flex;
-    height: 120px;
+    min-height: 120px;
     padding: 15px;
     background-color: #f0f4f9;
     border-radius: 10px;
@@ -147,12 +148,17 @@
     top: 0%;
     width: 80%;
     height: 74vh;
+    /* background-color: red; */
     /* max-height: 1000vh; */
     overflow-y: scroll;
     text-align: justify;
 }
 
 .result::-webkit-scrollbar{
+    display: none;
+}
+
+.result-data::-webkit-scrollbar{
     display: none;
 }
 
