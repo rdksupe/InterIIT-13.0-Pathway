@@ -95,7 +95,7 @@ const Main = () => {
 		fetch('http://localhost:5000/convert', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/pdf',
+				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ content: markdownContent }),
 		})
@@ -103,35 +103,34 @@ const Main = () => {
 				if (!response.ok) {
 					throw new Error('Failed to send data to the backend');
 				}
-				return response.json();  // Expecting a JSON response
+				return response.json(); // Expecting a JSON response
 			})
 			.then(data => {
 				console.log('Markdown content sent successfully to backend:', data.message);
-
-				// Now fetch the generated PDF from the backend after it's processed
+	
+				// Now fetch the generated HTML from the backend after it's processed
 				return fetch('http://localhost:5000/download-pdf', {
 					method: 'GET',
 				});
 			})
 			.then(response => {
 				if (!response.ok) {
-					throw new Error('Failed to fetch the generated PDF');
+					throw new Error('Failed to fetch the generated HTML');
 				}
-				return response.blob(); // Convert the response to a blob
+				return response.text(); // Convert the response to plain text (HTML content)
 			})
-			.then(blob => {
-				// Create a download link and trigger the download
-				const link = document.createElement('a');
-				link.href = window.URL.createObjectURL(blob);
-				link.download = 'generated_output.pdf'; // Specify the filename
-				document.body.appendChild(link);
-				link.click();
-				link.remove();
+			.then(htmlContent => {
+				// Open the HTML content in a new tab
+				const newTab = window.open();
+				newTab.document.open();
+				newTab.document.write(htmlContent);
+				newTab.document.close();
 			})
 			.catch(error => {
 				console.error('Error during the process:', error);
 			});
 	};
+	
 
 	// Auto-scrolling effect when resultData changes
 	useEffect(() => {

@@ -1,8 +1,4 @@
-import asyncio
-import websockets
-import json
-
-resp = '''### Can Nokia Acquire Apple?
+### Can Nokia Acquire Apple?
 
 Nokia acquiring Apple is a proposition that, at first glance, appears to be highly improbable due to several critical factors including financial disparity, strategic misalignment, regulatory challenges, and potential cultural and operational issues. This report delves deeply into each of these areas, providing a comprehensive analysis supported by relevant data, tables, and expert opinions.
 
@@ -55,65 +51,4 @@ Moreover, regulatory hurdles present formidable barriers, as any attempt to acqu
 
 Given these factors, it is clear that Nokia acquiring Apple is not a feasible proposition at this time. Instead, Nokia may benefit more from focusing on strengthening its core business areas and exploring strategic partnerships or smaller acquisitions that align more closely with its market position and capabilities. For Apple, maintaining its strong market position and continuing its innovation-driven growth strategy remains paramount. 
 
-In summary, while the idea of Nokia acquiring Apple is intriguing, the practical challenges are insurmountable given the current financial, strategic, regulatory, and cultural landscapes.'''
-questions =['q1', '### Historical Context of Media Mergers', "qdjqwnjqwdnjwqkdnqwkjdnqwkjdn3"]
-
-
-async def send(websocket):
-    agents = [
-        {"name": "order_hisqwerwetory", "response": "Analyzing osdfaaaaaadsffffffffffffrder history..."},
-        {"name": "clicerewwkstream", "response": "Analyzing usersdf clizxcxxxxxxxxxxxxxxxxxxxxxxxxack patterns..."},
-        {"name": "invewerwerntory", "response": "Cross-chfdffffffffffffffffffffffffffffffffassdfgdgfsdfgecking inventory status..."}
-    ]
-    await websocket.send(json.dumps({"type": "agents", "agents": agents}))
-
-async def handle_connection(websocket):  # Removed unused 'path' parameter
-    try:
-        async for message in websocket:
-            data = json.loads(message)
-            if data['type'] == 'query':
-                print(f"Received query: {data['query']}")
-
-                # Simulate agent analysis responses
-                agents = [
-                    {"name": "order_history", "response": "Analyjksfhjksdfjkhskjdgfhkszing order history..."},
-                    {"name": "clickstream", "response": "Analyzing asdfhjkashfdjahsfkuser click patterns..."},
-                    {"name": "inventory", "response": "Cross-checkasdjkfghjgfjhasgdfhjaging inventory status..."}
-                ]
-                await asyncio.sleep(2)
-                with open('./ProcessLogs.md', 'a') as fp:
-                    fp.write(str(agents))
-
-                agents = [
-                    {"name": "order_hsdfgsdistory", "response": "Analyjajkdfhjahfksfhjksdfjkhskjdgfhkszing order history..."},
-                    {"name": "clasdfaickstream", "response": "Analyzing asdfhjkashfakjhdfjkahdfkjdjahsfkuser click patterns..."},
-                    {"name": "inasdfventory", "response": "Cross-checkasdjkfghjgfjajkahfjkahfkhasgdfhjaging inventory status..."}
-                ]
-                
-                # await websocket.send(json.dumps({"type": "agents", "agents": agents}))
-                await asyncio.sleep(2)
-                with open('./ProcessLogs.md', 'a') as fp:
-                    fp.write(str(agents))
-                # await send(websocket)
-
-                # Simulate final bot response
-                await asyncio.sleep(1)
-                await websocket.send(json.dumps({"type": "response", "response": resp}))
-                await asyncio.sleep(1)
-                await websocket.send(json.dumps({"type": "questions", "questions": questions}))
-
-    except websockets.exceptions.ConnectionClosed:
-        print("Client connection closed")
-    except Exception as e:
-        print(f"Error handling connection: {e}")
-
-async def main():
-    print("WebSocket server starting on ws://0.0.0.0:8080")
-    async with websockets.serve(handle_connection, "localhost", 8080):
-        await asyncio.Future()  # run forever
-
-if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("\nServer shutdown by user")
+In summary, while the idea of Nokia acquiring Apple is intriguing, the practical challenges are insurmountable given the current financial, strategic, regulatory, and cultural landscapes.
