@@ -45,6 +45,7 @@ import os
 from datetime import datetime
 import requests
 import json 
+import urllib.parse 
 
 from langchain.tools import Tool
 from langchain.llms import OpenAI
@@ -149,6 +150,7 @@ def web_scrape(url, query) -> Union[Dict, str]:
         try:
             data = response.json()
             data_str = str(data)
+            # print(data)
         except ValueError:
             data_str = response.text
         finally:
@@ -158,7 +160,7 @@ def web_scrape(url, query) -> Union[Dict, str]:
             delay = 2
             time.sleep(delay)
 
-            return query_documents.invoke(query)
+            return query_documents.invoke({"prompt":query,"source":url})
 
     except requests.RequestException as e:
         log_error(
@@ -237,6 +239,7 @@ def web_search_simple(query: str):
         )
         return ''
 
+
 @tool
 def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form: str) -> str:
     """
@@ -260,6 +263,7 @@ def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form:
             filing =  company.get_filings().filter(ticker = f"{ticker}",form = f"{form}",date = f"{start_date}:{end_date}")[0].markdown()
         except Exception as e:
             return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
+
         finally:
             if not filing:
                 return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
@@ -273,6 +277,7 @@ def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form:
             delay = 2
             time.sleep(delay)
             return query_documents.invoke(query)
+
     except:
         return web_search.invoke(f"SEC filings for {company} from {start_year} to {end_year}")
     # return ""
@@ -400,7 +405,7 @@ def get_indian_kanoon(query: str):
     INDIAN_KANOON_API_KEY = os.getenv('INDIAN_KANOON_API_KEY_30')
 
     try:
-        search_url = f"https://api.indiankanoon.org/search/?formInput={query}&pagenum=0"
+        search_url = f"https://api.indiankanoon.org/search/?formInput={query}&pagenum=0&maxcites=20"
         headers = {
             'Authorization': f'Token {INDIAN_KANOON_API_KEY}'
         }
@@ -428,7 +433,9 @@ def get_indian_kanoon(query: str):
 
         delay = 2
         time.sleep(delay)
-        return query_documents.invoke(query)
+        source = 'Indian Kanoon'
+        return query_documents.invoke({"prompt":query,"source": source})
+
 
 
     except Exception as e:
@@ -489,7 +496,8 @@ def get_us_case_law(query: str) -> Tuple[str, str]:
         print(len(doc))
         delay = 2
         time.sleep(delay)
-        return query_documents.invoke(query)
+        source = "US Case Law"
+        return query_documents.invoke(query,source)
     except Exception as e:
         log_error(
             tool_name="get_us_case_law",
@@ -499,41 +507,62 @@ def get_us_case_law(query: str) -> Tuple[str, str]:
         return web_search.invoke(f'What are the relevant American LAWs and CASE LAWs for: {query}')
         
 @tool
-def query_documents(prompt: str) -> Dict:
+def query_documents(prompt: str, source: str) -> Dict:
     """
-    Query documents using a Retrieval-Augmented Generation (RAG) endpoint.This should be the first choice before doing web search,if this fails or returns unsatisfactory results, then use web search for the same query.
+    Query documents using a Retrieval-Augmented Generation (RAG) endpoint.
+    This should be the first choice before doing web search,
+    if this fails or returns unsatisfactory results, then use web search for the same query.
 
     Args:
         prompt (str): The prompt to send to the RAG endpoint.
+        source (str): The source URL of the document.
 
     Returns:
         Dict: The JSON response from the RAG endpoint, containing the retrieved information and generated answer.
     """
-    
-    try :    
+    try:    
         print("Started")
         start = time.time()
+        
+        payload = {
+            "query": prompt,  # No need to quote the prompt
+            "source": source  # source should be a string, not a set
+        }
+        
         response = requests.post(
             "http://localhost:4005/generate",
             headers={"Content-Type": "application/json"},
-            json={"query": urllib.parse.quote(prompt)},
+
+            json=payload
+
         )
-        print(response)
+        
+        print(f"Response status code: {response.status_code}")
         print("Posted")
-        #response.raise_for_status()  # Raise an error for HTTP issues
+        response.raise_for_status()  # Raise an error for HTTP issues
         print("Raised")
+        
         end = time.time()
-        print(end-start)
-        print(response.json())
-        return response.json()
+        print(f"Time taken: {end - start} seconds")
+        
+        result = response.json()
+        print(result)
+        return result
     
-    except Exception as e:
+    except requests.RequestException as e:
+        print(f"HTTP Request failed: {e}")
+        if hasattr(e, 'response'):
+            print(f"Response status code: {e.response.status_code}")
+            print(f"Response content: {e.response.text}")
         log_error(
             tool_name="query_documents",
             error_message=str(e),
-            additional_info={"prompt": prompt}
+            additional_info={"prompt": prompt, "source": source}
         )
         return web_search_simple.invoke(prompt)
+
+
+
         
 @tool
 def get_company_profile(symbol: str) -> str:
@@ -1208,6 +1237,7 @@ def get_reddit_search(query, limit=5):
         )
         
         return "No posts found matching the query."
+
 
 # query = "random"
 # symbol = "random"
