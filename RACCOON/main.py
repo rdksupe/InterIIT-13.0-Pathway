@@ -39,9 +39,7 @@ from watchdog.events import FileSystemEventHandler
 
 from TopicalGuardrails import applyTopicalGuardails
 from GenerateQuestions import genQuestionComplex, genQuestionSimple
-
 class  MyHandler(FileSystemEventHandler):
-
     def __init__(self, websocket_connection) -> None:
         super().__init__()
         self.websocket = websocket_connection  # WebSocket connection passed here

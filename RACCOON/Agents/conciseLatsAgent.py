@@ -6,6 +6,9 @@ import os
 import json
 from dotenv import load_dotenv
 from datetime import datetime
+
+from LLMs import conversation_complex
+
 load_dotenv('../../.env')
 GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY_30')
 OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
@@ -19,7 +22,8 @@ def drafterAgentSimplified(text, query):
     Following is the content:
     {text}
         '''
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    prompt = f'''{system_prompt}\n\n {user_prompt}'''
+    '''client = OpenAI(api_key=OPENAI_API_KEY)
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -30,7 +34,10 @@ def drafterAgentSimplified(text, query):
             }
         ]
     )
-    response = completion.choices[0].message.content.strip()
+    response = completion.choices[0].message.content.strip()'''
+
+    response = conversation_complex.run(f'''{prompt}''')
+    
     return response
 
 def conciseAns_vanilla_LATS(query, tools_list):

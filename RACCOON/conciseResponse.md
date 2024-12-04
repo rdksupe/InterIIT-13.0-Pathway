@@ -1,0 +1,1 @@
+The stock price of Apple Inc. (AAPL) on December 3, 2024, closed at $242.65.

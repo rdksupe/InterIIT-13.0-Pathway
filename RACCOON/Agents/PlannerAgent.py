@@ -16,7 +16,7 @@ from langchain.globals import set_verbose
 set_verbose(True)
 
 from datetime import datetime
-from openai import OpenAI
+from LLMs import conversation_complex
 
 
 
@@ -204,7 +204,7 @@ def plannerAgent(query,api_key =OPENAI_API_KEY, LLM="OPENAI"):
         response = model.generate_content(prompt).text
         dic =  json.loads(clean(response.split("```")[-2].split("json")[1]))
     elif LLM == "OPENAI":
-        client = OpenAI(api_key=OPENAI_API_KEY)
+        '''client = OpenAI(api_key=OPENAI_API_KEY)
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -215,7 +215,8 @@ def plannerAgent(query,api_key =OPENAI_API_KEY, LLM="OPENAI"):
             ]
         )
 
-        response = completion.choices[0].message.content.strip()
+        response = completion.choices[0].message.content.strip()'''
+        response = conversation_complex.run(f'''{prompt}''')
         dic =  json.loads(clean(response.split("```")[-2].split("json")[1]))
 
 

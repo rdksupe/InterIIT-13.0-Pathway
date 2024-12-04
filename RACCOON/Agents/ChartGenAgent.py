@@ -3,10 +3,11 @@ import logging
 import os
 import google.generativeai as genai
 from langchain_experimental.utilities import PythonREPL
-from openai import OpenAI
+
+from LLMs import GPT4o_mini_GraphGen
+
 
 load_dotenv('../../.env')
-client = OpenAI(api_key=os.getenv('OPEN_AI_API_KEY_30'))
 
 def generate_chart(content: str) -> str:
     """
@@ -38,7 +39,7 @@ def generate_chart(content: str) -> str:
     """
 
     #TODO: Add gemini-1.5-flash model
-    completion = client.chat.completions.create(
+    '''completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": messages},
@@ -49,7 +50,9 @@ def generate_chart(content: str) -> str:
         ]
     )
 
-    response_text = completion.choices[0].message.content.strip()
+    response_text = completion.choices[0].message.content.strip()'''
+
+    response_text = GPT4o_mini_GraphGen.invoke(f'''{messages}\n\n {content}''').content
 
     file_path = 'response-withCharts.md'
     with open(file_path, 'w', encoding='utf-8') as md_file:
@@ -93,7 +96,7 @@ def generate_chart(content: str) -> str:
     """
 
         
-    completion = client.chat.completions.create(
+    '''completion = client.chat.completions.create(
         model="gpt-4o",
         messages=[
             {"role": "system", "content": messages_new},
@@ -104,7 +107,10 @@ def generate_chart(content: str) -> str:
         ]
     )
 
-    response = completion.choices[0].message.content.strip()
+    response = completion.choices[0].message.content.strip()'''
+
+    response = GPT4o_mini_GraphGen.invoke(f'''{messages_new}\n\n {response_text}''').content
+
     try:
         result = repl.run(response)
         logging.info(f"Execution Result: {result}")
