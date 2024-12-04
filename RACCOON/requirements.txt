@@ -4,6 +4,9 @@ websockets
 asyncio
 watchdog
 langgraph
+flask
+flask_cors
+markdown_pdf
 matplotlib
 python-dotenv
 numpy
