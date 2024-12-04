@@ -1,1 +1,1 @@
-Hello! How can I assist you today? Please provide a specific question or topic you would like information on.
+I'm sorry, but I need a specific question or topic to provide the requested information. Please provide the details of your query.

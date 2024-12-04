@@ -294,7 +294,7 @@ const GraphBar = () => {
                 )}
 
                 {activeButton === 1 && (
-                    <div className="graph-render" style={{ height: '500px', width: '100%' }}>
+                    <div className="graph-render" style={{ height: '500px', width: '100%' , marginTop:'10px'}}>
                         <ReactFlow
                             nodes={nodes}
                             edges={edges}

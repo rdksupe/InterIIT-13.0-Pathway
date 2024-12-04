@@ -3,14 +3,76 @@ import logging
 import os
 import google.generativeai as genai
 from langchain_experimental.utilities import PythonREPL
-from openai import OpenAI
+import requests
+from langchain_openai import ChatOpenAI
 
 load_dotenv('../../.env')
-client = OpenAI(api_key=os.getenv('OPEN_AI_API_KEY_30'))
+api_gemini = os.getenv("GEMINI_API_KEY_30")
+api_img = os.getenv("IMGBB_API_KEY")
+openai_api_key=os.getenv("OPEN_AI_API_KEY_30")
+GPT4o_mini_GraphGen = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_key, temperature=0.2, model_kwargs={"top_p": 0.1})
 
-def generate_chart(file_path: str) -> str:
-    with open(file_path, 'r', encoding='utf-8') as md_file:
-        content = md_file.read()
+
+def gen_url(image_paths):
+    api_key = api_img  
+
+    url = []
+    for image_path in image_paths:
+
+        # Open the image and prepare the file for upload
+        with open(image_path, 'rb') as image_file:
+            # Define the payload (data) for the API call
+            data = {
+                'key': api_key,  
+                'expiration': '1000',  # Optional, image auto-delete time (in seconds, optional)
+            }
+            
+            files = {
+                'image': image_file,  # The image file to be uploaded
+            }
+            
+            # Make the POST request to upload the image
+            response = requests.post('https://api.imgbb.com/1/upload', data=data, files=files)
+
+        response_json = response.json()
+        if response_json['success']:
+            print("Image uploaded successfully!")
+            # print(f"Image URL: {response_json['data']['url_viewer']}")
+            print(f"Image URL (direct link): {response_json['data']['url']}")
+            url.append(response_json['data']['url'])
+        else:
+            print("Image upload failed!")
+            print(response_json)
+
+    return url
+
+def get_paths(response):
+    assets_folder = os.path.join(os.getcwd(), 'assets')
+    image_paths = []
+
+    for file_name in os.listdir(assets_folder):
+        if file_name.endswith(('.png', '.jpg', '.jpeg')):
+            image_path = os.path.join(assets_folder, file_name)
+            image_paths.append(image_path)
+
+    url = gen_url(image_paths)
+    # print(url)
+    genai.configure(api_key=api_gemini)
+    model = genai.GenerativeModel("gemini-1.5-flash")
+
+    message = f"""SYSTEM: you are a helpful AI assistant. you have been given a markdown file. It has images embedded in it. You also have a list of URLs of various images mentioned in the markdown file.
+    Your job is to only replace the links of the images with the corresponding URL given. Do not try to change anything else. Return only the full markdown file, without any code block. Only return plain text.
+    HUMAN: Markdown : {response}, URLS : {url}"""
+
+    ai_msg = model.generate_content(message)
+    file_path = 'response-withCharts.md'
+    with open(file_path, 'w', encoding='utf-8') as md_file:
+        md_file.write(ai_msg.text)
+    return ai_msg.text
+
+
+
+def generate_chart(content: str) -> str:
     """
     Analyzes a markdown file's content, determines if a chart can be generated, updates the markdown file
     to include the chart, and generates the chart using AI-generated Python code.
@@ -38,10 +100,9 @@ def generate_chart(file_path: str) -> str:
     5. Use various different types of graphs available in matplotlib. 
     6. Do not add a markdown code block in the beginning. 
     """
-    # ai_msg = model.generate_content(messages)
 
-    # client = OpenAI()
-    completion = client.chat.completions.create(
+    #TODO: Add gemini-1.5-flash model
+    '''completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": messages},
@@ -52,11 +113,13 @@ def generate_chart(file_path: str) -> str:
         ]
     )
 
-    response = completion.choices[0].message.content.strip()
+    response_text = completion.choices[0].message.content.strip()'''
+
+    response_text = GPT4o_mini_GraphGen.invoke(f'''{messages}\n\n {content}''').content
 
     file_path = 'response-withCharts.md'
     with open(file_path, 'w', encoding='utf-8') as md_file:
-        md_file.write(response)
+        md_file.write(response_text)
     print("done")
     repl = PythonREPL()
 
@@ -96,7 +159,7 @@ def generate_chart(file_path: str) -> str:
     """
 
         
-    completion = client.chat.completions.create(
+    '''completion = client.chat.completions.create(
         model="gpt-4o",
         messages=[
             {"role": "system", "content": messages_new},
@@ -107,12 +170,16 @@ def generate_chart(file_path: str) -> str:
         ]
     )
 
-    response = completion.choices[0].message.content.strip()
+    response = completion.choices[0].message.content.strip()'''
+
+    response = GPT4o_mini_GraphGen.invoke(f'''{messages_new}\n\n {response_text}''').content
+
     try:
         result = repl.run(response)
         logging.info(f"Execution Result: {result}")
-        return "Image Saved"
+        return get_paths(response_text)
     except Exception as e:
         logging.error(f"Failed to execute code. Error: {repr(e)}")
-        return "Error"
+        return f"Error {e}"
 
+  

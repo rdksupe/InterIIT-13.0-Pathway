@@ -18,6 +18,7 @@ import pway_icon from './pway.png'
 import edit_icon from './edit_icon.png'
 import attach_icon from './attachment.png'
 import download_icon from './downloads.png'
+import main_logo from './main_logo.png'
 
 export const assets = {
 	history_icon,
@@ -39,5 +40,6 @@ export const assets = {
 	pway_icon,
 	edit_icon,
 	attach_icon,
-	download_icon
+	download_icon,
+	main_logo
 };

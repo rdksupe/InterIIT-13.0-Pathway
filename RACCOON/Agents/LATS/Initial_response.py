@@ -11,8 +11,9 @@ from Agents.LATS.NewTools import *
 import os
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
-from Agents.LATS.utils import llm_to_check
 load_dotenv('../../../.env')
+
+from LLMs import GPT4o_mini_LATS
 
 prompt_template = ChatPromptTemplate.from_messages(
         [
@@ -37,12 +38,7 @@ prompt_template = ChatPromptTemplate.from_messages(
 def custom_generate_initial_response(tools):
     tool_node = ToolNode(tools=tools)
     def generate_initial_response(state: TreeState) -> dict:
-        
-
-        llm_to_check = ChatOpenAI(model="gpt-4o-mini",openai_api_key=os.getenv("OPEN_AI_API_KEY_30_TEST"))
-
-
-        initial_answer_chain = prompt_template | llm_to_check.bind_tools(tools=tools).with_config(
+        initial_answer_chain = prompt_template | GPT4o_mini_LATS.bind_tools(tools=tools).with_config(
             run_name="GenerateInitialCandidate"
         )
 
