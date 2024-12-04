@@ -46,6 +46,7 @@ const Main = () => {
 
 	const resultDataRef = useRef(null); // Reference to the result-data container for auto scrolling
 	const agentDataRef = useRef(null);
+	const agent = useRef(true);
 
 	const [markdownContent, setMarkdownContent] = useState('');
 
