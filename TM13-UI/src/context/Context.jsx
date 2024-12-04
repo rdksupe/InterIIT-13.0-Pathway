@@ -18,6 +18,7 @@ const ContextProvider = (props) => {
 	const [chatNo, setChatNo] = useState(0);
 	const displayedCharsRef = useRef(0); // Use a ref to track displayed characters count
 	const totalCharsRef = useRef(0); // Use a ref for total characters
+	const [fileHistory, setFileHistory] = useState([]);		// State to store the file history
 
 	const pendingDataRef = useRef([]);
 
@@ -209,7 +210,9 @@ const ContextProvider = (props) => {
 		agentData,
 		setAgentData,
 		chatNo,
-		setChatNo
+		setChatNo,
+		fileHistory,
+		setFileHistory
 	};
 
 	return <Context.Provider value={contextValue}>{props.children}</Context.Provider>;
