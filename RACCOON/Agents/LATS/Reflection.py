@@ -136,10 +136,10 @@ class Node:
                             f.write(f"{j['function']['name']}\n")
                             f.write("Function has Arguments\n")
                             f.write(f"{j['function']['arguments']}\n\n")
-                            dic = dict_obj_json = json.loads(j['function']['arguments'].replace("'", '''"'''))
+                            """dic = json.loads(j['function']['arguments'].replace("'", '''"'''))
                             if 'symbol' in dic:
                                 with open("tickers.txt", "a") as f_ticker:
-                                    f_ticker.write(f"{dic['symbol']}\n")
+                                    f_ticker.write(f"{dic['symbol']}\n")"""
                         f.write("Agent Tools RAW Output:\n")
                         f.write(f"{i.content}\n\n")
                     else:
