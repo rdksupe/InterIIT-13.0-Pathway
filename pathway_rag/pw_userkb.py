@@ -42,11 +42,7 @@ class DocumentProcessor:
 
     def initialize_vector_store(self, path1):
         """Initialize document store with provided file path"""
-
         source1 = pw.io.fs.read(path=path1, with_metadata=True, format="binary", mode="streaming")  
-        path2 = "../RACCOON/temp_rag_space"
-        source2 = pw.io.fs.read(path=path2, with_metadata=True, format="binary", mode="streaming")
-
 
         usearch = UsearchKnnFactory(embedder=self.embedder)
         bm25 = TantivyBM25Factory(ram_budget=524288000, in_memory_index=True)
@@ -55,8 +51,7 @@ class DocumentProcessor:
         
         self.vector_store = DocumentStore.from_langchain_components(
             retriever_factory=retriever_factory,
-            docs=[source1,source2],
-
+            docs=[source1],
             parser=self.parser,
             splitter=text_splitter,
         )
@@ -69,20 +64,12 @@ class DocumentProcessor:
             
         self.app1 = DocumentStoreServer(
             host=self.host,
-            port=4004,
+            port=4006,
             document_store=self.vector_store
         )
 
     
         
-    # def run_server1(self):
-    #     """Run document server"""
-    #     self.app1.run_server()
-    #     print("VS live")
-    # def run_server2(self):
-    #     self.app2.run_server2()
-    #     print("KS live ")
-
     def start_document_server(self):
         """Launch document server in background thread"""
         server_thread = threading.Thread(
@@ -95,7 +82,7 @@ class DocumentProcessor:
     
 def main():
     # Initialize data directory for document storage
-    data_dir = "../RACCOON/Agents/LATS/temp_rag_space"
+    data_dir = "./user_uploads"
     os.makedirs(data_dir, exist_ok=True)
     
     # Set up and start servers
