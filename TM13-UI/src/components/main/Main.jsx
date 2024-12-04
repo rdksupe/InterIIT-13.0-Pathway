@@ -51,7 +51,41 @@ const Main = () => {
 	const [markdownContent, setMarkdownContent] = useState('');
 	const [reccQs, setReccQs] = useState([])
 
+	const ToggleSwitch = ({ label }) => {
+		 // State to track whether the checkbox is checked or not
+		 const isChecked = useRef(true)
 
+		 // Function to handle the toggle switch change
+		 const handleToggle = () => {
+			isChecked.current = !isChecked.current; // Toggle the checkbox state
+			let query = isChecked.current
+			if (socket && socket.readyState === WebSocket.OPEN) {
+				socket.send(JSON.stringify({ type: 'toggleRag', query }));
+			}
+
+		 };
+	   
+		return (
+			<div className="container">
+				{label}{" "}
+				<div className="toggle-switch">
+					<input
+						type="checkbox"
+						className="checkbox"
+						name={label}
+						id={label}
+						checked={isChecked} // Control checkbox based on state
+				          onChange={handleToggle} // Call handleToggle on checkbox change
+					/>
+					<label className="label" htmlFor={label}>
+						<span className="inner" />
+						<span className="switch" />
+					</label>
+				</div>
+			</div>
+		);
+	};
+	
 	const handleMarkdownChange = (e) => {
 		setMarkdownContent(e.target.value);
 	};
@@ -306,6 +340,7 @@ const Main = () => {
 				<img src={assets.main_logo} className="pway" alt="" />
 				<div className="rightside">
 					<Dropdown />
+					<ToggleSwitch label={"RAG"}/>
 					<img src={assets.user} className="user" alt="" />
 				</div>
 			</div>
