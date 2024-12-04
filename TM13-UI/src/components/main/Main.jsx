@@ -40,7 +40,9 @@ const Main = () => {
 		prevPrompts,
 		setPrevPrompts,
 		chatNo,
-		setChatNo
+		setChatNo,
+		fileHistory,
+		setFileHistory
 	} = useContext(Context);
 	const [socket1, setSocket1] = useState(null);
 
@@ -54,15 +56,15 @@ const Main = () => {
 
 	const ToggleSwitch = ({ label }) => {
 
-		 const handleToggle = () => {
+		const handleToggle = () => {
 			// isChecked.current = !isChecked.current; // Toggle the checkbox state
 			setIsChecked(!isChecked);
 			let query = !isChecked
 			if (socket && socket.readyState === WebSocket.OPEN) {
 				socket.send(JSON.stringify({ type: 'toggleRag', query }));
 			}
-		 };
-	   
+		};
+
 		return (
 			<div className="container">
 				{label}{" "}
@@ -73,7 +75,7 @@ const Main = () => {
 						name={label}
 						id={label}
 						checked={isChecked} // Control checkbox based on state
-				          onChange={handleToggle} // Call handleToggle on checkbox change
+						onChange={handleToggle} // Call handleToggle on checkbox change
 					/>
 					<label className="label" htmlFor={label}>
 						<span className="inner" />
@@ -83,7 +85,7 @@ const Main = () => {
 			</div>
 		);
 	};
-	
+
 	const handleMarkdownChange = (e) => {
 		setMarkdownContent(e.target.value);
 	};
@@ -95,7 +97,7 @@ const Main = () => {
 		fetch('http://localhost:5000/convert', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/pdf',
+				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ content: markdownContent }),
 		})
@@ -103,35 +105,34 @@ const Main = () => {
 				if (!response.ok) {
 					throw new Error('Failed to send data to the backend');
 				}
-				return response.json();  // Expecting a JSON response
+				return response.json(); // Expecting a JSON response
 			})
 			.then(data => {
 				console.log('Markdown content sent successfully to backend:', data.message);
-
-				// Now fetch the generated PDF from the backend after it's processed
+	
+				// Now fetch the generated HTML from the backend after it's processed
 				return fetch('http://localhost:5000/download-pdf', {
 					method: 'GET',
 				});
 			})
 			.then(response => {
 				if (!response.ok) {
-					throw new Error('Failed to fetch the generated PDF');
+					throw new Error('Failed to fetch the generated HTML');
 				}
-				return response.blob(); // Convert the response to a blob
+				return response.text(); // Convert the response to plain text (HTML content)
 			})
-			.then(blob => {
-				// Create a download link and trigger the download
-				const link = document.createElement('a');
-				link.href = window.URL.createObjectURL(blob);
-				link.download = 'generated_output.pdf'; // Specify the filename
-				document.body.appendChild(link);
-				link.click();
-				link.remove();
+			.then(htmlContent => {
+				// Open the HTML content in a new tab
+				const newTab = window.open();
+				newTab.document.open();
+				newTab.document.write(htmlContent);
+				newTab.document.close();
 			})
 			.catch(error => {
 				console.error('Error during the process:', error);
 			});
 	};
+	
 
 	// Auto-scrolling effect when resultData changes
 	useEffect(() => {
@@ -201,41 +202,48 @@ const Main = () => {
 		adjustHeight();
 	}, [input]);
 
-	const [files, setFiles] = useState([]);
-
 	const handleFileChange = async (event) => {
 		const files = event.target.files;
 		await setEvenData(event);
-		console.log(event);
 
 		if (files.length > 0) {
 			const formData = new FormData();
 
 			// Append each selected file to the FormData object
 			for (let i = 0; i < files.length; i++) {
-				// formData.append('files', files[i]);
-			
-			formData.append('file', files[i]); 
-			// formData.append('filename', result.filename);
+				formData.append('file', files[i]);
 
-			try {
-				// Send a POST request
-				const response = await fetch('http://localhost:8000/upload', {
-					method: 'POST',
-					body: formData,
-				});
+				// Update fileHistory state by adding new file info
+				setFileHistory((prevFileHistory) => [
+					...prevFileHistory,
+					{
+					  fileName: files[i].name,
+					  fileSize: files[i].size,
+					  fileType: files[i].type,
+					  timestamp: new Date().toLocaleString(),
+					},
+				  ]);
 
-				if (response.ok) {
-					const result = await response.json();
-					console.log('Files uploaded successfully:', result);
-				} else {
-					console.error('Error uploading files:', response.statusText);
+				try {
+					// Send a POST request
+					const response = await fetch('http://localhost:8000/upload', {
+						method: 'POST',
+						body: formData,
+					});
+
+					if (response.ok) {
+						const result = await response.json();
+						console.log('Files uploaded successfully:', result);
+						// Update file history after successful upload
+
+
+					} else {
+						console.error('Error uploading files:', response.statusText);
+					}
+				} catch (error) {
+					console.error('Error during upload:', error);
 				}
-			} catch (error) {
-				console.error('Error during upload:', error);
 			}
-		}
-
 		};
 	}
 
@@ -338,7 +346,7 @@ const Main = () => {
 				<img src={assets.main_logo} className="pway" alt="" />
 				<div className="rightside">
 					<Dropdown />
-					<ToggleSwitch label={"RAG"}/>
+					<ToggleSwitch label={"RAG"} />
 					<img src={assets.user} className="user" alt="" />
 				</div>
 			</div>
