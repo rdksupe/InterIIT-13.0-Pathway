@@ -156,7 +156,7 @@ async def mainBackend(query, websocket):
 
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
-            await websocket.send(json.dumps({"type": "questions", "response": final_questions[:3]}))
+            await websocket.send(json.dumps({"type": "questions", "questions": final_questions[:3]}))
             
         elif query_type == 'simple':
             print("RUNNING SIMPLE TASK PIPELINE")
@@ -185,7 +185,7 @@ async def mainBackend(query, websocket):
 
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
-            await websocket.send(json.dumps({"type": "questions", "response": additionalQuestions[:3]}))
+            await websocket.send(json.dumps({"type": "questions", "questions": additionalQuestions[:3]}))
     else:
         resp = ''''''
         for key in reasonings:
