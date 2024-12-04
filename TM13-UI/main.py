@@ -114,6 +114,8 @@ In conclusion, while the merger could offer efficiencies and broaden consumer re
 3. Justia. “Antitrust Law Case Summaries.” Available at: [Justia](https://supreme.justia.com/cases-by-topic/antitrust/)
 4. Consumer Technology Association. “2024 Consumer Survey on Media Accessibility.” Available at: [CTA](https://www.cta.tech/)
 5. Bloomberg. “Spotify and Ringer Merger: Implications for Pricing.” Available at: [Bloomberg](https://www.bloomberg.com)'''
+questions =['q1', '### Historical Context of Media Mergers', "qdjqwnjqwdnjwqkdnqwkjdnqwkjdn3"]
+
 
 async def send(websocket):
     agents = [
@@ -153,8 +155,11 @@ async def handle_connection(websocket):  # Removed unused 'path' parameter
                 # await send(websocket)
 
                 # Simulate final bot response
-                await asyncio.sleep(10)
+                await asyncio.sleep(1)
                 await websocket.send(json.dumps({"type": "response", "response": resp}))
+                await asyncio.sleep(1)
+                await websocket.send(json.dumps({"type": "questions", "questions": questions}))
+
     except websockets.exceptions.ConnectionClosed:
         print("Client connection closed")
     except Exception as e:
