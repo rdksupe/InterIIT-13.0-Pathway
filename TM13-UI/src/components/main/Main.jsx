@@ -62,42 +62,42 @@ const Main = () => {
 		fetch('http://localhost:5000/convert', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': 'application/pdf',
 			},
 			body: JSON.stringify({ content: markdownContent }),
 		})
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Failed to send data to the backend');
-			}
-			return response.json();  // Expecting a JSON response
-		})
-		.then(data => {
-			console.log('Markdown content sent successfully to backend:', data.message);
-	
-			// Now fetch the generated PDF from the backend after it's processed
-			return fetch('http://localhost:5000/download-pdf', {
-				method: 'GET',
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Failed to send data to the backend');
+				}
+				return response.json();  // Expecting a JSON response
+			})
+			.then(data => {
+				console.log('Markdown content sent successfully to backend:', data.message);
+
+				// Now fetch the generated PDF from the backend after it's processed
+				return fetch('http://localhost:5000/download-pdf', {
+					method: 'GET',
+				});
+			})
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Failed to fetch the generated PDF');
+				}
+				return response.blob(); // Convert the response to a blob
+			})
+			.then(blob => {
+				// Create a download link and trigger the download
+				const link = document.createElement('a');
+				link.href = window.URL.createObjectURL(blob);
+				link.download = 'generated_output.pdf'; // Specify the filename
+				document.body.appendChild(link);
+				link.click();
+				link.remove();
+			})
+			.catch(error => {
+				console.error('Error during the process:', error);
 			});
-		})
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Failed to fetch the generated PDF');
-			}
-			return response.blob(); // Convert the response to a blob
-		})
-		.then(blob => {
-			// Create a download link and trigger the download
-			const link = document.createElement('a');
-			link.href = window.URL.createObjectURL(blob);
-			link.download = 'generated_output.pdf'; // Specify the filename
-			document.body.appendChild(link);
-			link.click();
-			link.remove();
-		})
-		.catch(error => {
-			console.error('Error during the process:', error);
-		});
 	};
 
 	// Auto-scrolling effect when resultData changes
@@ -123,29 +123,29 @@ const Main = () => {
 		setShowResults(true);
 		setLoading(true);
 		setRecentPrompt(input);
-		if(chatNo == 0)
-			setPrevPrompts(prev=>[...prev,input]);
-		setChatNo(chatNo+1);
-		
+		if (chatNo == 0)
+			setPrevPrompts(prev => [...prev, input]);
+		setChatNo(chatNo + 1);
+
 		let query = input;
 		if (socket && socket.readyState === WebSocket.OPEN) {
 			socket.send(JSON.stringify({ type: 'query', query }));
 		}
 		try {
 			fetch('http://localhost:5000/query', {
-			  method: 'POST',
-			  headers: {
-				'Content-Type': 'application/json',
-			  },
-			  body: JSON.stringify({ query: input }), // Send input to the Flask backend
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ query: input }), // Send input to the Flask backend
 			});
-		
+
 			console.log('Query sent successfully!');
 
-		  } catch (error) {
+		} catch (error) {
 			console.error('Error sending query to backend:', error);
 			setLoading(false);
-		  }
+		}
 	}
 
 	// Adjust textarea height dynamically
@@ -169,11 +169,40 @@ const Main = () => {
 
 	const [files, setFiles] = useState([]);
 
-	const handleFileChange = (event) => {
-		setEvenData(event);
+	const handleFileChange = async (event) => {
+		const files = event.target.files;
+		await setEvenData(event);
 		console.log(event);
 
-	};
+		if (files.length > 0) {
+			const formData = new FormData();
+
+			// Append each selected file to the FormData object
+			for (let i = 0; i < files.length; i++) {
+				// formData.append('files', files[i]);
+			
+			formData.append('file', files[i]); 
+
+			try {
+				// Send a POST request
+				const response = await fetch('http://35.184.195.118:8000/upload', {
+					method: 'POST',
+					body: formData,
+				});
+
+				if (response.ok) {
+					const result = await response.json();
+					console.log('Files uploaded successfully:', result);
+				} else {
+					console.error('Error uploading files:', response.statusText);
+				}
+			} catch (error) {
+				console.error('Error during upload:', error);
+			}
+		}
+
+		};
+	}
 
 	const triggerFileInput = () => {
 		document.getElementById('hiddenFileInput').click(); // Programmatically trigger click on hidden input
@@ -181,27 +210,28 @@ const Main = () => {
 
 	useEffect(() => {
 
-		try{
+		try {
 			const ws = new WebSocket('ws://localhost:8090');
 
 			ws.onopen = () => {
 				console.log('WebSocket connected to agent server');
-				
+
 			};
 			ws.onmessage = (event) => {
 				try {
 					const data = JSON.parse(event.data);
 
 					if (data.type === 'agents') {
-						
-						console.log("agents data", data);
-						if(agent.current === true){
 
-						onRenderAgent(data.response);
-						setPrevResults(prev=>[...prev,data.response]);
-						setRecentPrompt(prevPrompts)
-						console.log(data.response);
-						setMarkdownContent(data.response);}
+						console.log("agents data", data);
+						if (agent.current === true) {
+
+							onRenderAgent(data.response);
+							setPrevResults(prev => [...prev, data.response]);
+							setRecentPrompt(prevPrompts)
+							console.log(data.response);
+							setMarkdownContent(data.response);
+						}
 					}
 				} catch (error) {
 					console.error('Error parsing WebSocket message:', error);
@@ -215,14 +245,14 @@ const Main = () => {
 				ws.close();
 			};
 		}
-		catch(error){
+		catch (error) {
 			console.error('Verbose WebSocket Server Not Connected', error);
 		}
 	}, []);
 
 	useEffect(() => {
 		const ws = new WebSocket('ws://localhost:8080');
-		try{	
+		try {
 			ws.onopen = () => {
 				console.log('WebSocket connected');
 			};
@@ -231,11 +261,11 @@ const Main = () => {
 					const data = JSON.parse(event.data);
 
 					if (data.type === 'graph') {
-						
+
 						const graph = JSON.parse(data.response);
 						console.log(graph);
 						setGraphData(graph);
-					
+
 					} else if (data.type === 'response') {
 						agent.current = false;
 						onRender(data.response);
@@ -254,7 +284,7 @@ const Main = () => {
 				ws.close();
 			};
 		}
-		catch(error){
+		catch (error) {
 			console.error('Main WebSocket Server Not Connected', error);
 		}
 	}, []);
@@ -339,61 +369,61 @@ const Main = () => {
 								<p>{recentPrompt}</p>
 							</div>
 							<div>
-							{!agent.current ?	
-								(<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
-									
-								<img src={assets.pway_icon} className="pway-res" alt="" />
-									{loading ? (
-										<div className="loader">
-											<hr />
-											<hr />
-											<hr />
-										</div>
-									) : (
-										<div className="markdown-content" >
-											<ReactMarkdown
-											rehypePlugins={[rehypeRaw]} 
-											remarkPlugins={[remarkGfm]}
-											components={{
-												a: ({ href, children }) => (
-												<a href={href} target="_blank" rel="noopener noreferrer">
-													{children}
-												</a>
-												)
-											}}>{resultData}</ReactMarkdown>
-										</div>
-									)}
-								</div>):(
-								<div className="result-data" ref={agentDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
-									<img src={assets.pway_icon} className="pway-res" alt="" />
-									{loading ? (
-										<div className="loader">
-											<hr />
-											<hr />
-											<hr />
-										</div>
-									) : (
-										
+								{!agent.current ?
+									(<div className="result-data" ref={resultDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
 
-										<div className="markdown-content" style={{color: 'grey'}}>
-											<ReactMarkdown
-											rehypePlugins={[rehypeRaw]} 
-											remarkPlugins={[remarkGfm]}
-											components={{
-												a: ({ href, children }) => (
-												<a href={href} target="_blank" rel="noopener noreferrer">
-													{children}
-												</a>
-												)
-											}}>{agentData}</ReactMarkdown>
+										<img src={assets.pway_icon} className="pway-res" alt="" />
+										{loading ? (
+											<div className="loader">
+												<hr />
+												<hr />
+												<hr />
+											</div>
+										) : (
+											<div className="markdown-content" >
+												<ReactMarkdown
+													rehypePlugins={[rehypeRaw]}
+													remarkPlugins={[remarkGfm]}
+													components={{
+														a: ({ href, children }) => (
+															<a href={href} target="_blank" rel="noopener noreferrer">
+																{children}
+															</a>
+														)
+													}}>{resultData}</ReactMarkdown>
+											</div>
+										)}
+									</div>) : (
+										<div className="result-data" ref={agentDataRef} style={{ overflowY: 'auto', maxHeight: '400px' }}>
+											<img src={assets.pway_icon} className="pway-res" alt="" />
+											{loading ? (
+												<div className="loader">
+													<hr />
+													<hr />
+													<hr />
+												</div>
+											) : (
+
+
+												<div className="markdown-content" style={{ color: 'grey' }}>
+													<ReactMarkdown
+														rehypePlugins={[rehypeRaw]}
+														remarkPlugins={[remarkGfm]}
+														components={{
+															a: ({ href, children }) => (
+																<a href={href} target="_blank" rel="noopener noreferrer">
+																	{children}
+																</a>
+															)
+														}}>{agentData}</ReactMarkdown>
+												</div>
+
+											)}
 										</div>
-										
 									)}
-								</div>
-							)}
 							</div>
 							{downloadData && (
-								<img src = {assets.download_icon} onClick={generatePDF} style={{width: '20px', marginTop: '1vh', marginLeft:'7vh'}}>
+								<img src={assets.download_icon} onClick={generatePDF} style={{ width: '20px', marginTop: '1vh', marginLeft: '7vh' }}>
 								</img>
 							)}
 						</div>
@@ -426,6 +456,7 @@ const Main = () => {
 							<img src={assets.attach_icon} alt="Upload" onClick={triggerFileInput} />
 							<input
 								multiple
+								webkitdirectory="true"
 								id="hiddenFileInput"
 								type="file"
 								style={{ display: 'none' }} // Hide the input field
@@ -442,7 +473,7 @@ const Main = () => {
 						<p></p>
 					</div>
 				</div>
-			
+
 			</div>
 		</div>
 	);
