@@ -1,1 +1,16 @@
+<<<<<<< Updated upstream
 []
+=======
+[
+    {
+        "company_name": "AT&TInc.",
+        "ticker_symbol": "T",
+        "file_path": "src/AT&TInc._stock_data.csv"
+    },
+    {
+        "company_name": "DirecTV",
+        "ticker_symbol": "DTV",
+        "file_path": "src/DirecTV_stock_data.csv"
+    }
+]
+>>>>>>> Stashed changes
