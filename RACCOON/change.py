@@ -7,6 +7,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import queue
 import difflib
+from pathlib import Path
 
 
 class MyHandler(FileSystemEventHandler):
@@ -23,8 +24,8 @@ class MyHandler(FileSystemEventHandler):
             "response": f'Event type: {event.event_type} path: {event.src_path}'
         }
         print(f'event type: {event.event_type} path : {event.src_path}')
-        if(event.src_path == ".\ProcessLogs.md"):
-            print(f'Pizza lelo')
+        if(Path(event.src_path) == Path("./ProcessLogs.md")):
+            print(f'Running')
             with open("ProcessLogs.md", 'r') as file:
                 current_content = file.read()
 
