@@ -8,9 +8,7 @@ from openai import OpenAI
 load_dotenv('../../.env')
 client = OpenAI(api_key=os.getenv('OPEN_AI_API_KEY_30'))
 
-def generate_chart(file_path: str) -> str:
-    with open(file_path, 'r', encoding='utf-8') as md_file:
-        content = md_file.read()
+def generate_chart(content: str) -> str:
     """
     Analyzes a markdown file's content, determines if a chart can be generated, updates the markdown file
     to include the chart, and generates the chart using AI-generated Python code.
@@ -51,11 +49,11 @@ def generate_chart(file_path: str) -> str:
         ]
     )
 
-    response = completion.choices[0].message.content.strip()
+    response_text = completion.choices[0].message.content.strip()
 
     file_path = 'response-withCharts.md'
     with open(file_path, 'w', encoding='utf-8') as md_file:
-        md_file.write(response)
+        md_file.write(response_text)
     print("done")
     repl = PythonREPL()
 
@@ -110,8 +108,8 @@ def generate_chart(file_path: str) -> str:
     try:
         result = repl.run(response)
         logging.info(f"Execution Result: {result}")
-        return "Image Saved"
+        return response_text
     except Exception as e:
         logging.error(f"Failed to execute code. Error: {repr(e)}")
-        return "Error"
+        return f"Error {e}"
 

@@ -6,6 +6,7 @@ import time
 import json
 import google.generativeai as genai
 import re
+import concurrent.futures
 
 from Agents.Agents import Agent
 from Agents.Smack import Smack
@@ -19,6 +20,7 @@ from Agents.LATS.Solve_subquery import SolveSubQuery
 from Agents.conciseLatsAgent import conciseAns_vanilla_LATS
 from langchain_community.callbacks import get_openai_callback
 from langchain_openai import ChatOpenAI
+from GenerateQuestions import genQuestion
 
 from Agents.LATS.NewTools import *
 import json
@@ -56,7 +58,7 @@ with open("tickers.txt", "a") as f_ticker:
     f_ticker.write('')
 
 query = '''
-Hello Baby Gurl
+Evaluate the financial performance of BTG's key product lines in the last two years, highlighting any segments experiencing significant revenue decline or margin
 '''
 
 guard_rails, reasonings = applyTopicalGuardails(query)
@@ -78,8 +80,10 @@ if guard_rails:
         out_str = ''''''
 
         agentsList = []
-        
+        addn_questions = []
+
         for sub_task in plan['sub_tasks']:
+            addn_questions.append(plan['sub_tasks'][sub_task]['content'])
             agent_name = plan['sub_tasks'][sub_task]['agent']
             agent_role = plan['sub_tasks'][sub_task]['agent_role_description']
             local_constraints = plan['sub_tasks'][sub_task]['local_constraints']
@@ -90,45 +94,52 @@ if guard_rails:
             agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
             agentsList.append(agent)
         
-        smack = Smack(agentsList)
-        taskResultsDict = smack.executeSmack()
-        for task in taskResultsDict:
-            out_str += f'{taskResultsDict[task]} \n'
+        def executeComplexPipeline(agentsList):
+            smack = Smack(agentsList)
+            taskResultsDict = smack.executeSmack()
+            for task in taskResultsDict:
+                out_str += f'{taskResultsDict[task]} \n'
 
-        #Need to test this later
-        if IS_RAG == True:
-            rag_context, rag_processed_response = ragAgent(query, key_dict[LLM], LLM, state = 'report')
-            out_str = f'{rag_processed_response}\n \n{out_str}'
-            fin_resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
-        #Tested multiple times
-        else:
-            fin_resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
-        os.makedirs('./output', exist_ok=True)
-        with open('./output/individual_response.json', 'w') as json_file:
-            json.dump(taskResultsDict, json_file, indent=4)
+            #Need to test this later
+            if IS_RAG == True:
+                rag_context, rag_processed_response = ragAgent(query, key_dict[LLM], LLM, state = 'report')
+                out_str = f'{rag_processed_response}\n \n{out_str}'
+                fin_resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
+            #Tested multiple times
+            else:
+                fin_resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
+            os.makedirs('./output', exist_ok=True)
 
-        with open ('./output/raw_response.md', 'w') as f:
-            if LLM=='GEMINI':
-                f.write(str(out_str))
-            elif LLM=='OPENAI':
-                f.write(str(out_str))
-        with open ('./output/drafted_response.md', 'w') as f:
-            if LLM=='GEMINI':
-                fin_resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', fin_resp, flags=re.DOTALL)
-                f.write(str(fin_resp))
-            elif LLM=='OPENAI':
-                fin_resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', fin_resp, flags=re.DOTALL)
-                f.write(str(fin_resp))
-        with open ('./output/response_1.md', 'w') as f:
-            print(type(taskResultsDict[sub_task]))
-            print(taskResultsDict[sub_task])
-            f.write(taskResultsDict[sub_task])
+            with open ('./output/drafted_response.md', 'w') as f:
+                if LLM=='GEMINI':
+                    fin_resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', fin_resp, flags=re.DOTALL)
+                    fin_resp = generate_chart(fin_resp)
+                    f.write(str(fin_resp))
+                elif LLM=='OPENAI':
+                    fin_resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', fin_resp, flags=re.DOTALL)
+                    fin_resp = generate_chart(fin_resp)
+                    f.write(str(fin_resp))
+            return fin_resp
 
-        generate_chart("output/drafted_response.md")
+
+        def generateAddnQuestions(addn_questions):
+            final_questions = []
+            for question in addn_questions:
+                refinedQuestion = genQuestion(question)
+                final_questions.append(question)
+            return final_questions
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future_one = executor.submit(executeComplexPipeline)
+            future_two = executor.submit(generateAddnQuestions)
+
+            resp = future_one.result()
+            additionalQuestions = future_two.result()
+
+
         
     elif query_type == 'simple':
         tools_list = [get_stock_data, web_search_simple, get_company_profile, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
-        
         #Need to test this later
         if IS_RAG == True:
             rag_context = ragAgent(query, key_dict[LLM], LLM, state = "concise")

@@ -87,6 +87,7 @@ async def mainBackend(query, websocket):
         f.write("")
     with open("tickers.txt", "a") as f_ticker:
         f_ticker.write('')
+
     guard_rails, reasonings = applyTopicalGuardails(query)
     if guard_rails:
         query_type = classifierAgent(query, GOOGLE_API_KEY).lower()
@@ -107,8 +108,10 @@ async def mainBackend(query, websocket):
             out_str = ''''''
 
             agentsList = []
+            addn_questions = []
             
             for sub_task in plan['sub_tasks']:
+                addn_questions.append(plan['sub_tasks'][sub_task]['content'])
                 agent_name = plan['sub_tasks'][sub_task]['agent']
                 agent_role = plan['sub_tasks'][sub_task]['agent_role_description']
                 local_constraints = plan['sub_tasks'][sub_task]['local_constraints']
@@ -119,49 +122,56 @@ async def mainBackend(query, websocket):
                 agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
                 agentsList.append(agent)
             
-            smack = Smack(agentsList)
-            taskResultsDict = smack.executeSmack()
-            for task in taskResultsDict:
-                out_str += f'{taskResultsDict[task]} \n'
-            resp = ''
-            #Need to test this later
-            if IS_RAG == True:
-                rag_context, rag_processed_response = ragAgent(query, key_dict[LLM], LLM, state = 'report')
-                out_str = f'{rag_processed_response}\n \n{out_str}'
-                resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
-                resp = str(resp)
-                await asyncio.sleep(1)
-                await websocket.send(json.dumps({"type": "response", "response": resp}))
-            #Tested multiple times
-            else:
-                resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
-                
+            def executeComplexPipeline(agentsList):
+                smack = Smack(agentsList)
+                taskResultsDict = smack.executeSmack()
+                for task in taskResultsDict:
+                    out_str += f'{taskResultsDict[task]} \n'
 
-            with open('./output/individual_response.json', 'w') as json_file:
-                json.dump(taskResultsDict, json_file, indent=4)
-
-            with open ('./output/raw_response.md', 'w') as f:
-                if LLM=='GEMINI':
-                    f.write(str(out_str))
-                elif LLM=='OPENAI':
-                    f.write(str(out_str))
-            with open ('./output/drafted_response.md', 'w') as f:
-                if LLM=='GEMINI':
-                    resp_edited = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                    f.write(str(resp_edited))
-                    await asyncio.sleep(1)
-                    await websocket.send(json.dumps({"type": "response", "response": str(resp_edited)}))
-                elif LLM=='OPENAI':
-                    resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                    f.write(str(resp))
+                resp = ''
+                #Need to test this later
+                if IS_RAG == True:
+                    rag_context, rag_processed_response = ragAgent(query, key_dict[LLM], LLM, state = 'report')
+                    out_str = f'{rag_processed_response}\n \n{out_str}'
+                    resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
+                    resp = str(resp)
                     await asyncio.sleep(1)
                     await websocket.send(json.dumps({"type": "response", "response": resp}))
-            with open ('./output/response_1.md', 'w') as f:
-                print(type(taskResultsDict[sub_task]))
-                print(taskResultsDict[sub_task])
-                f.write(taskResultsDict[sub_task])
+                #Tested multiple times
+                else:
+                    resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
+                    
 
-            generate_chart("output/drafted_response.md")
+                with open ('./output/drafted_response.md', 'w') as f:
+                    if LLM=='GEMINI':
+                        resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+                        resp = generate_chart(resp)
+                        f.write(str(resp))
+                    elif LLM=='OPENAI':
+                        resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+                        resp = generate_chart(resp)
+                        f.write(str(resp))
+
+            def generateAddnQuestions(addn_questions):
+                final_questions = []
+                for question in addn_questions:
+                    refinedQuestion = genQuestion(question)
+                    final_questions.append(question)
+                return final_questions
+
+            resp = ''
+            additionalQuestions = []
+
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future_one = executor.submit(executeComplexPipeline)
+                future_two = executor.submit(generateAddnQuestions)
+
+                resp = future_one.result()
+                additionalQuestions = future_two.result()
+                
+            await asyncio.sleep(1)
+            await websocket.send(json.dumps({"type": "response", "response": resp}))
+            await websocket.send(json.dumps({"type": "questions", "response": additionalQuestions}))
             
         elif query_type == 'simple':
             print("RUNNING SIMPLE TASK PIPELINE")
@@ -198,6 +208,8 @@ async def mainBackend(query, websocket):
         with open("Bad_Question.md", "w") as f:
             f.write(resp)
         print(f'Total Time: {time.time()-now}')
+        await asyncio.sleep(1)
+        await websocket.send(json.dumps({"type": "response", "response": resp}))
 
 async def handle_connection(websocket):
     try:
