@@ -1,6 +1,6 @@
 from flask import Flask, request, send_file
 from flask_cors import CORS
-from get_data import get_stock_data,get_data,extract_and_convert_to_json
+from get_data import extract_and_convert_to_json
 from convert import convert_to_html
 import os
 import json
@@ -18,7 +18,7 @@ def handle_query():
 
     # Log or process the received query
     print(f"Received query: {query}")
-    # get_data(query)
+    extract_and_convert_to_json(query)
     return '',204
 
 

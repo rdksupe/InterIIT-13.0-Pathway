@@ -96,6 +96,4 @@ def get_stock_data(ticker_symbol, start_date, end_date, output_file):
         logging.error(f"Error fetching stock data for {ticker_symbol}: {e}")
 
 
-# Example usage
-query = "Fetch the stock data for Apple, Microsoft, and Amazon."
-extract_and_convert_to_json(query)
+
