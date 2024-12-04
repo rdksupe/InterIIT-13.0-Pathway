@@ -20,7 +20,8 @@ from langchain_core.runnables import (
 )
 from langchain_openai import ChatOpenAI
 
-
+#TO CHANGE IF POSSIBLE
+from LLMs import GPT4o_mini_LATS
 
 load_dotenv('../../.env')
 
@@ -41,10 +42,9 @@ def conciseAns_vanilla(query, api_key, LLM, tools_list):
         extra information, and don't provide detailed analysis. Only answer what is asked
         with the NECESSARY information backing it.
     '''
-    llm = ChatOpenAI(model="gpt-4o-mini")
 
     prompt = hub.pull("hwchase17/openai-tools-agent")
-    agent = create_tool_calling_agent(llm, tools_list, prompt)
+    agent = create_tool_calling_agent(GPT4o_mini_LATS, tools_list, prompt)
     agent_executor = AgentExecutor(agent=agent, tools=tools_list, verbose=True)
     response = agent_executor.invoke(
         {

@@ -77,7 +77,6 @@ if guard_rails:
             json.dump(dic_for_UI_graph, fp)
         pass
         
-        response_dict = dict()
         out_str = ''''''
 
         agentsList = []
@@ -96,6 +95,7 @@ if guard_rails:
             agentsList.append(agent)
         
         def executeComplexPipeline(agentsList):
+            out_str = ''''''
             smack = Smack(agentsList)
             taskResultsDict = smack.executeSmack()
             for task in taskResultsDict:

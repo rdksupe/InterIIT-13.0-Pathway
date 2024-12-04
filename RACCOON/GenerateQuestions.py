@@ -2,8 +2,9 @@ import google.generativeai as genai
 import os
 from datetime import datetime
 from dotenv import load_dotenv
-from openai import OpenAI
 import json
+
+from LLMs import conversation_complex
 
 load_dotenv('../.env')
 
@@ -24,8 +25,10 @@ def genQuestionComplex(main_query, sub_task, api_key, LLM):
 
     {sub_task}
     '''
+
+    prompt = f'''{system_prompt}\n\n {user_prompt}'''
     
-    client = OpenAI(api_key=api_key)
+    '''client = OpenAI(api_key=api_key)
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -36,7 +39,9 @@ def genQuestionComplex(main_query, sub_task, api_key, LLM):
             }
         ]
     )
-    response = completion.choices[0].message.content.strip()
+    response = completion.choices[0].message.content.strip()'''
+
+    response = conversation_complex.run(f'''{prompt}''')
 
     return response
 
@@ -64,8 +69,11 @@ def genQuestionSimple(query, api_key, LLM):
 
     {query}
     '''
+
+    prompt = f'''{system_prompt}\n\n {user_prompt}'''
+    response = conversation_complex.run(f'''{prompt}''')
     
-    client = OpenAI(api_key=api_key)
+    '''client = OpenAI(api_key=api_key)
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -76,6 +84,6 @@ def genQuestionSimple(query, api_key, LLM):
             }
         ]
     )
-    response = completion.choices[0].message.content.strip()
+    response = completion.choices[0].message.content.strip()'''
     print("Executed genQuestionSimple")
     return json.loads(response)
