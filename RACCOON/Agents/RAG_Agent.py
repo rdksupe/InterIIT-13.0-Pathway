@@ -20,11 +20,11 @@ def clean(text):
     return text[text.index('{'):text.rfind('}')+1]
 
 
-def ragAgent(query, api_key, LLM, state):
+def ragAgent(query, state):
     fin_context = ''''''
-    rag_result = query_documents.invoke(query)
-
+    
     if state == "report":
+        rag_result = retrieve_documents.invoke(query)
         fin_context += f'{rag_result} \n'
         sys_prompt =  '''
         Extract the Key Words, Jargons and Important Concepts from the information given below and make queries in order to query a 
@@ -56,7 +56,7 @@ def ragAgent(query, api_key, LLM, state):
         
         dic =  dict(json.loads(clean(response.split("```")[-2].split("json")[1])))
         for p in dic:
-            rag_resp = query_documents.invoke(query)
+            rag_resp = retrieve_documents.invoke(query)
             fin_context += f'{rag_resp} \n'
 
         prompt_2 =  f'''
@@ -88,4 +88,5 @@ def ragAgent(query, api_key, LLM, state):
         return fin_context, fin_response
         
     elif state == "concise":
-        return rag_result
+        print("Hello This is concise")
+        return simple_query_documents.invoke(query)

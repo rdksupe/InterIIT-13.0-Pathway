@@ -109,7 +109,7 @@ async def mainBackend(query, websocket, rag):
             resp = ''
             #Need to test this later
             if IS_RAG == True:
-                rag_context, rag_processed_response = ragAgent(query, key_dict[LLM], LLM, state = 'report')
+                rag_context, rag_processed_response = ragAgent(query, state = 'report')
                 out_str = f'{rag_processed_response}\n \n{out_str}'
                 resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
                 resp = str(resp)
@@ -145,13 +145,13 @@ async def mainBackend(query, websocket, rag):
             async def executeSimplePipeline(query):
                 resp = ''
                 if IS_RAG == True:
-                    rag_context = ragAgent(query, key_dict[LLM], LLM, state = "concise")
-                    resp = conciseAns_rag(query, rag_context, out_str, api_key, LLM)['output']
+                    resp = ragAgent(query, state = "concise")
 
                 else:
                     tools_list = [get_stock_data, web_search_simple, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
                     resp = conciseAns_vanilla(query, tools_list)
                     resp = resp['output']
+                resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
                 return str(resp)
 
             async def run_parallel(query):
@@ -180,7 +180,7 @@ async def mainBackend(query, websocket, rag):
         await websocket.send(json.dumps({"type": "response", "response": resp}))
 
 async def handle_connection(websocket):
-    rag = False
+    rag = True
     async for message in websocket:
         data = json.loads(message)
         if data['type'] == 'query':

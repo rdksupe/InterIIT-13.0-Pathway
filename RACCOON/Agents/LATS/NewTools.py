@@ -1310,6 +1310,117 @@ def get_reddit_search(query, limit=5):
         
         return "No posts found matching the query."
 
+@tool
+def simple_query_documents(prompt: str) -> Dict:
+    """
+    Query documents using a Retrieval-Augmented Generation (RAG) endpoint.
+    This should be the first choice before doing web search,
+    if this fails or returns unsatisfactory results, then use web search for the same query.
+
+    Args:
+        prompt (str): The prompt to send to the RAG endpoint.
+        source (str): The source URL of the document.
+
+    Returns:
+        Dict: The JSON response from the RAG endpoint, containing the retrieved information and generated answer.
+    """
+    try:    
+        print("Started_simple")
+        start = time.time()
+        
+        payload = {
+            "query": prompt,  # No need to quote the prompt
+            "destination": 'user'  # source should be a string, not a set
+        }
+        print(payload)
+        response = requests.post(
+            "http://localhost:4005/generate",
+            headers={"Content-Type": "application/json"},
+
+            json=payload
+
+        )
+        
+        print(f"Response status code: {response.status_code}")
+        print("Posted_simple")
+        response.raise_for_status()  # Raise an error for HTTP issues
+        print("Raised_simple")
+        
+        end = time.time()
+        print(f"Time taken: {end - start} seconds")
+        
+        result = response.json()
+        print(result)
+        return result
+    
+    except requests.RequestException as e:
+        print(f"HTTP Request failed: {e}")
+        if hasattr(e, 'response'):
+            print(f"Response status code: {e.response.status_code}")
+            print(f"Response content: {e.response.text}")
+        log_error(
+            tool_name="simple_query_documents",
+            error_message=str(e),
+            additional_info={"prompt": prompt, "source": source}
+        )
+        
+        return ''
+        
+@tool
+def retrieve_documents(prompt: str) -> Dict:
+    """
+    Query documents using a Retrieval-Augmented Generation (RAG) endpoint.
+    This should be the first choice before doing web search,
+    if this fails or returns unsatisfactory results, then use web search for the same query.
+
+    Args:
+        prompt (str): The prompt to send to the RAG endpoint.
+        source (str): The source URL of the document.
+
+    Returns:
+        Dict: The JSON response from the RAG endpoint, containing the retrieved information and generated answer.
+    """
+    try:    
+        print("Started")
+        start = time.time()
+        
+        payload = {
+            "query": prompt,
+            "k" : 2  , # No need to quote the prompt # source should be a string, not a set
+            "destination" : 'user'
+        }
+        
+        response = requests.post(
+            "http://localhost:4006/v1/retrieve",
+            headers={"Content-Type": "application/json"},
+
+            json=payload
+
+        )
+        
+        print(f"Response status code: {response.status_code}")
+        print("Posted")
+        response.raise_for_status()  # Raise an error for HTTP issues
+        print("Raised")
+        
+        end = time.time()
+        print(f"Time taken: {end - start} seconds")
+        
+        result = response.json()
+        print(result)
+        return result
+    
+    except requests.RequestException as e:
+        print(f"HTTP Request failed: {e}")
+        if hasattr(e, 'response'):
+            print(f"Response status code: {e.response.status_code}")
+            print(f"Response content: {e.response.text}")
+        log_error(
+            tool_name="query_documents",
+            error_message=str(e),
+            additional_info={"prompt": prompt, "source": source}
+        )
+        return web_search_simple.invoke(prompt)
 
 # query = "random"
 # symbol = "random"
