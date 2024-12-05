@@ -69,88 +69,84 @@ async def mainBackend(query, websocket, rag):
 
     guard_rails, reasonings = applyTopicalGuardails(query)
     if guard_rails:
-
         query_type = classifierAgent(query, GOOGLE_API_KEY).lower()
         if query_type == "complex":
-            print("RUNNING COMPLEX TASK PIPELINE")
-            plan = plannerAgent(query, api_key, LLM)
-
-            #This is the dictionary for UI Graph Construction
-            dic_for_UI_graph = makeGraphJSON(plan['sub_tasks'])
-            print(dic_for_UI_graph)
-            await asyncio.sleep(1)
-            await websocket.send(json.dumps({"type": "graph", "response": json.dumps(dic_for_UI_graph)}))
-
-            with open('Graph.json', 'w') as fp:
-                json.dump(dic_for_UI_graph, fp)
-            
-            out_str = ''''''
-
-            agentsList = []
-            addn_questions = []
-            
-            for sub_task in plan['sub_tasks']:
-                addn_questions.append(plan['sub_tasks'][sub_task]['content'])
-                agent_name = plan['sub_tasks'][sub_task]['agent']
-                agent_role = plan['sub_tasks'][sub_task]['agent_role_description']
-                local_constraints = plan['sub_tasks'][sub_task]['local_constraints']
-                task = plan['sub_tasks'][sub_task]['content']
-                dependencies = plan['sub_tasks'][sub_task]['require_data']
-                tools_list = plan['sub_tasks'][sub_task]['tools']
-                print(f'processing {agent_name}')
-                agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
-                agentsList.append(agent)
-            
-            
-            smack = Smack(agentsList)
-            taskResultsDict = smack.executeSmack()
-            for task in taskResultsDict:
-                out_str += f'{taskResultsDict[task]} \n'
             resp = ''
-            #Need to test this later
-            if IS_RAG == True:
-                rag_context, rag_processed_response = ragAgent(query, state = 'report')
-                out_str = f'{rag_processed_response}\n \n{out_str}'
-                resp = drafterAgent_rag(query, rag_context, out_str, api_key, LLM)
-                resp = str(resp)
+            #SORTED
+            print("RUNNING COMPLEX TASK PIPELINE")
+            if not IS_RAG:
+                plan = plannerAgent(query)
+
+                #This is the dictionary for UI Graph Construction
+                dic_for_UI_graph = makeGraphJSON(plan['sub_tasks'])
+                print(dic_for_UI_graph)
                 await asyncio.sleep(1)
-                await websocket.send(json.dumps({"type": "response", "response": resp}))
-            #Tested multiple times
-            else:
-                resp = drafterAgent_vanilla(query, out_str, api_key, LLM)
+                await websocket.send(json.dumps({"type": "graph", "response": json.dumps(dic_for_UI_graph)}))
+
+                with open('Graph.json', 'w') as fp:
+                    json.dump(dic_for_UI_graph, fp)
                 
-            with open ('./output/drafted_response.md', 'w') as f:
-                if LLM=='GEMINI':
-                    resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                    resp = generate_chart(resp)
-                    f.write(str(resp))
-                elif LLM=='OPENAI':
-                    resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                    resp = generate_chart(resp)
-                    f.write(str(resp))
+                out_str = ''''''
+
+                agentsList = []
+                addn_questions = []
+                
+                for sub_task in plan['sub_tasks']:
+                    addn_questions.append(plan['sub_tasks'][sub_task]['content'])
+                    agent_name = plan['sub_tasks'][sub_task]['agent']
+                    agent_role = plan['sub_tasks'][sub_task]['agent_role_description']
+                    local_constraints = plan['sub_tasks'][sub_task]['local_constraints']
+                    task = plan['sub_tasks'][sub_task]['content']
+                    dependencies = plan['sub_tasks'][sub_task]['require_data']
+                    tools_list = plan['sub_tasks'][sub_task]['tools']
+                    print(f'processing {agent_name}')
+                    agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
+                    agentsList.append(agent)
+                
+                
+                smack = Smack(agentsList)
+                taskResultsDict = smack.executeSmack()
+                for task in taskResultsDict:
+                    out_str += f'{taskResultsDict[task]} \n'
+                resp = drafterAgent_vanilla(query, out_str)
+                
+
+            #Need to test this later
+            else:
+                rag_context, rag_processed_response = ragAgent(query, state = 'report')
+                #resp = drafterAgent_rag(query, rag_context, out_str)
+                resp = rag_processed_response
+                resp = str(resp)
+                
+            resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+            resp = generate_chart(resp)
+
+            await asyncio.sleep(1)
+            await websocket.send(json.dumps({"type": "response", "response": resp}))
+                
+            with open ('./output/drafted_response.md', 'w') as f:\
+                f.write(str(resp))
 
             # final_questions = []
             # for question in addn_questions:
             #     refinedQuestion = genQuestionComplex(query, question)
             #     final_questions.append(question)
 
-            await asyncio.sleep(1)
-            await websocket.send(json.dumps({"type": "response", "response": resp}))
             # await asyncio.sleep(1)
             # await websocket.send(json.dumps({"type": "questions", "questions": final_questions[:3]}))
-            
+
+        #SORTED
         elif query_type == 'simple':
             print("RUNNING SIMPLE TASK PIPELINE")
             
             async def executeSimplePipeline(query):
                 resp = ''
-                if IS_RAG == True:
-                    resp = ragAgent(query, state = "concise")
-
+                if IS_RAG:
+                    resp = ragAgent(query, state = "concise")['answer']
                 else:
                     tools_list = [get_stock_data, web_search_simple, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
                     resp = conciseAns_vanilla(query, tools_list)
-                    resp = resp['output']
+                
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
                 return str(resp)
 

@@ -10,7 +10,7 @@ load_dotenv('../../.env')
 GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY_30')
 OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
 
-def drafterAgent_vanilla(query, text, api_key, LLM):
+def drafterAgent_vanilla(query, text):
     system_prompt = f'''
     Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. 
     All your searches and responses must be with respect to this time frame.
@@ -86,31 +86,12 @@ def drafterAgent_vanilla(query, text, api_key, LLM):
     {text}
     '''
 
-    if LLM == "GEMINI":
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(system_prompt+user_prompt).text
-        
-    elif LLM == "OPENAI":
-        response = conversation_complex.predict(input = f'''{system_prompt}\n\n+{user_prompt}''')
-        '''client = OpenAI(api_key=api_key)
-        completion = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {
-                    "role": "user",
-                    "content": f"{text}"
-                }
-            ]
-        )'''
-
-        #response = completion.choices[0].message.content.strip()
+    response = conversation_complex.predict(input = f'''{system_prompt}\n\n+{user_prompt}''')
 
     return response
 
 
-def drafterAgent_rag(query,rag_context, text, api_key, LLM):
+def drafterAgent_rag(query,rag_context, text):
     system_prompt = f'''
 
     You are an analyst who takes raw data and compiles it into comprehensive answers with detailed analysis.
@@ -164,26 +145,6 @@ def drafterAgent_rag(query,rag_context, text, api_key, LLM):
     {text}
     '''
 
-    if LLM == "GEMINI":
-        genai.configure(api_key=GOOGLE_API_KEY)
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(system_prompt+user_prompt).text
-        
-    elif LLM == "OPENAI":
-        response = conversation_complex.predict(input = f'''{system_prompt}\n\n+{user_prompt}''')
-        '''client = OpenAI(api_key=OPENAI_API_KEY)
-        completion = client.chat.completions.create(
-            model="gpt-4o-mini",
-            temperature=0.2,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {
-                    "role": "user",
-                    "content": f"{text}"
-                }
-            ]
-        )
-
-        response = completion.choices[0].message.content.strip()'''
+    response = conversation_complex.predict(input = f'''{system_prompt}\n\n+{user_prompt}''')
 
     return response

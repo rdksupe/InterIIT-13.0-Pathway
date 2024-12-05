@@ -24,7 +24,7 @@ def clean(text):
     return text[text.index('{'):text.rfind('}')+1]
 
 
-def plannerAgent(query,api_key =OPENAI_API_KEY, LLM="OPENAI"):
+def plannerAgent(query):
     
     sys = f'''Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses
         must be with respect to this time frame.'''
@@ -197,27 +197,8 @@ def plannerAgent(query,api_key =OPENAI_API_KEY, LLM="OPENAI"):
     '''
     prompt = prompt + tools_prompt
 
-
-    if LLM == "GEMINI":
-        genai.configure(api_key=GOOGLE_API_KEY)
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(prompt).text
-        dic =  json.loads(clean(response.split("```")[-2].split("json")[1]))
-    elif LLM == "OPENAI":
-        '''client = OpenAI(api_key=OPENAI_API_KEY)
-        completion = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        )
-
-        response = completion.choices[0].message.content.strip()'''
-        response = conversation_complex.predict(input = f'''{prompt}''')
-        dic =  json.loads(clean(response.split("```")[-2].split("json")[1]))
+    response = conversation_complex.predict(input = f'''{prompt}''')
+    dic =  json.loads(clean(response.split("```")[-2].split("json")[1]))
 
 
     with open('./Agents/plan.txt', 'w') as f:
