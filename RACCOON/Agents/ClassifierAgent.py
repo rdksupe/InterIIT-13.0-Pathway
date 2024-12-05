@@ -3,6 +3,7 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 load_dotenv('../../.env')
+load_dotenv('../.env')
 
 OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
 print(OPENAI_API_KEY)
@@ -42,3 +43,71 @@ def classifierAgent(query):
         model='gpt-4o-mini', messages=messages, temperature=0
     )
     return response.choices[0].message.content
+
+def classifierAgent_RAG(query, ragContext):
+    prompt = f'''
+    You are a classifier which determines if a question asks for a detailed response or a to-the point response.
+    
+    A query is detailed if it expects a long response, in form of a report and expects in depth analysis and reasoning.
+    When a user expects a detailed response, they would mention some key words like "in depth", "deep analysis", "report",
+    "long answer", "comprehensive report", "comprehensive analysis". OR it would ask for a multi-dimensional analysis of a topic.
+
+    For example: 'How did the merger of Jio and Disney Plus Hotstar impact the Indian OTT market?' is a detailed query because it has
+    to be analyzed from multiple standpoints and perspectives.
+
+    A query which is not detailed is simple.
+
+    output should be a single word answer between 'simple' or 'detailed'.
+
+    Following is the query:
+    {query}
+    '''
+    messages = [
+        {"role": "system", "content": prompt},
+    ]
+    response = client.chat.completions.create(
+        model='gpt-4o-mini', messages=messages, temperature=0
+    )
+    cat_1 = response.choices[0].message.content.lower()
+
+    if cat_1 == 'detailed':
+        query2 = f""" Does the folloing answer the query to it's fullest extent? 
+        query: {query}
+        context: {ragContext}
+
+        Answer only in 'yes' or 'no'
+        """
+        messages = [
+            {"role": "system", "content": prompt},
+        ]
+        response = client.chat.completions.create(
+            model='gpt-4o-mini', messages=messages, temperature=0
+        )
+        cat_2 = response.choices[0].message.content.lower()
+        if cat_2 == 'yes':
+            return 'complex'
+        else:
+            return 'simple'
+    else:
+        return 'simple'
+    
+if __name__ == '__main__':
+    queries = [
+        'What is the difference between the Annual Incomes of Apple and Google',
+        'What is the Difference between the Grades of Einstein and Tesla',
+        #'Provide the evaluation metrics of attenton is all you need along with the outputs',
+        #'Explain the Encoder-Decoder Mdodel of Transformers',
+        #'Provide the Formula in latex for Scaled Dot-Product Attention and explain how it works',
+        'What is Multi-Head attention and what are its applications',
+        'Why is self attention important in transformers',
+        #'What is the performance of Deep-Att + PosUnk, GNMT + RL, ConvS2S, Deep-Att + PosUnk Ensemble and Transformer (base model) on BLEU and Training Cost (FLOPs) performance metrics',
+        "What are the impacts of merger of FlipKart and Walmart on the Indian Economy and Markets",
+        "Analyze CoStar Group's and LoopNet's financial statements to identify potential areas of legal and financial risk associated with their overlapping business operations",
+        'Compare the legal compliance records of Tegna and Standard Media Group regarding broadcasting regulations',
+        #'Summarize the key terms and conditions of the merger agreement between Pfizer and Arena Pharmaceuticals, including payment structure and deal contingencies.',
+        "Analyze the legal implications of data privacy regulations (GDPR, CCPA) on Google's business model.",
+        "Determine the impact of the merger on the employment levels and compensation structures within Bank of America, using publicly available financial and SEC filings."
+    ]
+
+    for query in queries:
+        print(classifierAgent_RAG(query, 'ragContext'), classifierAgent(query))
