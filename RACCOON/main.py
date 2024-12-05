@@ -144,7 +144,7 @@ async def mainBackend(query, websocket, rag):
             async def executeSimplePipeline(query):
                 resp = ''
                 if IS_RAG:
-                    resp = ragAgent(query, state = "concise")['answer']
+                    resp = ragAgent(query, state = "concise")
                 else:
                     tools_list = [get_stock_data, web_search_simple, get_basic_financials, get_company_info, get_stock_dividends, get_income_stmt, get_balance_sheet, get_cash_flow, get_analyst_recommendations]
                     resp = conciseAns_vanilla(query, tools_list)

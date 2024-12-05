@@ -7,10 +7,11 @@ openai_api_key=os.getenv("OPEN_AI_API_KEY_30")
 from langchain_openai import ChatOpenAI
 
 #For Memory
-from langchain.memory import CombinedMemory, ConversationBufferMemory, ConversationSummaryMemory
+from langchain.memory import CombinedMemory, ConversationBufferMemory, ConversationSummaryMemory, ConversationEntityMemory
 from langchain.chains import ConversationChain
 from langchain.prompts import PromptTemplate
 from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain.memory.prompt import ENTITY_MEMORY_CONVERSATION_TEMPLATE
 
 
 # Agents/LATS/generate_candidates -> done
@@ -37,6 +38,8 @@ GPT4o_mini_Complex = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_
 
 #buffer_memory_complex = ConversationBufferMemory(memory_key="chat_history_lines",return_messages=True, input_key="input")
 summary_memory_complex = ConversationSummaryMemory(llm=GPT4o_mini_Complex, input_key="input")
+summary_memory_complex_entity = ConversationEntityMemory(llm=GPT4o_mini_Complex, input_key="input", return_messages=True)
+
 
 '''combined_memory_complex = CombinedMemory(
     memories=[
@@ -64,8 +67,9 @@ PROMPT = PromptTemplate(
 
 conversation_complex = ConversationChain(
     llm=GPT4o_mini_Complex,
-    memory=summary_memory_complex,
-    verbose=True
+    memory=summary_memory_complex_entity,
+    verbose=True,
+    prompt=ENTITY_MEMORY_CONVERSATION_TEMPLATE
 )
 
 
