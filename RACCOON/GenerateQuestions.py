@@ -4,7 +4,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import json
 
-from LLMs import conversation_complex
+from LLMs import conversation_complex, GPT4o_mini_Complex
 
 load_dotenv('../.env')
 
@@ -41,7 +41,7 @@ def genQuestionComplex(main_query, sub_task):
     )
     response = completion.choices[0].message.content.strip()'''
 
-    response = conversation_complex.predict(input = f'''{prompt}''')
+    response = GPT4o_mini_Complex.invoke(f'''{prompt}''').content
 
     return response
 
@@ -71,7 +71,7 @@ def genQuestionSimple(query):
     '''
 
     prompt = f'''{system_prompt}\n\n {user_prompt}'''
-    response = conversation_complex.predict(input = f'''{prompt}''')
+    response = GPT4o_mini_Complex.invoke(f'''{prompt}''').content
     print(response)
     
     '''client = OpenAI(api_key=api_key)
