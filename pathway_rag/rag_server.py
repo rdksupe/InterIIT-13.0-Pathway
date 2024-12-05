@@ -1,3 +1,8 @@
+"""
+This script defines a FastAPI server that uses OpenAI's RAG model to generate answers for user queries.
+The server retrieves relevant documents using a local retrieval service, reranks the documents using VoyageAI's reranker, 
+and then generates an answer using OpenAI's RAG model.
+"""
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Any
@@ -39,9 +44,11 @@ class AnswerResponse(BaseModel):
     answer: str
 
 
-
 def rerank_documents(query: str, documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Rerank documents using VoyageAI reranker."""
+    """
+    Rerank documents using VoyageAI reranker.
+    If the reranker service is not available, the original document order is used.
+    """
     if not is_rerank_service_available():
         print("Reranking service is not available. Using original document order.")
         return documents
@@ -66,7 +73,6 @@ def rerank_documents(query: str, documents: List[Dict[str, Any]]) -> List[Dict[s
         
         response = requests.post(VOYAGE_RERANK_URL, headers=headers, json=payload)
         response.raise_for_status()
-        
         reranked_results = response.json()
         
         # Reconstruct documents with reranked order and scores
@@ -82,7 +88,9 @@ def rerank_documents(query: str, documents: List[Dict[str, Any]]) -> List[Dict[s
         raise HTTPException(status_code=500, detail=f"Error during reranking: {str(e)}")
 
 def query_retrieval_service(query: str, k: int = 5) -> List[Dict[str, Any]]:
-    """Query the local retrieval service for relevant documents."""
+    """
+    Query the local retrieval service for relevant documents.
+    """
     try:
         encoded_query = quote(query)
         print(encoded_query)
@@ -91,8 +99,11 @@ def query_retrieval_service(query: str, k: int = 5) -> List[Dict[str, Any]]:
         return response.json()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error querying retrieval service: {str(e)}")
+
 def query_retrieval_service2(query: str, k: int = 2) -> List[Dict[str, Any]]:
-    """Query the local retrieval service for relevant documents."""
+    """
+    Query the local retrieval service for relevant documents
+    ."""
     try:
         print(query)
         encoded_query = quote(query)
@@ -103,15 +114,20 @@ def query_retrieval_service2(query: str, k: int = 2) -> List[Dict[str, Any]]:
     except Exception as e:
         print(query)
         raise HTTPException(status_code=500, detail=f"Error querying retrieval service: {str(e)}")
+
 def format_context(documents: List[Dict[str, Any]]) -> str:
-    """Format retrieved documents into context string."""
+    """
+    Format retrieved documents into context string
+    ."""
     formatted_docs = []
     for i, doc in enumerate(documents, 1):
         formatted_docs.append(f"Document {i} (Score: {doc.get('relevance_score', 'N/A')}):\n{doc.get('text', '')}")
     return "\n\n".join(formatted_docs)
 
 def generate_answer_openai(query: str, source: str,retrieved_docs: List[Dict[str, Any]], max_tokens: int = 1000) -> str:
-    """Generate an answer using OpenAI model."""
+    """
+    Generate an answer using OpenAI model
+    """
     try:
         print(query)
         context = format_context(retrieved_docs)
@@ -145,8 +161,11 @@ def generate_answer_openai(query: str, source: str,retrieved_docs: List[Dict[str
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating answer with OpenAI: {str(e)}")
+        
 def is_rerank_service_available() -> bool:
-    """Check if the VoyageAI reranking service is available."""
+    """
+    Check if the VoyageAI reranking service is available.
+    """
     try:
         headers = {
             "Authorization": f"Bearer {VOYAGE_API_KEY}",
@@ -164,6 +183,7 @@ def is_rerank_service_available() -> bool:
         return response.status_code == 200
     except Exception:
         return False
+
 @app.post("/generate", response_model=AnswerResponse)
 async def generate(query_request: Query):
     """

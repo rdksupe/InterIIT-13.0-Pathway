@@ -72,7 +72,7 @@ def ragAgent(query, state):
         \n
         '''
 
-        fin_response = GPT4o_mini_Complex.invoke(f'''{prompt_2}''').content
+        fin_response = GPT4o_mini_Complex.invoke(f'''{prompt_2}''').content"""
 
 
         return fin_context
@@ -84,4 +84,4 @@ def ragAgent(query, state):
         if type(resp) == str:
             return resp
         elif type(resp) == dict:
-            return resp['answer']"""
+            return resp['answer']

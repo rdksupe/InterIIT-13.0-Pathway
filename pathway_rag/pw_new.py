@@ -17,7 +17,12 @@ load_dotenv('../.env')
 # Configure text splitting parameters for document chunks
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=800)
 
+
 class DocumentProcessor:
+    """
+    A class to process documents and manage a document store server.
+    """
+
     def __init__(self, host: str = "127.0.0.1", port: int = 8001):
         # Configure environment and logging
         os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata"
@@ -41,7 +46,9 @@ class DocumentProcessor:
         )
 
     def initialize_vector_store(self, path1):
-        """Initialize document store with provided file path"""
+        """       
+        Initialize document store with provided file path
+        """
 
         source1 = pw.io.fs.read(path=path1, with_metadata=True, format="binary", mode="streaming")  
         path2 = "../RACCOON/temp_rag_space"
@@ -63,7 +70,9 @@ class DocumentProcessor:
 
 
     def setup_document_server(self):
-        """Configure document store server"""
+        """
+        Configure document store server
+        """
         if not self.vector_store:
             raise ValueError("Vector store not initialized")
             
@@ -73,18 +82,11 @@ class DocumentProcessor:
             document_store=self.vector_store
         )
 
-    
-        
-    # def run_server1(self):
-    #     """Run document server"""
-    #     self.app1.run_server()
-    #     print("VS live")
-    # def run_server2(self):
-    #     self.app2.run_server2()
-    #     print("KS live ")
 
     def start_document_server(self):
-        """Launch document server in background thread"""
+        """
+        Launch document server in background thread
+        """
         server_thread = threading.Thread(
             target=self.app1.run,
             name="BaseDocument"
@@ -105,17 +107,10 @@ def main():
     
     persistence_backend = pw.persistence.Backend.filesystem("./state/")
     persistence_config = pw.persistence.Config(persistence_backend)
-    # pw.run(
-    #     # monitoring_level=pw.MonitoringLevel.NONE,
-    #     # persistence_config=persistence_config,)
-    # pw.run()
     
     try:
         pw.run()
         processor.start_document_server()
-        # processor.run_server2()
-        # Run the question answering server
-        #processor.run_server()
     except KeyboardInterrupt:
         logging.info("Shutting down server...")
 

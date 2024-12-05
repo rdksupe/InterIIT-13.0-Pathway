@@ -1,3 +1,6 @@
+"""
+This module sets up various configurations for different ChatOpenAI models using the langchain library.
+"""
 import os
 from dotenv import load_dotenv
 load_dotenv('../.env')
