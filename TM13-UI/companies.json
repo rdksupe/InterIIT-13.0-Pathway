@@ -1,13 +1,3 @@
 [
-    {
-<<<<<<< HEAD
-        "company_name": "Aramco",
-        "ticker_symbol": "2222.SR",
-        "file_path": "src/Aramco_stock_data.csv"
-=======
-        "company_name": "Jio",
-        "ticker_symbol": "JIOFIN.NS",
-        "file_path": "src/Jio_stock_data.csv"
->>>>>>> 5e4dc120086dfea4d9d823c4abf1bafa4e3a615f
-    }
+    
 ]
