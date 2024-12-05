@@ -4,7 +4,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from LLMs import conversation_complex
+from LLMs import conversation_complex, GPT4o_mini_Complex
 
 load_dotenv('../../.env')
 GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY_30')
@@ -86,7 +86,7 @@ def drafterAgent_vanilla(query, text):
     {text}
     '''
 
-    response = conversation_complex.predict(input = f'''{system_prompt}\n\n+{user_prompt}''')
+    response = GPT4o_mini_Complex.invoke(f'''{system_prompt}\n\n+{user_prompt}''').content
 
     return response
 
@@ -145,6 +145,6 @@ def drafterAgent_rag(query,rag_context, text):
     {text}
     '''
 
-    response = conversation_complex.predict(input = f'''{system_prompt}\n\n+{user_prompt}''')
+    response = GPT4o_mini_Complex.invoke(f'''{system_prompt}\n\n+{user_prompt}''').content
 
     return response
