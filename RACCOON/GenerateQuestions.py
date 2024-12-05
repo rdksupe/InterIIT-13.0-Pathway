@@ -12,7 +12,7 @@ load_dotenv('../.env')
 
 OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
 
-def genQuestionComplex(main_query, sub_task):
+async def genQuestionComplex(main_query, sub_task):
     """
      Rephrases a given user prompt without dependence on any task or document.
         Args:
@@ -55,7 +55,7 @@ def genQuestionComplex(main_query, sub_task):
 
     return response
 
-def genQuestionSimple(query):
+async def genQuestionSimple(query):
     """ 
      Synthesizes five detailed questions related to a given query.
         Args:

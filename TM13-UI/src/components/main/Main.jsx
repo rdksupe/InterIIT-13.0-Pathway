@@ -276,7 +276,6 @@ const Main = () => {
 
 						console.log("agents data", data);
 						if (agent.current === true) {
-
 							onRenderAgent(data.response);
 							setPrevResults(prev => [...prev, data.response]);
 							setRecentPrompt(prevPrompts)
@@ -310,6 +309,7 @@ const Main = () => {
 			ws.onmessage = (event) => {
 				try {
 					const data = JSON.parse(event.data);
+					// console.log(data);
 					if (data.type === 'graph') {
 
 						const graph = JSON.parse(data.response);
@@ -323,8 +323,8 @@ const Main = () => {
 						setMarkdownContent(data.response);
 					}
 					else if (data.type === 'questions') {
-						console.log(data.questions);
-						setReccQs(data.questions);
+						console.log(data.response);
+						setReccQs(data.response);
 					}
 				} catch (error) {
 					console.error('Error parsing WebSocket message:', error);
@@ -502,7 +502,7 @@ const Main = () => {
 											}}
 											onClick={() => handleCardClick(reccQs[0])}
 										>
-											<p style={{ textAlign: "justify", margin: '0px 10px', padding: '10px' }}>{reccQs[0]}</p>
+											<p style={{ textAlign: "left", fontSize: '15px', margin: '0px 6px', padding: '2px' }}>{reccQs[0]}</p>
 										</div>
 									}
 
@@ -523,7 +523,7 @@ const Main = () => {
 											}}
 											onClick={() => handleCardClick(reccQs[1])}
 										>
-											<p style={{ textAlign: "justify", margin: '0px 10px', padding: '10px' }}>{reccQs[1]}</p>
+											<p style={{ textAlign: "left", fontSize: '15px',	 margin: '0px 6px', padding: '2px' }}>{reccQs[1]}</p>
 										</div>
 									}
 
@@ -543,7 +543,7 @@ const Main = () => {
 											}}
 											onClick={() => handleCardClick(reccQs[2])}
 										>
-											<p style={{ textAlign: "justify", margin: '0px 10px', padding: '10px' }}>{reccQs[2]}</p>
+											<p style={{ textAlign: "left", fontSize: '15px', margin: '0px 6px', padding: '2px' }}>{reccQs[2]}</p>
 										</div>
 									}
 								</div>

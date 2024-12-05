@@ -94,6 +94,7 @@ async def mainBackend(query, websocket, rag):
     guard_rails, reasonings = applyTopicalGuardails(query)
     
     resp = ''
+    additionalQuestions = None
     addn_questions = []
     
     if guard_rails:
@@ -135,6 +136,7 @@ async def mainBackend(query, websocket, rag):
                 resp = drafterAgent_vanilla(query, out_str)
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
                 resp = generate_chart(resp)
+                additionalQuestions = genQuestionComplex(query, addn_questions)
 
             elif query_type == "simple":
                 print("RUNNING SIMPLE TASK PIPELINE")   
@@ -149,8 +151,9 @@ async def mainBackend(query, websocket, rag):
                         executeSimplePipeline(query),
                         genQuestionSimple(query)
                     )
-                    return (str(resp), str(additionalQuestions))
-                resp = await executeSimplePipeline(query)
+                    return (str(resp), additionalQuestions)
+                # resp = await executeSimplePipeline(query)
+                resp, additionalQuestions = await run_parallel(query)
 
         elif IS_RAG:
             print("Running Internal Docs RAG")
@@ -192,6 +195,7 @@ async def mainBackend(query, websocket, rag):
                     out_str += f'{taskResultsDict[task]} \n'
                 resp = drafterAgent_rag(query,rag_context, out_str)
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+                additionalQuestions = await genQuestionComplex(query, addn_questions)
                     
                 with open ('./output/drafted_response.md', 'w') as f:
                     f.write(str(resp))
@@ -200,10 +204,15 @@ async def mainBackend(query, websocket, rag):
                 print("RUNNING SIMPLE TASK PIPELINE")   
                 resp = rag_context
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                additionalQuestions = genQuestionSimple(query)
+                additionalQuestions = await genQuestionSimple(query)
                 
         await asyncio.sleep(1)
         await websocket.send(json.dumps({"type": "response", "response": resp}))
+        print("Type",type(list(additionalQuestions)))
+        additionalQuestions = list(additionalQuestions)
+        print("Additional Questions",additionalQuestions)
+        await asyncio.sleep(1)
+        await websocket.send(json.dumps({"type": "questions", "response": additionalQuestions[:3]}))
 
     else:
         for key in reasonings:
