@@ -16,7 +16,7 @@ from langchain.globals import set_verbose
 set_verbose(True)
 
 from datetime import datetime
-from LLMs import conversation_complex
+from LLMs import conversation_complex, GPT4o_mini_Complex
 
 
 
@@ -197,7 +197,7 @@ def plannerAgent(query):
     '''
     prompt = prompt + tools_prompt
 
-    response = conversation_complex.predict(input = f'''{prompt}''')
+    response = GPT4o_mini_Complex.invoke(f'''{prompt}''').content
     dic =  json.loads(clean(response.split("```")[-2].split("json")[1]))
 
 
@@ -345,7 +345,7 @@ def plannerAgent_rag(query, ragContent):
     '''
     prompt = prompt + tools_prompt
 
-    response = conversation_complex.predict(input = f'''{prompt}''')
+    response = GPT4o_mini_Complex.invoke(f'''{prompt}''').content
     dic =  json.loads(clean(response.split("```")[-2].split("json")[1]))
 
 

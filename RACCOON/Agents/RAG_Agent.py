@@ -12,7 +12,7 @@ set_verbose(True)
 
 from Agents.LATS.NewTools import *
 
-from LLMs import conversation_complex
+from LLMs import conversation_complex, GPT4o_mini_Complex
 
 
 
@@ -38,9 +38,21 @@ def ragAgent(query, state):
         Following is the information to be used:
         \n
         '''
+        rag_result_str = ''
+        if type(rag_result) is list:
+            for i in rag_result:
+                if type(i) is str:
+                    rag_result_str += i
+                elif type(i) is str:
+                    rag_result_str += f"{i['url']}+{i['content']}"
+        elif type(rag_result) is str:
+            rag_result_str = rag_result
+        else:
+            print(type(rag_result))
+            
 
-        prompt = f"""Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses must be with respect to this time frame""" + sys_prompt + rag_result
-        response = conversation_complex.predict(input = f'''{prompt}''')
+        prompt = f"""Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses must be with respect to this time frame""" + sys_prompt + rag_result_str
+        response = GPT4o_mini_Complex.invoke(f'''{prompt}''').content
 
         print(response)
         dic =  dict(json.loads(clean(response.split("```")[-2].split("json")[1])))
@@ -63,7 +75,7 @@ def ragAgent(query, state):
         \n
         '''
 
-        fin_response = conversation_complex.predict(input = f'''{prompt_2}''')
+        fin_response = GPT4o_mini_Complex.invoke(f'''{prompt_2}''').content
 
         return fin_context, fin_response
         
