@@ -27,9 +27,7 @@ def ragAgent(query, state):
         rag_result = retrieve_documents.invoke(query)
         fin_context += f'{rag_result} \n'
         sys_prompt =  '''
-        Extract the Key Words, Jargons and Important Concepts from the information given below and make queries in order to query a 
-        document retriever to extract more context about the extract and query. Make at most 3 queries which encompass all the 
-        concepts and jargons. Strictly format is like a dictionary with schema:
+        Extract the Key Words, Jargons and Important Concepts from the information given below and make queries for further research:
         {
             "query_1": "...",
             "query_2": "...",
@@ -42,13 +40,12 @@ def ragAgent(query, state):
         prompt = f"""Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses must be with respect to this time frame""" + sys_prompt + rag_result
         response = conversation_complex.predict(input = f'''{prompt}''')
 
-        print(response)
         dic =  dict(json.loads(clean(response.split("```")[-2].split("json")[1])))
         for p in dic:
             rag_resp = retrieve_documents.invoke(dic[p])
             fin_context += f'{rag_resp} \n'
 
-        prompt_2 =  f'''
+        """prompt_2 =  f'''
         Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses
         must be with respect to this time frame
         
@@ -63,9 +60,9 @@ def ragAgent(query, state):
         \n
         '''
 
-        fin_response = conversation_complex.predict(input = f'''{prompt_2}''')
+        fin_response = conversation_complex.predict(input = f'''{prompt_2}''')"""
 
-        return fin_context, fin_response
+        return fin_context
         
     elif state == "concise":
         print("Hello This is concise")
