@@ -10,7 +10,7 @@ import re
 from Agents.Agents import Agent
 from Agents.Smack import Smack
 from Agents.ClassifierAgent import classifierAgent
-from Agents.PlannerAgent import plannerAgent
+from Agents.PlannerAgent import plannerAgent, plannerAgent_rag
 from Agents.ChartGenAgent import generate_chart
 from Agents.DrafterAgent import drafterAgent_vanilla, drafterAgent_rag
 from Agents.ConciseAnsAgent import conciseAns_vanilla, conciseAns_rag
@@ -115,18 +115,48 @@ async def mainBackend(query, websocket, rag):
 
             #Need to test this later
             else:
-                rag_context, rag_processed_response = ragAgent(query, state = 'report')
+                rag_context = ragAgent(query, state = 'report')
                 #resp = drafterAgent_rag(query, rag_context, out_str)
-                resp = rag_processed_response
-                resp = str(resp)
-                resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+                plan = plannerAgent_rag(query, rag_context)
                 
-            
+                dic_for_UI_graph = makeGraphJSON(plan['sub_tasks'])
+                print(dic_for_UI_graph)
+                await asyncio.sleep(1)
+                await websocket.send(json.dumps({"type": "graph", "response": json.dumps(dic_for_UI_graph)}))
 
+                with open('Graph.json', 'w') as fp:
+                    json.dump(dic_for_UI_graph, fp)
+                
+                out_str = ''''''
+
+                agentsList = []
+                addn_questions = []
+                
+                for sub_task in plan['sub_tasks']:
+                    addn_questions.append(plan['sub_tasks'][sub_task]['content'])
+                    agent_name = plan['sub_tasks'][sub_task]['agent']
+                    agent_role = plan['sub_tasks'][sub_task]['agent_role_description']
+                    local_constraints = plan['sub_tasks'][sub_task]['local_constraints']
+                    task = plan['sub_tasks'][sub_task]['content']
+                    dependencies = plan['sub_tasks'][sub_task]['require_data']
+                    tools_list = plan['sub_tasks'][sub_task]['tools']
+                    print(f'processing {agent_name}')
+                    agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
+                    agentsList.append(agent)
+                
+                
+                smack = Smack(agentsList)
+                taskResultsDict = smack.executeSmack()
+                for task in taskResultsDict:
+                    out_str += f'{taskResultsDict[task]} \n'
+                resp = drafterAgent_rag(query,rag_context, out_str)
+                resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+                #resp = generate_chart(resp)
+                
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
                 
-            with open ('./output/drafted_response.md', 'w') as f:\
+            with open ('./output/drafted_response.md', 'w') as f:
                 f.write(str(resp))
 
             # final_questions = []
