@@ -230,7 +230,7 @@ const Main = () => {
 
 				try {
 					// Send a POST request
-					const response = await fetch('http://35.184.195.118:8000/upload', {
+					const response = await fetch('http://localhost:8000/upload', {
 						method: 'POST',
 						body: formData,
 					});
