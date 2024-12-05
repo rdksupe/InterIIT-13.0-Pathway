@@ -20,6 +20,7 @@ brew install libmagic
    `
    cd pathway_rag &&
    pip install -r requirements.txt &&
+   fuser -k 4005/tcp
    python3 rag_server.py
    `
 
