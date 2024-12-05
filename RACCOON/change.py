@@ -58,13 +58,13 @@ class MyHandler(FileSystemEventHandler):
         """
          Handles the event when a new file is created. Prints the event type and path.
         """
-         print(f'event type: {event.event_type} path : {event.src_path}')
+        print(f'event type: {event.event_type} path : {event.src_path}')
 
     def  on_deleted(self,  event):
         """
          Handles the event when a file is deleted. Prints the event type and path.
         """
-         print(f'event type: {event.event_type} path : {event.src_path}')
+        print(f'event type: {event.event_type} path : {event.src_path}')
 
 
 async def handle_connection(websocket):

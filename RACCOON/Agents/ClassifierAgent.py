@@ -70,7 +70,7 @@ def classifierAgent_RAG(query, ragContext):
     )
     cat_1 = response.choices[0].message.content.lower()
 
-    if cat_1 == 'simple':
+    if cat_1 == 'complex':
         query2 = f""" Does the folloing answer the query to it's fullest extent? Evaluate on the following metrics, only return yes when all metrics are fulfilled:
         a. Competion: Does the Answer contains answers to all aspects of the query?
         b. Detail: Does the Answer provide as much detail as asked in the query? If the query asks for a detailed or in-depth analysis, does the answer provide that level of deep analysis?
@@ -93,7 +93,7 @@ def classifierAgent_RAG(query, ragContext):
             return 'complex' 
         return 'complex'
     else:
-        return 'complex'
+        return 'simple'
     
 if __name__ == '__main__':
     queries = [
