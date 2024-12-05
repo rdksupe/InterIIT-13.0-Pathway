@@ -1367,7 +1367,7 @@ def simple_query_documents(prompt: str) -> Dict:
         return ''
         
 @tool
-def retrieve_documents(prompt: str) -> Dict:
+def retrieve_documents(prompt: str) -> str:
     """
     Query documents using a Retrieval-Augmented Generation (RAG) endpoint.
     This should be the first choice before doing web search,
@@ -1380,6 +1380,7 @@ def retrieve_documents(prompt: str) -> Dict:
     Returns:
         Dict: The JSON response from the RAG endpoint, containing the retrieved information and generated answer.
     """
+
     try:    
         print("Started")
         start = time.time()
@@ -1407,8 +1408,17 @@ def retrieve_documents(prompt: str) -> Dict:
         print(f"Time taken: {end - start} seconds")
         
         result = response.json()
-        print(result)
-        return result
+        out = ''
+        for i in result:
+            for j in i.values():
+                if type(j) is str:
+                    out += f"{j} "
+                elif type(j) is dict:
+                    for k in j.values():
+                        out += f"{str(j)} "
+                    out+= '\n'
+            out+= '\n'
+        return out
     
     except requests.RequestException as e:
         print(f"HTTP Request failed: {e}")
@@ -1418,7 +1428,7 @@ def retrieve_documents(prompt: str) -> Dict:
         log_error(
             tool_name="query_documents",
             error_message=str(e),
-            additional_info={"prompt": prompt, "source": source}
+            additional_info={"prompt": prompt}
         )
         return web_search_simple.invoke(prompt)
 
