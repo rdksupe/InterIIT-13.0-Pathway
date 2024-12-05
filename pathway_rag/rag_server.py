@@ -85,6 +85,7 @@ def query_retrieval_service(query: str, k: int = 5) -> List[Dict[str, Any]]:
     """Query the local retrieval service for relevant documents."""
     try:
         encoded_query = quote(query)
+        print(encoded_query)
         response = requests.get(f"http://localhost:4004/v1/retrieve?query={encoded_query}&k={k}")
         response.raise_for_status()
         return response.json()
@@ -211,7 +212,7 @@ if __name__ == "__main__":
 
     options = {
         'bind': '0.0.0.0:4005',
-        'workers': 12,
+        'workers': 32,
         'worker_class': 'uvicorn.workers.UvicornWorker',
         'timeout': 120,
         'graceful_timeout': 60,

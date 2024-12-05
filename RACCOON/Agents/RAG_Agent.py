@@ -69,4 +69,9 @@ def ragAgent(query, state):
         
     elif state == "concise":
         print("Hello This is concise")
-        return simple_query_documents.invoke(query)
+        #return json.dumps(simple_query_documents.invoke(query))
+        resp = simple_query_documents.invoke(query)
+        if type(resp) == str:
+            return resp
+        elif type(resp) == dict:
+            return resp['answer']
