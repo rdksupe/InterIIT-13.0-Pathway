@@ -7,6 +7,7 @@ from operator import itemgetter
 from operator import itemgetter
 from typing import Dict, List, Union
 from datetime import datetime
+import json
 
 from langchain_core.prompts import PromptTemplate
 from langchain import hub
@@ -41,23 +42,20 @@ def conciseAns_vanilla(query, tools_list):
         extra information, and don't provide detailed analysis. Only answer what is asked
         with the NECESSARY information backing it.
     '''
-    print('.')
     prompt = hub.pull("hwchase17/openai-tools-agent")
-    print('.')
     agent = create_tool_calling_agent(GPT4o_mini_LATS, tools_list, prompt)
-    print('.')
     agent_executor = AgentExecutor(agent=agent, tools=tools_list, verbose=True)
-    print('.')
     response = agent_executor.invoke(
         {
             "input": {finalQuery}
         }
     )
-    print('.')
     with open("conciseResponse.md", "w") as f:
         f.write(response['output'])
     print("COMPLETED conciseAns_vanilla")
-    return response
+    print(response)
+    print(type(response))
+    return json.dumps(response['output'])
 
 
 def conciseAns_rag(query,rag_context, text, api_key, LLM):

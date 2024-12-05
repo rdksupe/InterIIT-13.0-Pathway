@@ -239,4 +239,7 @@ def run_parallel_with_early_exit(query, *functions):
     return (all(results) and not cancel_event.is_set(), reasonings)
 
 def applyTopicalGuardails(query):
+    print(query)
+    if query == "":
+        return False, {"Empty Query": "Please Enter a Query"}
     return run_parallel_with_early_exit(query, topical_guardrail_1,topical_guardrail_2,topical_guardrail_3,topical_guardrail_4,topical_guardrail_5)

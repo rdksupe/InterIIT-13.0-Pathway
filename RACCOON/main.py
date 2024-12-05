@@ -69,7 +69,7 @@ async def mainBackend(query, websocket, rag):
 
     guard_rails, reasonings = applyTopicalGuardails(query)
     if guard_rails:
-        query_type = classifierAgent(query, GOOGLE_API_KEY).lower()
+        query_type = classifierAgent(query).lower()
         if query_type == "complex":
             resp = ''
             #SORTED
