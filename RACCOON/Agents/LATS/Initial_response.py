@@ -21,9 +21,12 @@ prompt_template = ChatPromptTemplate.from_messages(
                 "system",
                 """
                 Generate a detailed response backed by numbers and sources to the user question below
-                1. Use specialized tools to generate the response,if the tools fail to generate a satisfactory response, then use web search to get the detailed response.
-                2. Cite the sources,the link of the exact webpage  next to there relevant information in each response,used to get that information
-                3. If a tool says it has failed, switch to the next tool. DO NOT USE THE SAME TOOL AGAIN
+                1. If 'retrieve_documents' tool is present in the available set of tools, ALWAYS CALL IT FIRST
+                2. Any other tool will only be called after 'retrieve_documents'
+                3. If required information has been extracted from 'retrieve_documents' and it provides satisfactory answer, DO NOT call any other tool.
+                4. Do not remove Document and page number for any response from 'retrieve_documents'
+                4. Use specialized tools to generate the response.
+                5. Cite the sources,the link of the exact webpage  next to there relevant information in each response.
                 """,
             ),
             ("user", "{input}"),

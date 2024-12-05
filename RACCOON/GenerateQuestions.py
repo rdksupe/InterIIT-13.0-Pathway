@@ -57,7 +57,7 @@ async def genQuestionComplex(main_query, sub_task):
 
 async def genQuestionSimple(query):
     """ 
-     Synthesizes five detailed questions related to a given query.
+    Synthesizes five detailed questions related to a given query.
         Args:
             query (str): The main query for which questions need to be generated.
         Returns:
@@ -90,8 +90,7 @@ async def genQuestionSimple(query):
 
     prompt = f'''{system_prompt}\n\n {user_prompt}'''
     response = GPT4o_mini_Complex.invoke(f'''{prompt}''').content
-    print(response)
-    
+
     '''client = OpenAI(api_key=api_key)
     completion = client.chat.completions.create(
         model="gpt-4o-mini",

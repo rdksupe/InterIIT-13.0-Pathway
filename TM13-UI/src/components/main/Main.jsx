@@ -55,7 +55,7 @@ const Main = () => {
 
 	const [markdownContent, setMarkdownContent] = useState('');
 	const [reccQs, setReccQs] = useState([])
-	const [isChecked, setIsChecked] = useState(true);
+	const [isChecked, setIsChecked] = useState(false);
 
 	const ToggleSwitch = ({ label }) => {
 

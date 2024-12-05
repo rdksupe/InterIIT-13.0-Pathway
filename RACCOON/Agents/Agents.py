@@ -22,9 +22,7 @@ from langchain.callbacks.tracers import ConsoleCallbackHandler
 from Agents.LATS.Solve_subquery import SolveSubQuery
 
 class Agent:
-    def __init__(self, number, name, role, constraints, task, dependencies,api_key, tools_list, LLM):
-        self.LLM = LLM
-        self.api_key = api_key
+    def __init__(self, number, name, role, constraints, task, dependencies, tools_list, state):
         self.taskNumber = number
         self.name = name
         self.role = role
@@ -32,6 +30,7 @@ class Agent:
         self.dependencies = dependencies
         self.context = ''
         self.task = task
+        self.state = state
 
         tl_lis = []
 
@@ -45,13 +44,14 @@ class Agent:
             else:
                 tl_lis.append(globals()[function_name])
         self.tools_list = tl_lis[:]
-
+        
+        if self.state == 'RAG':
+            self.tools_list.append(retrieve_documents)
 
         self.PREFIX_TEMPLATE = f"""You are a {self.name}, with the following role : {self.role}."""
         self.CONSTRAINT_TEMPLATE = f"the constraint is {self.constraints}. "
 
         self.func_docs = ''''''
-        self.tools_list = [retrieve_documents]
 
         for func in self.tools_list:
             self.func_docs+=f'''{func.name}: {func.description}\n'''

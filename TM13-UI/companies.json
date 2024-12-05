@@ -3,10 +3,5 @@
         "company_name": "Jio",
         "ticker_symbol": "JIOFIN.NS",
         "file_path": "src/Jio_stock_data.csv"
-    },
-    {
-        "company_name": "Airtel",
-        "ticker_symbol": "BHARTIARTL.NS",
-        "file_path": "src/Airtel_stock_data.csv"
     }
 ]

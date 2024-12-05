@@ -124,8 +124,9 @@ async def mainBackend(query, websocket, rag):
                     task = plan['sub_tasks'][sub_task]['content']
                     dependencies = plan['sub_tasks'][sub_task]['require_data']
                     tools_list = plan['sub_tasks'][sub_task]['tools']
+                    agent_state = 'vanilla'
                     print(f'processing {agent_name}')
-                    agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
+                    agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, tools_list, agent_state)
                     agentsList.append(agent)
                 
                 # Execute the task results using the Smack agent
@@ -162,17 +163,16 @@ async def mainBackend(query, websocket, rag):
             query_type = classifierAgent_RAG(query, rag_context).lower()
             
             if query_type == "complex":
-
-                print("========================")
-                print(query_type)
-                print("========================")
+                agent_state = 'RAG'
                 print("RUNNING COMPLEX TASK PIPELINE")
 
                 rag_context = ragAgent(query, state = 'report')
-                #resp = drafterAgent_rag(query, rag_context, out_str)
                 plan = plannerAgent_rag(query, rag_context)
                 
                 dic_for_UI_graph = makeGraphJSON(plan['sub_tasks'])
+                for node in dic_for_UI_graph['nodes']:
+                    node['metadata']['tools'].append('retrieve_documents')
+
                 print(dic_for_UI_graph)
                 await asyncio.sleep(1)
                 await websocket.send(json.dumps({"type": "graph", "response": json.dumps(dic_for_UI_graph)}))
@@ -191,7 +191,7 @@ async def mainBackend(query, websocket, rag):
                     dependencies = plan['sub_tasks'][sub_task]['require_data']
                     tools_list = plan['sub_tasks'][sub_task]['tools']
                     print(f'processing {agent_name}')
-                    agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
+                    agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, tools_list, agent_state)
                     agentsList.append(agent)
                 
                 # Execute the task results using the Smack agent
@@ -217,7 +217,6 @@ async def mainBackend(query, websocket, rag):
                 
         await asyncio.sleep(1)
         await websocket.send(json.dumps({"type": "response", "response": resp}))
-        print("Type",type(list(additionalQuestions)))
         additionalQuestions = list(additionalQuestions)
         print("Additional Questions",additionalQuestions)
         await asyncio.sleep(1)
@@ -243,7 +242,7 @@ async def handle_connection(websocket):
     Returns:
         None: The function processes messages asynchronously and sends back responses to the client.
     """
-    rag = True
+    rag = False
     async for message in websocket:
         data = json.loads(message)
         if data['type'] == 'query':

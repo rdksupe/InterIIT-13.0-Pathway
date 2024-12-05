@@ -31,7 +31,7 @@ def classifierAgent(query):
     Questions like "Analyze the merger between 2 companies", "Compare and contrast 2 resumes", "What are the economic implications of an event",
     "Provide me case laws related to a particular topic", "Give a detailed report on something" etc are classified as 'complex'.
 
-    Your task is to classify the given query is 'simple' or 'complex'. Give a single word answer between 'simple' and 'complex'.
+    Your task is to classify the given query as 'simple' or 'complex'. Give a single word answer between 'simple' and 'complex'.
 
     Following is the query
     {query}
@@ -58,9 +58,10 @@ def classifierAgent_RAG(query, ragContext):
     For example: 'How did the merger of Jio and Disney Plus Hotstar impact the Indian OTT market?' is a detailed query because it has
     to be analyzed from multiple standpoints and perspectives.
 
-    A query which is not detailed is simple.
+    A query which is not detailed is concise. Even if a query has complex jargons, concepts and numbers, then also it can be answered in a concise manner.
+    For example: Questions about complex topics self attention, depreciating marginal returns etc can also be answered in a concise manner. 
 
-    output should be a single word answer between 'simple' or 'detailed'.
+    output should be a single word answer between 'concise' or 'detailed'.
 
     Following is the query:
     {query}
@@ -74,7 +75,7 @@ def classifierAgent_RAG(query, ragContext):
     cat_1 = response.choices[0].message.content.lower()
 
     if cat_1 == 'detailed':
-        query2 = f""" Does the folloing answer the query to it's fullest extent? Evaluate on the following metrics, only return yes when all metrics are fulfilled:
+        query2 = f'''''Does the following answer the query to it's fullest extent? Evaluate on the following metrics, only return yes when all metrics are fulfilled:
         a. Competion: Does the Answer contains answers to all aspects of the query?
         b. Detail: Does the Answer provide as much detail as asked in the query? If the query asks for a detailed or in-depth analysis, does the answer provide that level of deep analysis?
 
@@ -82,22 +83,21 @@ def classifierAgent_RAG(query, ragContext):
         Answer: {ragContext}
 
         Answer only in 'yes' or 'no'
-        """
+        '''
+        
         messages = [
-            {"role": "system", "content": prompt},
+            {"role": "system", "content": query2},
         ]
         response = client.chat.completions.create(
             model='gpt-4o-mini', messages=messages, temperature=0
         )
         cat_2 = response.choices[0].message.content.lower()
         if cat_2 == 'yes':
-            print("iski maa ka bhosda")
             return 'simple'
         else:
             return 'complex' 
-        return 'complex'
+        
     else:
-        print("Iski maa ki choot")
         return 'simple'
     
 if __name__ == '__main__':

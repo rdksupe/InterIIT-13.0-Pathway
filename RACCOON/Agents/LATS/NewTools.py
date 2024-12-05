@@ -1370,9 +1370,10 @@ def simple_query_documents(prompt: str) -> Dict:
 @tool
 def retrieve_documents(prompt: str) -> str:
     """
-    Query documents using a Retrieval-Augmented Generation (RAG) endpoint.
-    This should be the first choice before doing web search,
-    if this fails or returns unsatisfactory results, then use web search for the same query.
+    Extract Information from the provided internal document
+    Since this is the main source of information which is always 
+    correct, this should be the first choice of tool for any agent.
+    CALL THIS BEFORE CALLING ANY OTHER TOOL.
 
     Args:
         prompt (str): The prompt to send to the RAG endpoint.

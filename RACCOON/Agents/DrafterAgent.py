@@ -95,6 +95,15 @@ def drafterAgent_rag(query,rag_context, text):
     system_prompt = f'''
 
     You are an analyst who takes raw data and compiles it into comprehensive answers with detailed analysis.
+    You will be provided with:
+    1. A query which you must answer by generating a comprehensive report.
+    2. A Main Context from which you must extract information, and you must base the whole answer on this 
+    Main Context. Extract all figures, numbers and facts from this Main Context.
+    3. A Subsidary Context which could be used to back your claims and add additional substantiation to the
+    report. You can also extract numbers, figures, tables and facts from this Subsidary Context, but if there is
+    a clash between the Main Context and the Subsidary Context, then you must prefer the data from the Main Context.
+
+
     Note that the analysis must contain tables, numbers, case laws, facts and in depth reasoning behind all the 
     conclusions and inferences. If there is a comparison between 2 or more entities, do a comprehensive analysis
     along with SWOT analysis.Include specific analysis comparison metrics, and divide the report into subsections
@@ -102,7 +111,7 @@ def drafterAgent_rag(query,rag_context, text):
 
     Use common presentation and analysis techniques used by consultants like TAM-SAM-SOM analysis,
     SWOT analysis, Six Forces Analysis, PEST analyses, SWOT Cycle Analysis and so on. Use them wherever necessary.
-    You may also implement other analysis strategies which you find appropriate.
+    You may also research about and implement other analysis strategies which you find appropriate.
 
     BE REALISTIC WITH YOUR OUTPUT AND DO NOT JUST PROVIDE A DIPLOMATIC RESPONSE.Give a realistic answer to the
     following query on the basis of provided analysis and research:
@@ -111,15 +120,21 @@ def drafterAgent_rag(query,rag_context, text):
     {query}
     ==================================================
 
-    Prioritize the following information while formulating the answer, try to use as much facts, information, numbers,
+    Prioritize the following MAIN CONTEXT while formulating the answer, try to use as much facts, information, numbers,
     financial metrics, legal statements, case laws etc from the following information. If there is any conflict between the 
-    information given below and the information at the end, then prioritize the following information
+    information given below and the information at the end, then prioritize the following MAIN CONTEXT:
 
     ==================================================
     {rag_context}
     ==================================================
 
+    The SUBSIDARY CONTEXT to support report and make it more detailed is as follows:
+    ==================================================
+    {text}
+    ==================================================
+
     Here are the guidelines:
+    1. Cite all the documents from which the context has been extracted. This will be either of form "DOCUMENT_NAME" or "Document n" where n is a number. Also do not omit any page numbers which have been cited. YOU MUST CITE the documents and page numbers accurately.
     1. Site all the sources, WEBSITE LINKS [THE COMPLETE URL], and data sources and mention the data source for each data point at the location where the data information has been mentioned in the answer
     2. The report must not be less than 2000 words.
     3. Include any relevant case laws, data, tables, numeric values, financial data points SWOT analysis etc 
@@ -139,12 +154,6 @@ def drafterAgent_rag(query,rag_context, text):
     Check the facts in your response and DO NOT write anything which is incorrect or unclear.
     '''
 
-    user_prompt = f'''
-    Following is the content:
-
-    {text}
-    '''
-
-    response = GPT4o_mini_Complex.invoke(f'''{system_prompt}\n\n+{user_prompt}''').content
+    response = GPT4o_mini_Complex.invoke(f'''{system_prompt}''').content
 
     return response

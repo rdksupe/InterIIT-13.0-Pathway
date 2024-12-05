@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import logging
 import os
+import shutil
 import google.generativeai as genai
 from langchain_experimental.utilities import PythonREPL
 import requests
@@ -47,7 +48,15 @@ def gen_url(image_paths):
     return url
 
 def get_paths(response):
+    def remove_folder_and_contents(folder_path):
+        if os.path.exists(folder_path):
+            shutil.rmtree(folder_path)
+            print(f"Folder '{folder_path}' and its contents have been removed.")
+        else:
+            print(f"Folder '{folder_path}' does not exist.")
+
     assets_folder = os.path.join(os.getcwd(), 'assets')
+    remove_folder_and_contents(assets_folder)
     os.mkdir(assets_folder)
     image_paths = []
 
