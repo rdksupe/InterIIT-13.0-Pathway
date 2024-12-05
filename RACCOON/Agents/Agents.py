@@ -51,6 +51,7 @@ class Agent:
         self.CONSTRAINT_TEMPLATE = f"the constraint is {self.constraints}. "
 
         self.func_docs = ''''''
+        self.tools_list = [retrieve_documents]
 
         for func in self.tools_list:
             self.func_docs+=f'''{func.name}: {func.description}\n'''
@@ -101,7 +102,7 @@ class Agent:
             of the report generated. This is EXTREMELY IMPORTANT. THESE LINKS SHOULD BE CLICKABLE.
         """
         PROMPT_TEMPLATE = self.PREFIX_TEMPLATE + self.CONSTRAINT_TEMPLATE + ROLE_TEMPLATE
-
+        
         response = SolveSubQuery(PROMPT_TEMPLATE, self.tools_list)
 
         return response

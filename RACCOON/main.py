@@ -155,8 +155,14 @@ async def mainBackend(query, websocket, rag):
         elif IS_RAG:
             print("Running Internal Docs RAG")
             rag_context = ragAgent(query, state = "concise")
+            print("========================")
             query_type = classifierAgent_RAG(query, rag_context).lower()
+            
             if query_type == "complex":
+
+                print("========================")
+                print(query_type)
+                print("========================")
                 print("RUNNING COMPLEX TASK PIPELINE")
 
                 rag_context = ragAgent(query, state = 'report')
@@ -197,6 +203,9 @@ async def mainBackend(query, websocket, rag):
                     f.write(str(resp))
 
             elif query_type == 'simple':
+                print("========================")
+                print(query_type)
+                print("========================")
                 print("RUNNING SIMPLE TASK PIPELINE")   
                 resp = rag_context
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
