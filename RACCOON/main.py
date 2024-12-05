@@ -109,6 +109,8 @@ async def mainBackend(query, websocket, rag):
                 for task in taskResultsDict:
                     out_str += f'{taskResultsDict[task]} \n'
                 resp = drafterAgent_vanilla(query, out_str)
+                resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
+                resp = generate_chart(resp)
                 
 
             #Need to test this later
@@ -117,9 +119,9 @@ async def mainBackend(query, websocket, rag):
                 #resp = drafterAgent_rag(query, rag_context, out_str)
                 resp = rag_processed_response
                 resp = str(resp)
+                resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
                 
-            resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-            resp = generate_chart(resp)
+            
 
             await asyncio.sleep(1)
             await websocket.send(json.dumps({"type": "response", "response": resp}))
