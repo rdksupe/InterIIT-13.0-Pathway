@@ -45,7 +45,7 @@ def genQuestionComplex(main_query, sub_task):
 
     return response
 
-async def genQuestionSimple(query):
+def genQuestionSimple(query):
     print("Executing genQuestionSimple")
     system_prompt = '''
         Synthesize 5 Questions Related to the given query. 

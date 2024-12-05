@@ -67,9 +67,9 @@ PROMPT = PromptTemplate(
 
 conversation_complex = ConversationChain(
     llm=GPT4o_mini_Complex,
-    memory=summary_memory_complex_entity,
-    verbose=True,
-    prompt=ENTITY_MEMORY_CONVERSATION_TEMPLATE
+    #memory=summary_memory_complex_entity,
+    #verbose=True,
+    #prompt=ENTITY_MEMORY_CONVERSATION_TEMPLATE
 )
 
 
