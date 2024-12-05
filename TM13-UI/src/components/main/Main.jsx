@@ -94,7 +94,7 @@ const Main = () => {
 
 	const generatePDF = () => {
 		// Send the raw Markdown content to the backend
-		fetch('http://localhost:5000/convert', {
+		fetch('http://localhost:5001/convert', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ const Main = () => {
 				console.log('Markdown content sent successfully to backend:', data.message);
 	
 				// Now fetch the generated HTML from the backend after it's processed
-				return fetch('http://localhost:5000/download-pdf', {
+				return fetch('http://localhost:5001/download-pdf', {
 					method: 'GET',
 				});
 			})
@@ -167,7 +167,7 @@ const Main = () => {
 			socket.send(JSON.stringify({ type: 'query', query }));
 		}
 		try {
-			fetch('http://localhost:5000/query', {
+			fetch('http://localhost:5001/query', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

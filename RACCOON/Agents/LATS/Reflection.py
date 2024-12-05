@@ -225,7 +225,7 @@ def reflection_chain(inputs) -> Reflection:
         f.write(str(tool_choices))
         f.write("\n\n")'''
     reflection = tool_choices[0]
-    if reflection.score >= 7:
+    if reflection.score >= 6:
         reflection.found_solution = True
     #This has to be commented
     #if not isinstance(inputs["candidate"][-1], AIMessage):

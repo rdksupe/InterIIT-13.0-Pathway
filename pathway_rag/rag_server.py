@@ -12,6 +12,10 @@ import gunicorn.app.base
 from typing import Optional
 app = FastAPI()
 load_dotenv('../.env')
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
+from starlette.responses import Response
 
 # OpenAI client configuration
 endpoint = "https://models.inference.ai.azure.com"
@@ -26,12 +30,15 @@ VOYAGE_RERANK_URL = "https://api.voyageai.com/v1/rerank"
 
 class Query(BaseModel):
     query: str
-    source: Optional[str] = "Find the source from the chunk"
+    source: Optional[str] = " The source is available in the context "
     max_tokens: int = 1000
     num_docs: int = 5
+    destination: Optional[str] = None 
 
 class AnswerResponse(BaseModel):
     answer: str
+
+
 
 def rerank_documents(query: str, documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Rerank documents using VoyageAI reranker."""
@@ -76,12 +83,20 @@ def query_retrieval_service(query: str, k: int = 5) -> List[Dict[str, Any]]:
     """Query the local retrieval service for relevant documents."""
     try:
         encoded_query = quote(query)
-        response = requests.get(f"http://0.0.0.0:4004/v1/retrieve?query={encoded_query}&k={k}")
+        response = requests.get(f"http://localhost:4004/v1/retrieve?query={encoded_query}&k={k}")
         response.raise_for_status()
         return response.json()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error querying retrieval service: {str(e)}")
-
+def query_retrieval_service2(query: str, k: int = 2) -> List[Dict[str, Any]]:
+    """Query the local retrieval service for relevant documents."""
+    try:
+        encoded_query = quote(query)
+        response = requests.get(f"http://localhost:4006/v1/retrieve?query={encoded_query}&k={k}")
+        response.raise_for_status()
+        return response.json()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error querying retrieval service: {str(e)}")
 def format_context(documents: List[Dict[str, Any]]) -> str:
     """Format retrieved documents into context string."""
     formatted_docs = []
@@ -92,6 +107,7 @@ def format_context(documents: List[Dict[str, Any]]) -> str:
 def generate_answer_openai(query: str, source: str,retrieved_docs: List[Dict[str, Any]], max_tokens: int = 1000) -> str:
     """Generate an answer using OpenAI model."""
     try:
+        print(query)
         context = format_context(retrieved_docs)
         print(source)
         
@@ -103,13 +119,14 @@ def generate_answer_openai(query: str, source: str,retrieved_docs: List[Dict[str
                     Important Instructions:
                     - Base your answer ONLY on the provided context documents
                     - Use quotes when directly quoting text
-                    - If information isn't available in the context, state: "This information is not available in the provided documents."
-                    - If you find conflicting information, point it out"""
+                    - E
+                    - If information isn't available in the context, state: "This information is not available in the provided documents. and explain why the provided context is not relevant to the query"
+                    - If you find conflicting information, point it out """
 
                 },
                 {
                     "role": "user",
-                    "content": f"""Context:\n{context}\n\nQuestion: {query}\n\n  {source} .if its a url like https://bbcnews.com/ give it completely. If not a url then just mention the {source}  with relevant context from provided else dont add ANYTHING."""
+                    "content": f"""Context:\n{context}\n\nQuestion: {query}\n\n  .if its a url like https://bbcnews.com/ give it completely. If not a url then just mention the {source}  with relevant context from provided else dont add ANYTHING."""
                 }
             ],
             temperature=0.3,
@@ -147,12 +164,20 @@ async def generate(query_request: Query):
     Generate an answer for a given query using retrieved documents and OpenAI LLM.
     Returns only the final answer from the LLM.
     """
-    # Retrieve relevant documents
     start = time.time()
-    retrieved_docs = query_retrieval_service(query_request.query, query_request.num_docs)
-    
+    print("Hello from rag_server.py")
+    print(query_request)
+    print(query_request.destination) 
+    # Choose the appropriate retrieval service based on the destination
+    if query_request.destination == "user":
+        print("hello this is destination")
+        retrieved_docs = query_retrieval_service2(query_request.query, str(query_request.num_docs))
+    else:
+        retrieved_docs = query_retrieval_service(query_request.query, query_request.num_docs)
+    print(retrieved_docs)
     # Rerank the retrieved documents
     reranked_docs = rerank_documents(query_request.query, retrieved_docs)
+    print(reranked_docs)
     # Generate answer using OpenAI with reranked documents
     answer = generate_answer_openai(
         query_request.query, 
@@ -160,9 +185,11 @@ async def generate(query_request: Query):
         reranked_docs,
         query_request.max_tokens
     )
+    
     end = time.time()
     print(end-start)
     return AnswerResponse(answer=answer)
+
 
 if __name__ == "__main__":
 

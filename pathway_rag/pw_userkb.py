@@ -82,7 +82,7 @@ class DocumentProcessor:
     
 def main():
     # Initialize data directory for document storage
-    data_dir = "./user_uploads"
+    data_dir = "./uploads"
     os.makedirs(data_dir, exist_ok=True)
     
     # Set up and start servers

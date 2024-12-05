@@ -28,7 +28,6 @@ def convert_to_pdf():
     markdown_content = data.get('content', '')
     print(f"Received markdown content: {markdown_content}")
     markdown_content = str(markdown_content)
-    print("idhar aaya---------------")
     convert_to_html(markdown_content)
     if not os.path.exists("pathway.html"):
         return {"error": "Failed to generate PDF"}, 500
@@ -43,9 +42,7 @@ def download_pdf():
     if not os.path.exists(output_file):
         return {"error": "PDF not found"}, 404
 
-    print("messi")
-
     return send_file(output_file, as_attachment=True, download_name='pathway.html', mimetype='text/html')
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)  # Run Flask server on port 5000
+    app.run(port=5001, debug=True)  # Run Flask server on port 5001
