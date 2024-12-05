@@ -1336,9 +1336,7 @@ def simple_query_documents(prompt: str) -> Dict:
         response = requests.post(
             "http://localhost:4005/generate",
             headers={"Content-Type": "application/json"},
-
             json=payload
-
         )
         
         print(f"Response status code: {response.status_code}")
