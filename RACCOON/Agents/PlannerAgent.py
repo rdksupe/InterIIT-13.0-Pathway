@@ -224,6 +224,10 @@ def plannerAgent_rag(query, ragContent):
     Large Scale considerations v/s Small Scale considerations, Long Term Considerations v/s Short Term Considerations etc. 
     For each of these domains like economics, public policy, finance, law, antitrust issues, management, consultancy, market 
     strategy etc, generate an individual agents which do intensive research on these specific topics, leveraging the tools provided.
+    The agents have access to extensive documents relevant to the query encourage them to make as many queries as possible to retrieve_documents to get relevant context for answering the query. 
+    The agents should focus HEAVILY ON extracting numbers from the context . Extract AS MANY NUMBERS as possible . Also the source provided to you should be mentioned EXPLICITLY.
+    Your Job is to extract as much relevant information from retrieve_documents .  Make sure to extract information from tables as much as you can. Basically you have lots of information waiting to be extracted from the document do it. Its a treasure trove of information 
+
 
     The task divison should be very specific to the context. Following is the context:
 

@@ -1,43 +1,5 @@
 [
     {
-      "name": "get_sec_filings",
-      "docstring": "Query SEC to retrieve any filings as required to find answers you generally find in filings. Filings published between start_date and end_date will be retrieved.",
-      "parameters": {
-        "query": "str",
-        "ticker": "str",
-        "start_date": "str",
-        "end_date": "str",
-        "form": "str"
-      },
-      "output": {
-        "type": "str",
-        "description": "SEC filing to be sent to RAG endpoint for retrieval."
-      }
-    },
-
-    {
-        "name": "get_indian_kanoon",
-        "docstring": "Retrieves Indian LEGAL data and CASE LAWs from Indian Kanoon based on the query",
-        "parameters": {
-            "query": "str"
-        },
-        "output": {
-            "type": "tuple",
-            "description": "A tuple containing the title (str), date (str), and document text (str)."
-        }
-    },
-    {
-        "name": "get_us_case_law",
-        "docstring": "Retrieves American LEGAL data and CASE LAWs from Indian Kanoon based on the query",
-        "parameters": {
-            "query": "str"
-        },
-        "output": {
-            "type": "Tuple[str, str]",
-            "description": "A tuple containing the title and cleaned document text of the case law."
-        }
-    },
-    {
         "name": "get_stock_data",
         "docstring": "Retrieve stock price data for designated ticker symbol.",
         "parameters": {
@@ -128,6 +90,43 @@
         }
     },
     {
+        "name": "case_law",
+        "docstring": "Provides legal research for the given queries, for instance case laws, precedents, legal documents etc.",
+        "parameters": {
+            "query": "str"
+        },
+        "output": {
+            "type": "Tuple[str, str]",
+            "description": "A tuple containing the links and legal content"
+        }
+    },
+    {
+        "name": "get_indian_kanoon",
+        "docstring": "Retrieves Indian LEGAL data and CASE LAWs from Indian Kanoon based on the query",
+        "parameters": {
+            "query": "str"
+        },
+        "output": {
+            "type": "tuple",
+            "description": "A tuple containing the title (str), date (str), and document text (str)."
+        }
+    },
+    {
+        "name": "get_sec_filings",
+        "docstring": "Query SEC to retrieve any filings as required to find answers you generally find in filings. Filings published between start_date and end_date will be retrieved.",
+        "parameters": {
+        "query": "str",
+        "ticker": "str",
+        "start_date": "str",
+        "end_date": "str",
+        "form": "str"
+        },
+        "output": {
+        "type": "str",
+        "description": "SEC filing to be sent to RAG endpoint for retrieval."
+        }
+    },
+    {
         "name": "web_search",
         "docstring": "If you do not know about an entity, perform a web search using the Google search engine. This should be followed by web scraping the most relevant page to get a detailed response.",
         "parameters": {
@@ -182,28 +181,6 @@
         "output": {
             "type": "dict",
             "description": "Content and metadata of Reddit posts."
-        }
-    },
-    {
-        "name": "get_indian_kanoon",
-        "docstring": "Retrieves the title, date, and cleaned document text from Indian Kanoon based on the query.",
-        "parameters": {
-            "query": "str"
-        },
-        "output": {
-            "type": "tuple",
-            "description": "A tuple containing the title (str), date (str), and document text (str)."
-        }
-    },
-    {
-        "name": "get_us_case_law",
-        "docstring": "Retrieves the title and cleaned document text of a US case law based on the query.",
-        "parameters": {
-            "query": "str"
-        },
-        "output": {
-            "type": "Tuple[str, str]",
-            "description": "A tuple containing the title and cleaned document text of the case law."
         }
     }
 ]

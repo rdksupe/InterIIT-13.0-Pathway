@@ -46,11 +46,14 @@ def classifierAgent(query):
 
 def classifierAgent_RAG(query, ragContext):
     prompt = f'''
-    You are a classifier which determines if a question asks for a detailed response or a to-the point response.
+    You are a classifier which determines if a question asks for a detailed response or a concise response.
     
     A query is detailed if it expects a long response, in form of a report and expects in depth analysis and reasoning.
     When a user expects a detailed response, they would mention some key words like "in depth", "deep analysis", "report",
     "long answer", "comprehensive report", "comprehensive analysis". OR it would ask for a multi-dimensional analysis of a topic.
+
+    If the query has phrases like "analyze", "detailed analysis","in-depth analysis", "generate a report", "comprehensive analysis", "Evaluate comprehensively"
+    or other phrases which indicate an in depth answer, return 'detailed'
 
     For example: 'How did the merger of Jio and Disney Plus Hotstar impact the Indian OTT market?' is a detailed query because it has
     to be analyzed from multiple standpoints and perspectives.
@@ -70,7 +73,7 @@ def classifierAgent_RAG(query, ragContext):
     )
     cat_1 = response.choices[0].message.content.lower()
 
-    if cat_1 == 'complex':
+    if cat_1 == 'detailed':
         query2 = f""" Does the folloing answer the query to it's fullest extent? Evaluate on the following metrics, only return yes when all metrics are fulfilled:
         a. Competion: Does the Answer contains answers to all aspects of the query?
         b. Detail: Does the Answer provide as much detail as asked in the query? If the query asks for a detailed or in-depth analysis, does the answer provide that level of deep analysis?
@@ -88,11 +91,13 @@ def classifierAgent_RAG(query, ragContext):
         )
         cat_2 = response.choices[0].message.content.lower()
         if cat_2 == 'yes':
+            print("iski maa ka bhosda")
             return 'simple'
         else:
             return 'complex' 
         return 'complex'
     else:
+        print("Iski maa ki choot")
         return 'simple'
     
 if __name__ == '__main__':

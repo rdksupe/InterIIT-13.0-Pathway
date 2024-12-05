@@ -137,13 +137,14 @@ def generate_answer_openai(query: str, source: str,retrieved_docs: List[Dict[str
             messages=[
                 {
                     "role": "system",
-                    "content": """You are a precise and factual research assistant. Answer questions based solely on the provided context.
+                    "content": """You are a precise and factual research assistant. Answer questions based on the provided context.
                     Important Instructions:
-                    - Base your answer ONLY on the provided context documents
-                    - Use quotes when directly quoting text
-                    - E
-                    - If information isn't available in the context, state: "This information is not available in the provided documents. and explain why the provided context is not relevant to the query"
-                    - If you find conflicting information, point it out """
+                    1. Base your answer on the provided context documents
+                    2. Search for additional facts if required
+                    3. THINK and REASON out your analysis while generating response. Do comparative and critical analysis if required.  
+                    4. Use quotes when directly quoting text
+                    5. If you find conflicting information, point it out 
+                    6. If the file name is 'uploads/Name.pdf', state the source as Name.pdf along with the page range from where the answer is extracted """
 
                 },
                 {

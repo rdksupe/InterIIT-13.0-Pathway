@@ -48,6 +48,7 @@ def gen_url(image_paths):
 
 def get_paths(response):
     assets_folder = os.path.join(os.getcwd(), 'assets')
+    os.mkdir(assets_folder)
     image_paths = []
 
     for file_name in os.listdir(assets_folder):
