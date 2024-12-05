@@ -35,3 +35,5 @@ RACCOON/content-self_messages_fromReflection.txt
 RACCOON/Bad_Question.md
 RACCOON/additional_kwargs-self_messages_fromReflection.txt
 ProcessLogs.md
+
+*.csv
