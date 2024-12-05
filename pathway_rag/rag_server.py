@@ -45,7 +45,9 @@ def rerank_documents(query: str, documents: List[Dict[str, Any]]) -> List[Dict[s
     if not is_rerank_service_available():
         print("Reranking service is not available. Using original document order.")
         return documents
-
+    if not documents : 
+        print("No relevant documents retreived from user input")
+        return [{"message":"No relevant documents retreived from user input. Ask the user to provide relevant documents"}]
     try:
         # Extract text from documents
         doc_texts = [doc.get('text', '') for doc in documents]
@@ -91,11 +93,14 @@ def query_retrieval_service(query: str, k: int = 5) -> List[Dict[str, Any]]:
 def query_retrieval_service2(query: str, k: int = 2) -> List[Dict[str, Any]]:
     """Query the local retrieval service for relevant documents."""
     try:
+        print(query)
         encoded_query = quote(query)
+        print(encoded_query)
         response = requests.get(f"http://localhost:4006/v1/retrieve?query={encoded_query}&k={k}")
         response.raise_for_status()
         return response.json()
     except Exception as e:
+        print(query)
         raise HTTPException(status_code=500, detail=f"Error querying retrieval service: {str(e)}")
 def format_context(documents: List[Dict[str, Any]]) -> str:
     """Format retrieved documents into context string."""
@@ -165,9 +170,7 @@ async def generate(query_request: Query):
     Returns only the final answer from the LLM.
     """
     start = time.time()
-    print("Hello from rag_server.py")
-    print(query_request)
-    print(query_request.destination) 
+
     # Choose the appropriate retrieval service based on the destination
     if query_request.destination == "user":
         print("hello this is destination")

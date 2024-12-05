@@ -1361,7 +1361,7 @@ def simple_query_documents(prompt: str) -> Dict:
         log_error(
             tool_name="simple_query_documents",
             error_message=str(e),
-            additional_info={"prompt": prompt, "source": source}
+            additional_info={"prompt": prompt}
         )
         
         return ''

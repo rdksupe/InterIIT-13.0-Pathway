@@ -41,10 +41,11 @@ def ragAgent(query, state):
 
         prompt = f"""Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses must be with respect to this time frame""" + sys_prompt + rag_result
         response = conversation_complex.predict(input = f'''{prompt}''')
-        
+
+        print(response)
         dic =  dict(json.loads(clean(response.split("```")[-2].split("json")[1])))
         for p in dic:
-            rag_resp = retrieve_documents.invoke(query)
+            rag_resp = retrieve_documents.invoke(dic[p])
             fin_context += f'{rag_resp} \n'
 
         prompt_2 =  f'''
