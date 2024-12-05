@@ -23,7 +23,7 @@ from LLMs import GPT4o_mini_LATS
 class Reflection(BaseModel):
     reflections: str = Field(
         description=
-        f'''The critique and reflections on the sufficiency of the questions, superfluency and general quality of the response.The response must be very detailed and backed by numbers and sources.  Note: The Current Date and Time is {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}. All your searches and responses must be with respect to this time frame. Include full WEB-LINKS[THE FULL URL] next to the relevant information in each response'''
+        f'''The critique and reflections on the sufficiency of the questions, superfluency and general quality of the response. The response must be accurate and backed by soures. Include full WEB-LINKS[THE FULL URL] next to the relevant information in each response IF POSSIBLE.'''
     )
     score: int = Field(
         description="Score from 0-10 on the quality of the candidate response.",
@@ -31,7 +31,7 @@ class Reflection(BaseModel):
         lte=10,
     )
     found_solution: bool = Field(
-        description="Whether the response has fully solved the question or task and the response is detailed and backed by numbers tables and sources including full WEB-LINKS[THE FULL URL] next to the relevant information in each response. If you do not have links to the relevant information in the response, you can use web search to get the detailed response."
+        description="Whether the response has fully solved the question or task and the response is accurate and backed by sources including sources next to the relevant information in each response."
     )
 
     def as_message(self):
@@ -71,7 +71,8 @@ class Node:
 
     @property
     def is_solved(self):
-        """If any solutions is detailed and backed by data sources,including full WEB-LINKS[THE FULL URL] next to the relevant information in each response, we can end the search."""
+        """If any solutions is accurate and backed by data sources,including full WEB-LINKS[THE FULL URL] next to the relevant information in each response we can end the search.
+        We can also end the result if the respoonse is NULL, or the response is along the lines of retrieval not possible, or incorrect ticker"""
         return self._is_solved
 
     @property
@@ -198,11 +199,11 @@ prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "Reflect and grade the assistant response to the user question below, give better grade to the response that is more accurate ,informative,elaborate and contains more numerical data and tables. Accuracy is the highest priority",
+            "Reflect and grade the assistant response to the user question below, give better grade to the response that is more accurate ,informative, and contains more numerical data. Accuracy is the highest priority",
         ),
         (
             "system",
-            "Do not call the same tool if the tool returns the message that it has failed, instead call another relevant tool to get the response.If you do not have any relevant tool to call, you have to use web search to get the detailed response.",
+            "Do not call the same tool if the tool returns the message that it has failed or returned null, instead call another relevant tool to get the response.If you do not have any relevant tool to call, you have to use web search to get the detailed response.",
         ),
         ("user", "{input}"),
         MessagesPlaceholder(variable_name="candidate"),

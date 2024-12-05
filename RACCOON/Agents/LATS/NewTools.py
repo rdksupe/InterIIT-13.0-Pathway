@@ -1423,8 +1423,9 @@ def retrieve_documents(prompt: str) -> str:
     except requests.RequestException as e:
         print(f"HTTP Request failed: {e}")
         if hasattr(e, 'response'):
-            print(f"Response status code: {e.response.status_code}")
-            print(f"Response content: {e.response.text}")
+            if e.response is not None:
+                print(f"Response status code: {e.response.status_code}")
+                print(f"Response content: {e.response.text}")
         log_error(
             tool_name="query_documents",
             error_message=str(e),

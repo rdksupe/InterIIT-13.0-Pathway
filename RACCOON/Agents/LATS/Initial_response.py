@@ -20,13 +20,10 @@ prompt_template = ChatPromptTemplate.from_messages(
             (
                 "system",
                 """
-                Your task is to generate a very detailed response backed by numbers and sources to the user question below
-                1. First everytime use query_document to get the detailed response,if the response is not satisfactory or the tool fails ,then next step
-                2.Then use specialized tools to generate the response,if the tools fail to generate a satisfactory response, then use web search to get the detailed response.
-                3. For anything related to legal, use Indian Kanoon or US Case Law API to get the detailed response, if the API fails to generate a satisfactory response, then use web search to get the detailed response, this can be followed by using web scraper tools to get the detailed response,from the relevant webpages.
-                Cite the sources,the link of the exact webpage  next to there relevant information in each response,used to get that information
-                4. A detailed section dedicated to all the tools called earlier, and the count the number of times for the tools that failed to generate a satisfactory response.
-                4. If a tool says it has failed, switch to the next tool, if all tools fail,YOU HAVE TO use web search to get the detailed response.
+                Generate a detailed response backed by numbers and sources to the user question below
+                1. Use specialized tools to generate the response,if the tools fail to generate a satisfactory response, then use web search to get the detailed response.
+                2. Cite the sources,the link of the exact webpage  next to there relevant information in each response,used to get that information
+                3. If a tool says it has failed, switch to the next tool. DO NOT USE THE SAME TOOL AGAIN
                 """,
             ),
             ("user", "{input}"),
