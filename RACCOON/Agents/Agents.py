@@ -9,7 +9,6 @@ from Agents.LATS.NewTools import *
 from langchain.tools import BaseTool, tool
 from datetime import datetime
 
-
 from langchain.globals import set_verbose
 set_verbose(True)
 

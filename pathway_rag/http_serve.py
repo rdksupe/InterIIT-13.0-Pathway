@@ -1,3 +1,6 @@
+"""
+This module provides an HTTP server for file uploads using FastAPI.
+"""
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -15,14 +18,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPLOAD_DIR = "uploads"
+UPLOAD_DIR = "uploads" # Directory to store uploaded files
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @app.post("/upload")
-async def upload_file(
-    file: UploadFile = File(...),
-    filename: str = Form(None)  # Add this line to accept the filename field
-):
+async def upload_file(file: UploadFile = File(...),filename: str = Form(None)):
+    """
+    Uploads a file to the server.
+
+    Args:
+        file (UploadFile): The file to be uploaded.
+        filename (str): The name of the file.
+
+    Returns:
+        dict: A dictionary containing a message and the filename.
+    """
     try:
         # Use the provided filename if available, otherwise use the original filename
         original_filename = filename or file.filename

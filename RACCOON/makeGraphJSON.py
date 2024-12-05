@@ -1,4 +1,18 @@
 def makeGraphJSON(plan_subTasks):
+    """
+    This function is used to generate a JSON representation of a graph from a given set of plan sub-tasks.
+    Functions:
+        makeGraphJSON(plan_subTasks): Generates a JSON representation of a graph from the provided plan sub-tasks.
+    makeGraphJSON(plan_subTasks)
+        Generates a JSON representation of a graph from the provided plan sub-tasks.
+        Parameters:
+            plan_subTasks (dict): A dictionary where keys are task identifiers and values are dictionaries containing 
+                                  details about each task, including agent, content, agent_role_description, tools, 
+                                  and required data.
+        Returns:
+            dict: A dictionary containing nodes and edges representing the graph. Nodes contain metadata about each task, 
+                  and edges represent dependencies between tasks.
+    """
     graphData = dict()
     graphData_nodes = []
     graphData_edges = []

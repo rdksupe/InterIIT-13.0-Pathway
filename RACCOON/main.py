@@ -1,3 +1,13 @@
+"""
+This script sets up a WebSocket server to handle various types of queries and tasks using different agents and APIs.
+Functions:
+    mainBackend(query, websocket, rag):
+        Handles the main backend processing of queries, including classification, planning, and execution of tasks using various agents.
+    handle_connection(websocket):
+        Manages incoming WebSocket connections and routes messages to the appropriate handlers.
+    main():
+        Starts the WebSocket server and keeps it running indefinitely.
+"""
 import os
 from dotenv import load_dotenv
 load_dotenv('../.env')
@@ -7,6 +17,7 @@ import json
 import google.generativeai as genai
 import re
 
+# Import custom agents for different tasks
 from Agents.Agents import Agent
 from Agents.Smack import Smack
 from Agents.ClassifierAgent import classifierAgent, classifierAgent_RAG
@@ -43,6 +54,19 @@ now = time.time()
 
 
 async def mainBackend(query, websocket, rag):
+    """
+    Main backend function to process queries and interact with a websocket.
+    This function handles different types of queries (simple or complex) and 
+    processes them using various agents and pipelines. The function 
+    also generates and sends responses back through the websocket.
+    Args:
+        query (str): The input query to be processed.
+        websocket (WebSocket): The websocket connection to send responses.
+        rag (bool): Flag to indicate if RAG mode is enabled.
+    Returns:
+        None
+    """
+
     print("Running mainBackend, ", query)
     GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY_30')
     OPENAI_API_KEY = os.getenv('OPEN_AI_API_KEY_30')
@@ -53,7 +77,6 @@ async def mainBackend(query, websocket, rag):
         'GEMINI': GOOGLE_API_KEY
     }
     api_key = key_dict[LLM]
-
 
     IS_RAG = rag
 
@@ -67,6 +90,7 @@ async def mainBackend(query, websocket, rag):
     with open("tickers.txt", "a") as f_ticker:
         f_ticker.write('')
 
+    # Apply guardrails to the query
     guard_rails, reasonings = applyTopicalGuardails(query)
     
     resp = ''
@@ -103,7 +127,7 @@ async def mainBackend(query, websocket, rag):
                     agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
                     agentsList.append(agent)
                 
-                
+                # Execute the task results using the Smack agent
                 smack = Smack(agentsList)
                 taskResultsDict = smack.executeSmack()
                 for task in taskResultsDict:
@@ -125,11 +149,8 @@ async def mainBackend(query, websocket, rag):
                         executeSimplePipeline(query),
                         genQuestionSimple(query)
                     )
-                    
                     return (str(resp), str(additionalQuestions))
-                # resp, additionalQuestions = await run_parallel(query)
                 resp = await executeSimplePipeline(query)
-                #additionalQuestions = '\n'.join(additionalQuestions.values())
 
         elif IS_RAG:
             print("Running Internal Docs RAG")
@@ -164,36 +185,25 @@ async def mainBackend(query, websocket, rag):
                     agent = Agent(sub_task, agent_name, agent_role, local_constraints, task,dependencies, api_key, tools_list, LLM)
                     agentsList.append(agent)
                 
-                
+                # Execute the task results using the Smack agent
                 smack = Smack(agentsList)
                 taskResultsDict = smack.executeSmack()
                 for task in taskResultsDict:
                     out_str += f'{taskResultsDict[task]} \n'
                 resp = drafterAgent_rag(query,rag_context, out_str)
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                #resp = generate_chart(resp)
                     
                 with open ('./output/drafted_response.md', 'w') as f:
                     f.write(str(resp))
-
-                # final_questions = []
-                # for question in addn_questions:
-                #     refinedQuestion = genQuestionComplex(query, question)
-                #     final_questions.append(question)
-
-                # await asyncio.sleep(1)
-                # await websocket.send(json.dumps({"type": "questions", "questions": final_questions[:3]}))
 
             elif query_type == 'simple':
                 print("RUNNING SIMPLE TASK PIPELINE")   
                 resp = rag_context
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
                 additionalQuestions = genQuestionSimple(query)
-                #additionalQuestions = '\n'.join(additionalQuestions.values())
                 
         await asyncio.sleep(1)
         await websocket.send(json.dumps({"type": "response", "response": resp}))
-        # await websocket.send(json.dumps({"type": "questions", "questions": additionalQuestions[:3]}))
 
     else:
         for key in reasonings:
@@ -206,6 +216,15 @@ async def mainBackend(query, websocket, rag):
         await websocket.send(json.dumps({"type": "response", "response": resp}))
 
 async def handle_connection(websocket):
+    """
+    Manages incoming WebSocket connections and routes messages to the appropriate handlers.
+    
+    Args:
+        websocket (WebSocket): The WebSocket connection to manage.
+    
+    Returns:
+        None: The function processes messages asynchronously and sends back responses to the client.
+    """
     rag = True
     async for message in websocket:
         data = json.loads(message)
@@ -215,7 +234,6 @@ async def handle_connection(websocket):
 
         if data['type'] == 'toggleRag':
             print(f"Received query: {data['query']}")
-            # await mainBackend(data['query'], websocket, rag)
             rag = not rag
 
         if data['type'] == 'cred':
@@ -224,10 +242,8 @@ async def handle_connection(websocket):
                 with open(env_file_path, 'r') as fp:
                     env_content = fp.readlines()
 
-                # Create a dictionary to hold the current environment variables
                 env_dict = {}
                 for line in env_content:
-                    # Ignore comments and empty lines
                     if line.strip() and not line.startswith('#'):
                         key, value = line.strip().split('=', 1)
                         value = value.strip('"')
@@ -251,6 +267,9 @@ async def handle_connection(websocket):
                 print(".env file has been updated.")
 
 async def main():
+    """       
+     Starts the WebSocket server and keeps it running indefinitely.
+    """
     print("WebSocket server starting on ws://0.0.0.0:8080")
     async with websockets.serve(handle_connection, "localhost", 8080):
         await asyncio.Future()  # run forever

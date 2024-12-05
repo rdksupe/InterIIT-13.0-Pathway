@@ -1,3 +1,6 @@
+"""
+This file sets up a WebSocket server to monitor file changes and send updates to connected clients.
+"""
 import time
 import json
 import threading
@@ -9,8 +12,11 @@ import queue
 import difflib
 from pathlib import Path
 
-
 class MyHandler(FileSystemEventHandler):
+    """
+    MyHandler is a custom event handler class for monitoring file system changes and processing modifications to a specific file.
+    """
+
     def __init__(self, websocket, message_queue):
         super().__init__()
         self.websocket = websocket
@@ -18,7 +24,9 @@ class MyHandler(FileSystemEventHandler):
         self.previous_content = ""
 
     def on_modified(self, event):
-        # Generate event details
+        """
+         Handles the event when a monitored file is modified. Reads the file, computes the diff, and sends the diff through the message queue.
+        """
         event_data = {
             "type": "agents",
             "response": f'Event type: {event.event_type} path: {event.src_path}'
@@ -47,12 +55,28 @@ class MyHandler(FileSystemEventHandler):
             self.previous_content = current_content
 
     def  on_created(self,  event):
+        """
+         Handles the event when a new file is created. Prints the event type and path.
+        """
          print(f'event type: {event.event_type} path : {event.src_path}')
+
     def  on_deleted(self,  event):
+        """
+         Handles the event when a file is deleted. Prints the event type and path.
+        """
          print(f'event type: {event.event_type} path : {event.src_path}')
 
 
 async def handle_connection(websocket):
+    """
+    Handle the WebSocket connection with the client.
+    Args:
+        websocket (websockets.WebSocketServerProtocol): The WebSocket connection to the client.
+    Raises:
+        websockets.exceptions.ConnectionClosed: If the client connection is closed.
+        Exception: For any other errors that occur during connection handling.
+    """
+
     message_queue = queue.Queue()
     async def process_events():
         while True:
@@ -81,6 +105,14 @@ async def main():
         await asyncio.Future() 
 
 def start_observer(websocket, message_queue):
+    """
+    Starts a file system observer to monitor changes in the current directory.
+    Args:
+        websocket: The websocket connection to send messages to.
+        message_queue: The queue to store messages for processing.
+    Raises:
+        KeyboardInterrupt: If the observer is manually stopped by a keyboard interrupt.
+    """
     event_handler = MyHandler(websocket, message_queue)
     observer = Observer()
     observer.schedule(event_handler,  path='.',  recursive=False)
@@ -92,8 +124,6 @@ def start_observer(websocket, message_queue):
     except  KeyboardInterrupt:
         observer.stop()
     observer.join()
-
-
 
 
 if __name__ == "__main__":
