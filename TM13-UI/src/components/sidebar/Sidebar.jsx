@@ -7,7 +7,7 @@ import Viewer from "../file/fileSystem";
 
 const Sidebar = () => {
 	const [extended, setExtended] = useState(true);
-	const { prevPrompts, prevResults, setRecentPrompt, newChat, socket, setSocket, setIsUpload, isUpload} = useContext(Context);
+	const { prevPrompts, prevResults, setRecentPrompt, newChat, socket, setSocket, setIsUpload, isUpload } = useContext(Context);
 	const [isPopupVisible, setPopupVisible] = useState(false);
 	const [isFilePopupVisible, setFilePopupVisible] = useState(false);
 
@@ -44,7 +44,7 @@ const Sidebar = () => {
 	const loadPreviousPrompt = async (prompt) => {
 		alert(result)
 		setRecentPrompt(prompt);
-	
+
 		await onRender(prompt);
 	};
 
@@ -165,35 +165,6 @@ const Sidebar = () => {
 						<form className="custom-form">
 							<div>
 
-
-								<label htmlFor="GoogleDrive">Google Drive (Credentials.json and ObjectID)</label>
-								<input
-									type=""
-									id="GoogleDrive_ObjectId"
-									name="GoogleDrive_ObjectId"
-									value={formData.GoogleDrive_ObjectId}
-									onChange={handleChange}
-									placeholder="Object ID for Google Drive Folder"
-
-								/>
-								<input
-									type="file"
-									id="jsonFile"
-									name="jsonFile"
-									onChange={handleFileChange}
-									accept="application/json"
-
-								/>
-								<label htmlFor="GEMINI_API_KEY_30">Gemini API Key</label>
-								<input
-									type="text"
-									id="GEMINI_API_KEY_30"
-									name="GEMINI_API_KEY_30"
-									value={formData.GEMINI_API_KEY_30}
-									onChange={handleChange}
-									placeholder="API key for Gemini"
-								/>
-
 								<label htmlFor="OPEN_AI_API_KEY_30">OpenAI API Key</label>
 								<input
 									type="text"
@@ -204,6 +175,17 @@ const Sidebar = () => {
 									placeholder="API key for OpenAI"
 								/>
 
+								<label htmlFor="GEMINI_API_KEY_30">Gemini API Key</label>
+								<input
+									type="text"
+									id="GEMINI_API_KEY_30"
+									name="GEMINI_API_KEY_30"
+									value={formData.GEMINI_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Gemini"
+								/>
+
+
 								<label htmlFor="FINNHUB_API_KEY_30">Finnhub API Key</label>
 								<input
 									type="text"
@@ -212,16 +194,6 @@ const Sidebar = () => {
 									value={formData.FINNHUB_API_KEY_30}
 									onChange={handleChange}
 									placeholder="API key for Finnhub"
-								/>
-
-								<label htmlFor="GOOGLE_CSE_ID_30">Google Custom Search Engine ID</label>
-								<input
-									type="text"
-									id="GOOGLE_CSE_ID_30"
-									name="GOOGLE_CSE_ID_30"
-									value={formData.GOOGLE_CSE_ID_30}
-									onChange={handleChange}
-									placeholder="CSE ID for Google Custom Search"
 								/>
 
 								<label htmlFor="TAVILY_API_KEY_30">Tavily API Key</label>
@@ -234,14 +206,14 @@ const Sidebar = () => {
 									placeholder="API key for Tavily"
 								/>
 
-								<label htmlFor="GOOGLE_API_KEY_30">Google API Key</label>
+								<label htmlFor="VOYAGE_API_KEY">Voyage API Key</label>
 								<input
 									type="text"
-									id="GOOGLE_API_KEY_30"
-									name="GOOGLE_API_KEY_30"
-									value={formData.GOOGLE_API_KEY_30}
+									id="VOYAGE_API_KEY"
+									name="VOYAGE_API_KEY"
+									value={formData.VOYAGE_API_KEY}
 									onChange={handleChange}
-									placeholder="API key for Google"
+									placeholder="API key for Voyage"
 								/>
 
 								<label htmlFor="JINA_API_KEY_30">Jina API Key</label>
@@ -263,16 +235,6 @@ const Sidebar = () => {
 									onChange={handleChange}
 									placeholder="API key for Indian Kanoon"
 								/>
-								<label htmlFor="File">File Link</label>
-								<input
-									type="text"
-									id="File"
-									name="File_Link"
-									value={formData.File_Link}
-									onChange={handleChange}
-									placeholder="File Link"
-
-								/>
 							</div>
 
 							<button type="submit" onClick={handleSubmit}>Submit</button>
@@ -291,7 +253,7 @@ const Sidebar = () => {
 				</>
 			)}
 			{isUpload && (
-				<>
+				<>	
 					<div className="popup">
 						<div className="popup-overlay" onClick={closePopup}></div>
 						<div className="popup-form">

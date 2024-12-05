@@ -4,4 +4,8 @@ markdown_pdf
 flask
 flask_cors
 yfinance
+<<<<<<< HEAD
+google-generativeai
+=======
 grip
+>>>>>>> 5e4dc120086dfea4d9d823c4abf1bafa4e3a615f

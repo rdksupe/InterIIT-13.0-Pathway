@@ -220,8 +220,13 @@ const GraphBar = () => {
     }, []); // Empty dependency array to run once on component mount
 
     const renderChart = () => {
-        const chartData = Object.keys(stockData).map((ticker) => {
+        const chartData = Object.keys(stockData).map((ticker, index) => {
             const data = stockData[ticker];
+            
+            // Define different colors for each company
+            const lineColor = index % 2 === 0 ? "blue" : "orange"; // Alternate between blue and orange for line charts
+            const candlestickColor = index % 2 === 0 ? "green" : "purple"; // Alternate between green and purple for candlestick charts
+    
             if (chartType === "candlestick") {
                 return {
                     x: data.map((row) => row.Date),
@@ -231,8 +236,8 @@ const GraphBar = () => {
                     close: data.map((row) => parseFloat(row.Close)),
                     type: "candlestick",
                     name: ticker,
-                    increasing: { line: { color: "green" } },
-                    decreasing: { line: { color: "red" } },
+                    increasing: { line: { color: candlestickColor } },
+                    decreasing: { line: { color: "red" } }, // Keep red for decreasing
                 };
             } else if (chartType === "line") {
                 return {
@@ -240,17 +245,17 @@ const GraphBar = () => {
                     y: data.map((row) => parseFloat(row.Close)),
                     type: "line",
                     name: ticker,
-                    line: { color: "blue" },
+                    line: { color: lineColor }, // Alternate color for line charts
                 };
             }
             return null;
         }).filter((data) => data !== null);
-
+    
         return (
             <Plot
                 data={chartData}
                 layout={{
-                    title: chartType === "candlestick" ? "Stock Candlestick Chart" :  "Stock Time Series" ,
+                    title: chartType === "candlestick" ? "Stock Candlestick Chart" : "Stock Time Series",
                     xaxis: { title: "Date" },
                     yaxis: { title: "Price (USD)" },
                     responsive: true,
@@ -260,6 +265,7 @@ const GraphBar = () => {
             />
         );
     };
+    
 
 
     return (
@@ -284,12 +290,6 @@ const GraphBar = () => {
                             onClick={() => setActiveButton(2)}
                         >
                             Data Visualization</button>
-                        <button
-                            className={`graph-button ${activeButton === 3 ? "on" : "off"}`}
-                            onClick={() => setActiveButton(3)}
-                        >
-                            Data
-                        </button>
                     </div>
                 )}
 
@@ -357,7 +357,7 @@ const GraphBar = () => {
                         {renderChart()}
                     </div>
                 )}
-                {activeButton === 3 && (
+                {/* {activeButton === 3 && (
                     <div className="csv-render" style={{ padding: "20px", overflowX: "scroll" }}>
                         <input type="file" accept=".csv" onChange={handleFileUpload} />
                         {tableData.length > 0 && (
@@ -381,7 +381,7 @@ const GraphBar = () => {
                             </table>
                         )}
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

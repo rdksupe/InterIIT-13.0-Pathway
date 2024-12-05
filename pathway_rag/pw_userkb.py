@@ -53,10 +53,18 @@ class DocumentProcessor:
         bm25 = TantivyBM25Factory(ram_budget=524288000, in_memory_index=True)
         factories = [usearch, bm25]
         retriever_factory = HybridIndexFactory(factories, k=60)
-        
+        gdrive_source = pw.io.gdrive.read(
+                object_id="1_ga91J5sZ_YcQdcNWcQXtrBHqvODpEa5",
+                mode="streaming",
+                object_size_limit=None,
+                service_user_credentials_file="team-30-441514-d9a9da2d500c.json",
+                with_metadata=True,
+                # file_name_pattern=['*pdf','*docx','*txt','*pptx','*ppt','*doc','*xlsx','*Google Docs','*Google Slides','*Google Sheets','*xls']
+
+        )
         self.vector_store = DocumentStore.from_langchain_components(
             retriever_factory=retriever_factory,
-            docs=[source1],
+            docs=[source1,gdrive_source],
             parser=self.parser,
             splitter=text_splitter,
         )
@@ -108,7 +116,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-

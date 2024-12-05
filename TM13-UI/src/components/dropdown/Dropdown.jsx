@@ -13,8 +13,8 @@ const Dropdown = () => {
 
     <div style={styles.container}>
       <select value={selectedOption} onChange={handleChange} style={styles.dropdown}>
-        <option style = {styles.opt} value="option1">Gemini Pro</option>
-        <option style = {styles.opt} value="option2">Gpt 4-o</option>
+        <option style = {styles.opt} value="option1">GPT 4-o</option>
+        <option style = {styles.opt} value="option2">GPT 4-o mini</option>
       </select>
     </div>
   );
@@ -26,7 +26,7 @@ const styles = {
     textAlign: "center",
     margin: "10px",
     // backgroundColor: "#f9f9f9",
-    maxWidth: "120px",
+    maxWidth: "1200px",
   },
 
   header: {

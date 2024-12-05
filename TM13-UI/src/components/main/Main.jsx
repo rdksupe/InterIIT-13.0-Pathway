@@ -8,8 +8,6 @@ import { TypeAnimation } from 'react-type-animation';
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import html2pdf from 'html2pdf.js';
-import { marked } from 'marked';
 
 const Main = () => {
 	const {
@@ -56,6 +54,10 @@ const Main = () => {
 	const [markdownContent, setMarkdownContent] = useState('');
 	const [reccQs, setReccQs] = useState([])
 	const [isChecked, setIsChecked] = useState(false);
+<<<<<<< HEAD
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+=======
+>>>>>>> 5e4dc120086dfea4d9d823c4abf1bafa4e3a615f
 
 	const ToggleSwitch = ({ label }) => {
 
@@ -112,7 +114,7 @@ const Main = () => {
 			})
 			.then(data => {
 				console.log('Markdown content sent successfully to backend:', data.message);
-	
+
 				// Now fetch the generated HTML from the backend after it's processed
 				return fetch('http://localhost:5001/download-pdf', {
 					method: 'GET',
@@ -135,7 +137,7 @@ const Main = () => {
 				console.error('Error during the process:', error);
 			});
 	};
-	
+
 
 	// Auto-scrolling effect when resultData changes
 	useEffect(() => {
@@ -221,12 +223,12 @@ const Main = () => {
 				setFileHistory((prevFileHistory) => [
 					...prevFileHistory,
 					{
-					  fileName: files[i].name,
-					  fileSize: files[i].size,
-					  fileType: files[i].type,
-					  timestamp: new Date().toLocaleString(),
+						fileName: files[i].name,
+						fileSize: files[i].size,
+						fileType: files[i].type,
+						timestamp: new Date().toLocaleString(),
 					},
-				  ]);
+				]);
 
 				try {
 					// Send a POST request
@@ -256,7 +258,29 @@ const Main = () => {
 	}
 
 	const triggerFileInput = () => {
+
 		document.getElementById('hiddenFileInput').click(); // Programmatically trigger click on hidden input
+	};
+
+	// Toggle the dropdown visibility
+	const toggleDropdown = () => {
+		setIsDropdownOpen(!isDropdownOpen);
+	  };
+	
+	  // Close the dropdown
+	  const closeDropdown = () => {
+		setIsDropdownOpen(false);
+	  };
+
+	// Close the dropdown if the user clicks outside of it
+	window.onclick = function (event) {
+		const dropdown = document.getElementById("dropdown");
+		const buttonContainer = document.querySelector(".button-container");
+
+		// Check if the clicked element is not the dropdown or the button
+		if (!buttonContainer.contains(event.target)) {
+			dropdown.style.display = "none";
+		}
 	};
 
 	useEffect(() => {
@@ -344,6 +368,7 @@ const Main = () => {
 	}, []);
 
 	return (
+
 		<div className="main" tabIndex="0" onKeyDown={(e) => {
 			if (e.key === 'Enter' && !resp.current) {
 				e.preventDefault();
@@ -377,10 +402,10 @@ const Main = () => {
 									<div
 										className="card"
 										onClick={() =>
-											handleCardClick("Give me a detailed report on the current state of Russian economy and the impacts of sanctions. I am Aramco and is will it br profitable for me to acquire Lukoil? Will the sanction pose any problem for my company in any prospect?")
+											handleCardClick("Give me a detailed report on the current state of Russian economy and the impacts of sanctions. I am Aramco and will it be profitable for me to acquire Lukoil? Will the sanction pose any problem for my company in any prospect?")
 										}
 									>
-										<p style={{ textAlign: "justify" }}>Give me a detailed report on the current state of Russian economy and the impacts of sanctions. I am Aramco and is will it br profitable for me to acquire Lukoil? Will the sanction pose any problem for my company in any prospect?</p>
+										<p style={{ textAlign: "justify" }}>Give me a detailed report on the current state of Russian economy and the impacts of sanctions. I am Aramco and will it be profitable for me to acquire Lukoil? Will the sanction pose any problem for my company in any prospect?</p>
 										{/* <img src={assets.compass_icon} alt="" /> */}
 									</div>
 									<div
@@ -397,11 +422,12 @@ const Main = () => {
 										className="card"
 										onClick={() =>
 											handleCardClick(
-												"Give me a detailed report on the current state of ed-tech sector in India and US. Can chegg acquire byju's, what would be the impact of such merger and acquisition on the market in every prospect?"
+												"Provide a detailed report on the current state of the ed-tech sector in India and the US. Can Chegg acquire Byju's? What would be the impact of such a merger and acquisition on the market from every perspective?"
 											)
 										}
 									>
-										<p style={{ textAlign: "justify" }}>Give me a detailed report on the current state of ed-tech sector in India and US. Can chegg acquire byju's, what would be the impact of such merger and acquisition on the market in every prospect? </p>
+										<p style={{ textAlign: "justify" }}>
+											Provide a detailed report on the current state of the ed-tech sector in India and the US. Can Chegg acquire Byju's? What would be the impact of such a merger and acquisition on the market from every perspective?</p>
 										{/* <img src={assets.message_icon} alt="" /> */}
 									</div>
 									<div
@@ -555,7 +581,7 @@ const Main = () => {
 					)}
 				</div>
 				<div className="main-bottom">
-					<div className="search-box">
+					<div className="search-box" style={{ marginTop: '-7%' }}>
 						<textarea
 							ref={textAreaRef}
 							onChange={(e) => setInput(e.target.value)}
@@ -578,19 +604,11 @@ const Main = () => {
 							}}
 						/>
 						<div>
-							<img src={assets.attach_icon} alt="Upload" onClick={triggerFileInput} />
-							<input
-								multiple
-								// webkitdirectory="true"
-								id="hiddenFileInput"
-								type="file"
-								style={{ display: 'none' }} // Hide the input field
-								onChange={handleFileChange}
-							/>
+							<img src={assets.attach_icon} class="upload" onClick={!resp.current ? toggleDropdown : null} />
 							<img
 								src={assets.send_icon}
 								alt=""
-								onClick={!resp.current ?handleClick: null}
+								onClick={!resp.current ? handleClick : null}
 							/>
 						</div>
 					</div>
@@ -598,10 +616,39 @@ const Main = () => {
 						<p></p>
 					</div>
 				</div>
+				{/* Overlay and Dropdown */}
+				{isDropdownOpen && (
+					<>
+						{/* Overlay */}
 
+
+						{/* Dropdown Content */}
+						<div id="dropdown" className="dropdown-content">
+							<div>
+								<button onClick={triggerFileInput}>Upload from Computer</button>
+								<input
+									multiple
+									id="hiddenFileInput"
+									type="file"
+									style={{ display: "none" }}
+									onChange={handleFileChange}
+								/>
+							</div>
+							<a
+								href="https://drive.google.com/drive/folders/1_ga91J5sZ_YcQdcNWcQXtrBHqvODpEa5"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<button>Upload to Google Drive</button>
+							</a>
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);
 };
 
 export default Main;
+
+
