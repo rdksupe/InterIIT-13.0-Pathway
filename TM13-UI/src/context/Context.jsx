@@ -19,8 +19,10 @@ const ContextProvider = (props) => {
 	const displayedCharsRef = useRef(0); // Use a ref to track displayed characters count
 	const totalCharsRef = useRef(0); // Use a ref for total characters
 	const [fileHistory, setFileHistory] = useState([]);		// State to store the file history
+	const [isUpload, setIsUpload] = useState(false);		// State to check if the user is uploading a file
 
 	const pendingDataRef = useRef([]);
+	const resp = useRef(false);
 
 	// Helper function to update displayed characters and check if all have been shown
 	const delayPara = (index, nextWord) => {
@@ -33,6 +35,7 @@ const ContextProvider = (props) => {
 				console.log('All characters displayed. Setting downloadData to true');
 				setDownloadData(true);
 				// setAgent(false);
+				resp.current = false;
 			}
 		}, 0.5 * index); // Slower pace for better visibility
 	};
@@ -212,7 +215,10 @@ const ContextProvider = (props) => {
 		chatNo,
 		setChatNo,
 		fileHistory,
-		setFileHistory
+		setFileHistory,
+		resp,
+		isUpload,
+		setIsUpload,
 	};
 
 	return <Context.Provider value={contextValue}>{props.children}</Context.Provider>;

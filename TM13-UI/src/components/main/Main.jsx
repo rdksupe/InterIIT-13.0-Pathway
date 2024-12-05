@@ -42,7 +42,10 @@ const Main = () => {
 		chatNo,
 		setChatNo,
 		fileHistory,
-		setFileHistory
+		setFileHistory,
+		resp,
+		isUpload,
+		setIsUpload,
 	} = useContext(Context);
 	const [socket1, setSocket1] = useState(null);
 
@@ -157,6 +160,7 @@ const Main = () => {
 		setShowResults(true);
 		setLoading(true);
 		setDownloadData(false)
+		resp.current = true;
 		setRecentPrompt(input);
 		if (chatNo == 0)
 			setPrevPrompts(prev => [...prev, input]);
@@ -226,7 +230,7 @@ const Main = () => {
 
 				try {
 					// Send a POST request
-					const response = await fetch('http://localhost:8000/upload', {
+					const response = await fetch('http://35.184.195.118:8000/upload', {
 						method: 'POST',
 						body: formData,
 					});
@@ -234,6 +238,10 @@ const Main = () => {
 					if (response.ok) {
 						const result = await response.json();
 						console.log('Files uploaded successfully:', result);
+						setIsUpload(true);
+						setTimeout(() => {
+							setIsUpload(false);
+						}, 1000);
 						// Update file history after successful upload
 
 
@@ -337,7 +345,7 @@ const Main = () => {
 
 	return (
 		<div className="main" tabIndex="0" onKeyDown={(e) => {
-			if (e.key === 'Enter') {
+			if (e.key === 'Enter' && !resp.current) {
 				e.preventDefault();
 				handleClick();
 			}
@@ -582,7 +590,7 @@ const Main = () => {
 							<img
 								src={assets.send_icon}
 								alt=""
-								onClick={handleClick}
+								onClick={!resp.current ?handleClick: null}
 							/>
 						</div>
 					</div>

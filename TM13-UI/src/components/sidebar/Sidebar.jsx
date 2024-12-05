@@ -7,7 +7,7 @@ import Viewer from "../file/fileSystem";
 
 const Sidebar = () => {
 	const [extended, setExtended] = useState(true);
-	const { prevPrompts, prevResults, setRecentPrompt, newChat, socket, setSocket } = useContext(Context);
+	const { prevPrompts, prevResults, setRecentPrompt, newChat, socket, setSocket, setIsUpload, isUpload} = useContext(Context);
 	const [isPopupVisible, setPopupVisible] = useState(false);
 	const [isFilePopupVisible, setFilePopupVisible] = useState(false);
 
@@ -29,6 +29,7 @@ const Sidebar = () => {
 	const closePopup = () => {
 		setPopupVisible(false);
 		setFilePopupVisible(false);
+		setIsUpload(false);
 	};
 
 	// Function to open the popup (optional if needed)
@@ -285,6 +286,16 @@ const Sidebar = () => {
 						<div className="popup-overlay" onClick={closePopup}></div>
 						<div className="popup-form">
 							<Viewer />
+						</div>
+					</div>
+				</>
+			)}
+			{isUpload && (
+				<>
+					<div className="popup">
+						<div className="popup-overlay" onClick={closePopup}></div>
+						<div className="popup-form">
+							<h2>File Upload Successfull</h2>
 						</div>
 					</div>
 				</>
