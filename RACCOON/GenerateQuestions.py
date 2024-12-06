@@ -38,7 +38,7 @@ async def genQuestionComplex(main_query, sub_task):
     
     '''client = OpenAI(api_key=api_key)
     completion = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=os.getenv("MODEL_NAME"),
         messages=[
             {"role": "system", "content": system_prompt},
             {
@@ -91,7 +91,7 @@ async def genQuestionSimple(query):
 
     '''client = OpenAI(api_key=api_key)
     completion = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=os.getenv("MODEL_NAME"),
         messages=[
             {"role": "system", "content": system_prompt},
             {

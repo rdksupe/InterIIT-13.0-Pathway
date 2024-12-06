@@ -20,24 +20,24 @@ from langchain.memory.prompt import ENTITY_MEMORY_CONVERSATION_TEMPLATE
 # Agents/LATS/generate_candidates -> done
 # Agents/LATS/Initial_response -> done 
 # Agents/LATS/Reflection -> done
-GPT4o_mini_LATS = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_key, temperature=0.4, model_kwargs={"top_p": 0.4})
+GPT4o_mini_LATS = ChatOpenAI(model=os.getenv("MODEL_NAME"),openai_api_key = openai_api_key, temperature=0.4, model_kwargs={"top_p": 0.4})
 
 
 # Agents/ConciseAnsAgent -> done
-#GPT4o_mini_SimpleAnswers = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_key, temperature=0.3, model_kwargs={"top_p": 0.3})
+#GPT4o_mini_SimpleAnswers = ChatOpenAI(model=os.getenv("MODEL_NAME"),openai_api_key = openai_api_key, temperature=0.3, model_kwargs={"top_p": 0.3})
 
 # Agents/conciseLATS -> done
-#GPT4o_mini_SimpleAnswersLATS = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_key, temperature=0.3, model_kwargs={"top_p": 0.3})
+#GPT4o_mini_SimpleAnswersLATS = ChatOpenAI(model=os.getenv("MODEL_NAME"),openai_api_key = openai_api_key, temperature=0.3, model_kwargs={"top_p": 0.3})
 
 # Agents/ChartGenAgent -> done
-GPT4o_mini_GraphGen = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_key, temperature=0.2, model_kwargs={"top_p": 0.1})
+GPT4o_mini_GraphGen = ChatOpenAI(model=os.getenv("MODEL_NAME"),openai_api_key = openai_api_key, temperature=0.2, model_kwargs={"top_p": 0.1})
 
 # Agents/DrafterAgent -> done
 # Agents/RAG_Agent -> done
 # Generate Questions -> done
 # Agents/PlannerAgent -> done
 
-GPT4o_mini_Complex = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_key, temperature=0.6, model_kwargs={"top_p": 0.7})
+GPT4o_mini_Complex = ChatOpenAI(model=os.getenv("MODEL_NAME"),openai_api_key = openai_api_key, temperature=0.6, model_kwargs={"top_p": 0.7})
 
 #buffer_memory_complex = ConversationBufferMemory(memory_key="chat_history_lines",return_messages=True, input_key="input")
 summary_memory_complex = ConversationSummaryMemory(llm=GPT4o_mini_Complex, input_key="input")
@@ -79,4 +79,4 @@ conversation_complex = ConversationChain(
 
 
 #TopicalGuardrails
-GPT4o_mini_GuardRails = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_key, temperature=0.2, model_kwargs={"top_p": 0.1})
+GPT4o_mini_GuardRails = ChatOpenAI(model=os.getenv("MODEL_NAME"),openai_api_key = openai_api_key, temperature=0.2, model_kwargs={"top_p": 0.1})

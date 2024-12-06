@@ -39,7 +39,7 @@ def classifierAgent(query):
         {"role": "system", "content": prompt},
     ]
     response = client.chat.completions.create(
-        model='gpt-4o-mini', messages=messages, temperature=0
+        model=os.getenv("MODEL_NAME"), messages=messages, temperature=0
     )
     return response.choices[0].message.content
 
@@ -69,7 +69,7 @@ def classifierAgent_RAG(query, ragContext):
         {"role": "system", "content": prompt},
     ]
     response = client.chat.completions.create(
-        model='gpt-4o-mini', messages=messages, temperature=0
+        model=os.getenv("MODEL_NAME"), messages=messages, temperature=0
     )
     cat_1 = response.choices[0].message.content.lower()
 
@@ -88,7 +88,7 @@ def classifierAgent_RAG(query, ragContext):
             {"role": "system", "content": query2},
         ]
         response = client.chat.completions.create(
-            model='gpt-4o-mini', messages=messages, temperature=0
+            model=os.getenv("MODEL_NAME"), messages=messages, temperature=0
         )
         cat_2 = response.choices[0].message.content.lower()
         if cat_2 == 'yes':

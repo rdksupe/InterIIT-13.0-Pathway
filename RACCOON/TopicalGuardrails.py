@@ -47,7 +47,7 @@ def get_chat_response(user_request):
         {"role": "user", "content": user_request},
     ]
     response = client.chat.completions.create(
-        model='gpt-4o-mini', messages=messages, temperature=0.5
+        model=os.getenv("MODEL_NAME"), messages=messages, temperature=0.5
     )
 
     return response.choices[0].message.content
@@ -86,7 +86,7 @@ def topical_guardrail_1(user_request):
         {"role": "user", "content": user_request},
     ]
     response = client.chat.completions.create(
-        model='gpt-4o-mini', messages=messages, temperature=0
+        model=os.getenv("MODEL_NAME"), messages=messages, temperature=0
     )
 
     return response.choices[0].message.content
@@ -127,7 +127,7 @@ def topical_guardrail_2(user_request):
         {"role": "user", "content": user_request},
     ]
     response = client.chat.completions.create(
-        model='gpt-4o-mini', messages=messages, temperature=0
+        model=os.getenv("MODEL_NAME"), messages=messages, temperature=0
     )
 
     return response.choices[0].message.content
@@ -168,7 +168,7 @@ def topical_guardrail_3(user_request):
         {"role": "user", "content": user_request},
     ]
     response = client.chat.completions.create(
-        model='gpt-4o-mini', messages=messages, temperature=0
+        model=os.getenv("MODEL_NAME"), messages=messages, temperature=0
     )
     return response.choices[0].message.content
 
@@ -206,7 +206,7 @@ def topical_guardrail_4(user_request):
         {"role": "user", "content": user_request},
     ]
     response = client.chat.completions.create(
-        model='gpt-4o-mini', messages=messages, temperature=0
+        model=os.getenv("MODEL_NAME"), messages=messages, temperature=0
     )
 
     return response.choices[0].message.content
@@ -243,7 +243,7 @@ def topical_guardrail_5(user_request):
         {"role": "user", "content": user_request},
     ]
     response = client.chat.completions.create(
-        model='gpt-4o-mini', messages=messages, temperature=0
+        model=os.getenv("MODEL_NAME"), messages=messages, temperature=0
     )
 
     return response.choices[0].message.content

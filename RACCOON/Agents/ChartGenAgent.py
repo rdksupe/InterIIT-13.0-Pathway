@@ -114,7 +114,7 @@ def generate_chart(content: str) -> str:
 
     #TODO: Add gemini-1.5-flash model
     '''completion = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=os.getenv("MODEL_NAME"),
         messages=[
             {"role": "system", "content": messages},
             {

@@ -375,7 +375,7 @@ const Main = () => {
 				<img src={assets.main_logo} className="pway" alt="" />
 				<div className="rightside">
 					<Dropdown />
-					<ToggleSwitch label={"DOCS"} />
+					<ToggleSwitch label={"Docs"} />
 					<img src={assets.user} className="user" alt="" />
 				</div>
 			</div>

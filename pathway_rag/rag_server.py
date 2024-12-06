@@ -24,7 +24,7 @@ from starlette.responses import Response
 
 # OpenAI client configuration
 endpoint = "https://models.inference.ai.azure.com"
-model_name = "gpt-4o-mini"
+model_name = os.getenv("MODEL_NAME")
 
 api_key = os.getenv('OPEN_AI_API_KEY_30')
 client = OpenAI(api_key=api_key)

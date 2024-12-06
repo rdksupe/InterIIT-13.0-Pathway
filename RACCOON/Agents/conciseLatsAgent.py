@@ -25,7 +25,7 @@ def drafterAgentSimplified(text, query):
     prompt = f'''{system_prompt}\n\n {user_prompt}'''
     '''client = OpenAI(api_key=OPENAI_API_KEY)
     completion = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=os.getenv("MODEL_NAME"),
         messages=[
             {"role": "system", "content": system_prompt},
             {
