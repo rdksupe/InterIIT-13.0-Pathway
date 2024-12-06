@@ -43,7 +43,7 @@ from langchain.agents import initialize_agent, AgentType
 from typing import Dict
 
 ERROR_LOG_FILE = "./error_logs.log"
-load_dotenv('.env')
+load_dotenv('../../../.env')
 
 # Step 1: Create a logger
 logger = logging.getLogger('my_logger')

@@ -24,9 +24,7 @@ async def genQuestionComplex(main_query, sub_task):
     system_prompt = f'''
     Rephrase the following User Prompt without dependance on all task_n or any document. Ensure that there is no phrase like "based on...":
 
-    The context  to this has to be:
-
-    {main_query}
+    
 
     '''
 

@@ -11,7 +11,7 @@ load_dotenv('../../.env')
 api_gemini = os.getenv("GEMINI_API_KEY_30")
 api_img = os.getenv("IMGBB_API_KEY")
 openai_api_key=os.getenv("OPEN_AI_API_KEY_30")
-GPT4o_mini_GraphGen = ChatOpenAI(model="gpt-4o-mini",openai_api_key = openai_api_key, temperature=0.2, model_kwargs={"top_p": 0.1})
+GPT4o_mini_GraphGen = ChatOpenAI(model="gpt-4o",openai_api_key = openai_api_key, temperature=0.2, model_kwargs={"top_p": 0.1})
 
 
 def gen_url(image_paths):
@@ -48,16 +48,7 @@ def gen_url(image_paths):
     return url
 
 def get_paths(response):
-    def remove_folder_and_contents(folder_path):
-        if os.path.exists(folder_path):
-            shutil.rmtree(folder_path)
-            print(f"Folder '{folder_path}' and its contents have been removed.")
-        else:
-            print(f"Folder '{folder_path}' does not exist.")
-
     assets_folder = os.path.join(os.getcwd(), 'assets')
-    remove_folder_and_contents(assets_folder)
-    os.mkdir(assets_folder)
     image_paths = []
 
     for file_name in os.listdir(assets_folder):
@@ -80,9 +71,19 @@ def get_paths(response):
         md_file.write(ai_msg.text)
     return ai_msg.text
 
+def remove_folder_and_contents(folder_path):
+    if os.path.exists(folder_path):
+        shutil.rmtree(folder_path)
+        print(f"Folder '{folder_path}' and its contents have been removed.")
+    else:
+        print(f"Folder '{folder_path}' does not exist.")
+
 
 
 def generate_chart(content: str) -> str:
+    assets_folder = os.path.join(os.getcwd(), 'assets')
+    remove_folder_and_contents(assets_folder)
+    os.mkdir(assets_folder)
     """
     Analyzes a markdown file's content, determines if a chart can be generated, updates the markdown file
     to include the chart, and generates the chart using AI-generated Python code.
@@ -184,6 +185,9 @@ def generate_chart(content: str) -> str:
 
     response = GPT4o_mini_GraphGen.invoke(f'''{messages_new}\n\n {response_text}''').content
 
+    with open('code.txt', 'w') as f:
+        f.write(response)
+
     try:
         result = repl.run(response)
         logging.info(f"Execution Result: {result}")
@@ -192,4 +196,104 @@ def generate_chart(content: str) -> str:
         logging.error(f"Failed to execute code. Error: {repr(e)}")
         return f"Error {e}"
 
+
+if __name__ == '__main__':
+    print(generate_chart(
+        """# Comprehensive Report on the Impact of Telecom Mergers on Regulatory Policies and Digital Inclusion Initiatives in Rural India
+
+## Introduction
+
+The telecommunications sector in India has witnessed significant changes, particularly with the emergence of Reliance Jio as a dominant player since its inception in 2016. With over 481.8 million subscribers as of March 2024, Jio has transformed the landscape of digital services in India, focusing on enhancing digital inclusion across various demographics, particularly in rural regions. This report analyzes how potential mergers in the telecom sector could affect regulatory policies and initiatives aimed at enhancing digital inclusion in rural India.
+
+## Overview of Telecom Landscape in India
+
+The Indian telecom sector is characterized by intense competition, with Reliance Jio leading the market. As of FY 2023-24, Jio reported revenues exceeding ₹100,000 crore and an EBITDA of ₹50,000 crore, underscoring its financial strength (Reliance Jio Infocomm Limited Annual Report 2024, p. 6). The company's robust network coverage extends to 99% of the Indian population, including hard-to-reach terrains and remote villages, which traditionally lack digital access (Reliance Jio Infocomm Limited Annual Report 2024, p. 65).
+
+### Digital Inclusion Initiatives
+
+Jio's commitment to digital inclusion is evident through various initiatives aimed at providing affordable services and enhancing digital skills. The company has aligned its mobile applications with the Web Content Accessibility Guidelines (WCAG) version 2.1, achieving AA level conformance for popular applications (Reliance Jio Infocomm Limited Annual Report 2024, p. 65). Furthermore, Jio's WomenConnect Challenge, launched in partnership with USAID, aims to empower women by improving access to digital technology, impacting over 300,000 women across India (Reliance Jio Infocomm Limited Annual Report 2024, p. 65).
+
+## Impact of Telecom Mergers on Regulatory Policies
+
+### 1. Market Consolidation and Competition
+
+The potential merger of telecom companies could lead to market consolidation, affecting competition. Regulatory bodies, such as the Telecom Regulatory Authority of India (TRAI), may need to revise policies to prevent monopolistic practices and ensure fair competition. A consolidated market could lead to increased pricing power for the merged entity, which may hinder the affordability of services crucial for digital inclusion.
+
+#### SWOT Analysis of Potential Mergers
+
+| Strengths                        | Weaknesses                     |
+|----------------------------------|--------------------------------|
+| Increased operational efficiency  | Potential for reduced competition |
+| Enhanced technological capabilities | Risk of service monopolization  |
+| Greater financial resources       | Regulatory scrutiny and delays  |
+
+| Opportunities                    | Threats                        |
+|----------------------------------|--------------------------------|
+| Expansion of digital services     | Regulatory pushback            |
+| Enhanced investment in rural areas | Consumer backlash against pricing |
+
+### 2. Regulatory Scrutiny and Compliance
+
+Mergers in the telecom sector would attract heightened scrutiny from regulatory bodies. The Competition Commission of India (CCI) would evaluate the merger's impact on market competition and consumer welfare. Regulatory compliance costs may increase, diverting resources away from digital inclusion initiatives.
+
+### 3. Policy Framework for Digital Inclusion
+
+The merger could necessitate the formulation of new policies or the revision of existing ones aimed at promoting digital inclusion. Regulatory bodies may impose conditions on merged entities to maintain service affordability and accessibility, particularly in rural areas. 
+
+### 4. Funding and Investment in Infrastructure
+
+Mergers could lead to increased capital for investment in infrastructure, particularly in underserved rural regions. However, the focus on profitability may overshadow the need for investment in digital inclusion initiatives. Regulatory frameworks may need to incentivize investments in rural infrastructure to ensure that the benefits of mergers extend to underserved populations.
+
+## Case Studies of Previous Mergers
+
+### Case Study 1: Vodafone-Idea Merger
+
+The merger between Vodafone India and Idea Cellular in 2018 aimed to create the largest telecom operator in India. While the merger resulted in improved operational efficiencies and a broader customer base, it also led to increased tariffs, impacting affordability for consumers (Source: TRAI Report, 2020).
+
+### Case Study 2: Bharti Airtel and Telenor India
+
+Bharti Airtel's acquisition of Telenor India in 2017 expanded its subscriber base and strengthened its market position. However, the merger raised concerns regarding competition and service quality, prompting regulatory scrutiny (Source: CCI Report, 2018).
+
+## Regulatory Initiatives for Digital Inclusion
+
+### 1. National Digital Communications Policy (NDCP) 2018
+
+The NDCP aims to provide universal broadband access, enhance digital infrastructure, and promote digital literacy. Mergers could align with this policy, but regulatory bodies must ensure that merged entities adhere to the principles of affordability and accessibility in their service offerings.
+
+### 2. Digital India Initiative
+
+The Digital India initiative focuses on transforming India into a digitally empowered society. Regulatory bodies may need to enforce compliance measures to ensure that merged telecom entities contribute to this initiative, particularly in rural areas.
+
+### 3. Universal Service Obligation Fund (USOF)
+
+The USOF aims to provide financial support for expanding telecom services in rural and remote areas. Mergers may necessitate contributions from merged entities to the USOF, ensuring that digital inclusion remains a priority.
+
+## Conclusion
+
+The merger of telecom companies in India has the potential to significantly impact regulatory policies and initiatives aimed at enhancing digital inclusion in rural regions. While consolidation may lead to operational efficiencies and increased investment, it also poses risks related to competition, affordability, and service quality. Regulatory bodies must adopt a proactive approach to ensure that the benefits of mergers extend to underserved populations, promoting digital inclusion as a priority.
+
+### Key Takeaways
+
+1. **Regulatory Scrutiny**: Mergers will attract scrutiny from regulatory bodies, necessitating compliance with competition and consumer welfare standards.
   
+2. **Investment in Infrastructure**: Mergers could provide increased capital for infrastructure investment, but regulatory frameworks must incentivize investments in rural areas.
+
+3. **Policy Alignment**: Merged entities must align with national policies aimed at promoting digital inclusion, ensuring that affordability and accessibility remain priorities.
+
+### Next Steps
+
+1. **Monitoring and Evaluation**: Regulatory bodies should establish mechanisms for monitoring the impact of mergers on service affordability and accessibility.
+
+2. **Stakeholder Engagement**: Engaging with stakeholders, including consumers and rural communities, will be essential to understand the implications of mergers on digital inclusion.
+
+3. **Policy Development**: Developing policies that promote digital inclusion as a core principle of telecom mergers will be crucial in ensuring equitable access to digital services across India.
+
+### References
+
+- Reliance Jio Infocomm Limited Annual Report 2024, pp. 6, 65.
+- TRAI Report, 2020.
+- CCI Report, 2018.
+
+![Telecom Market Revenue and EBITDA](assets/telecom_market_revenue_ebitda.png)
+"""
+    ))
