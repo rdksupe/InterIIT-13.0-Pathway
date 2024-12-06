@@ -256,8 +256,8 @@ const Sidebar = () => {
 				<>	
 					<div className="popup">
 						<div className="popup-overlay" onClick={closePopup}></div>
-						<div className="popup-form">
-							<h2>File Upload Successfull</h2>
+						<div className="popup-form" >
+							<h2>File Uploaded Successfully</h2>
 						</div>
 					</div>
 				</>
