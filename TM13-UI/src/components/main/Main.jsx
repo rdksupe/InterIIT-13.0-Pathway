@@ -252,6 +252,7 @@ const Main = () => {
 				}
 			}
 		};
+		setIsDropdownOpen(false)
 	}
 
 	const triggerFileInput = () => {
@@ -617,7 +618,7 @@ const Main = () => {
 				{isDropdownOpen && (
 					<>
 						{/* Overlay */}
-
+						<div class="overlay" onClick={closeDropdown}></div>
 
 						{/* Dropdown Content */}
 						<div id="dropdown" className="dropdown-content">
@@ -636,7 +637,7 @@ const Main = () => {
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<button>Upload to Google Drive</button>
+								<button onClick={closeDropdown}>Upload to Google Drive</button>
 							</a>
 						</div>
 					</>
