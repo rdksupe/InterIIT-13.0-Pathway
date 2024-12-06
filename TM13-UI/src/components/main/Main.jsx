@@ -46,11 +46,9 @@ const Main = () => {
 		setIsUpload,
 	} = useContext(Context);
 	const [socket1, setSocket1] = useState(null);
-
 	const resultDataRef = useRef(null); // Reference to the result-data container for auto scrolling
 	const agentDataRef = useRef(null);
 	const agent = useRef(true);
-
 	const [markdownContent, setMarkdownContent] = useState('');
 	const [reccQs, setReccQs] = useState([])
 	const [isChecked, setIsChecked] = useState(false);
@@ -377,7 +375,7 @@ const Main = () => {
 				<img src={assets.main_logo} className="pway" alt="" />
 				<div className="rightside">
 					<Dropdown />
-					<ToggleSwitch label={"RAG"} />
+					<ToggleSwitch label={"DOCS"} />
 					<img src={assets.user} className="user" alt="" />
 				</div>
 			</div>

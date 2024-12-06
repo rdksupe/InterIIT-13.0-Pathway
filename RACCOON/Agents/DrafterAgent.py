@@ -151,6 +151,8 @@ def drafterAgent_rag(query,rag_context, text):
     finance, microeconomics, macroeconomics, public policy, politics, law, environment etc, Large Scale considerations v/s Small Scale considerations, 
     Long Term Considerations v/s Short Term Considerations, comparative analysis of entities, analysis and comparisons on SIMILAR metrics in order to reach a logical conclusion etc.
 
+    DO NOT MENTION MAIN CONTEXT OR SUBSIDARY CONTEXT AS THE SOURCE. PROVIDE THE DOCUMENT NAME AND PAGE NUMBER AS THE SOURCE. THIS DOCUMENT NAME AND PAGE NUMBER HAS TO BE EXTRACTED FROM THE MAIN CONTEXT
+
     Check the facts in your response and DO NOT write anything which is incorrect or unclear.
     '''
 

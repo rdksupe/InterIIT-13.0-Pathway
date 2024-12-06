@@ -1,20 +1,38 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from 'react';
+import { Context } from '../../context/Context';
 
 const Dropdown = () => {
-  // State to store selected value
-  const [selectedOption, setSelectedOption] = useState("");
+  // Initialize state for selectedOption and modelName
+  const [selectedOption, setSelectedOption] = useState('gpt-4o');  // Default selected value
+  const [modelName, setModelName] = useState('gpt-4o'); // Default modelName
 
-  // Handle dropdown change
+  const {
+    socket, 
+    setSocket
+  } = useContext(Context)
+
   const handleChange = (event) => {
-    setSelectedOption(event.target.value);
+    const selectedValue = event.target.value;  // Get the selected option value
+    setSelectedOption(selectedValue);  // Update selectedOption state
+    setModelName(selectedValue);  // Update modelName state
+
+    event.preventDefault();  // Prevent default form submission (if applicable)
+
+    console.log(selectedValue);  // Log the selected value for debugging
+
+    // WebSocket logic
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      const model = { MODEL_NAME : selectedValue}
+
+      socket.send(JSON.stringify({ type: 'llm', model }));
+    }
   };
 
   return (
-
     <div style={styles.container}>
       <select value={selectedOption} onChange={handleChange} style={styles.dropdown}>
-        <option style = {styles.opt} value="option1">GPT 4-o</option>
-        <option style = {styles.opt} value="option2">GPT 4-o mini</option>
+        <option style={styles.opt} value="gpt-4o">GPT 4-o</option>
+        <option style={styles.opt} value="gpt-4o-mini">GPT 4-o mini</option>
       </select>
     </div>
   );

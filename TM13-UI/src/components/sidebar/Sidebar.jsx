@@ -12,17 +12,13 @@ const Sidebar = () => {
 	const [isFilePopupVisible, setFilePopupVisible] = useState(false);
 
 	const [formData, setFormData] = useState({
-		GoogleDrive_ObjectId: '',
-		File_Link: '',
-		GEMINI_API_KEY_30: '',
 		OPEN_AI_API_KEY_30: '',
+		GEMINI_API_KEY_30: '',
 		FINNHUB_API_KEY_30: '',
-		GOOGLE_CSE_ID_30: '',
 		TAVILY_API_KEY_30: '',
-		GOOGLE_API_KEY_30: '',
+		VOYAGE_API_KEY: '',
 		JINA_API_KEY_30: '',
 		INDIAN_KANOON_API_KEY_30: '',
-		jsonFile: null
 	});
 
 	// Function to close the popup

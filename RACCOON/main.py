@@ -137,7 +137,11 @@ async def mainBackend(query, websocket, rag):
                 resp = drafterAgent_vanilla(query, out_str)
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
                 resp = generate_chart(resp)
-                additionalQuestions = genQuestionComplex(query, addn_questions)
+                additionalQuestions = []
+                for que in addn_questions:
+                    finQue = await genQuestionComplex(query, addn_questions)
+                    additionalQuestions.append(finQue)
+
 
             elif query_type == "simple":
                 print("RUNNING SIMPLE TASK PIPELINE")   
@@ -201,7 +205,12 @@ async def mainBackend(query, websocket, rag):
                     out_str += f'{taskResultsDict[task]} \n'
                 resp = drafterAgent_rag(query,rag_context, out_str)
                 resp = re.sub(r'\\\[(.*?)\\\]', lambda m: f'$${m.group(1)}$$', resp, flags=re.DOTALL)
-                additionalQuestions = await genQuestionComplex(query, addn_questions)
+                resp = generate_chart(resp)
+                additionalQuestions = []
+                for que in addn_questions:
+                    finQue = await genQuestionComplex(query, addn_questions)
+                    additionalQuestions.append(finQue)
+
                     
                 with open ('./output/drafted_response.md', 'w') as f:
                     f.write(str(resp))

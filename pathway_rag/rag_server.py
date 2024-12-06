@@ -144,7 +144,8 @@ def generate_answer_openai(query: str, source: str,retrieved_docs: List[Dict[str
                     3. THINK and REASON out your analysis while generating response. Do comparative and critical analysis if required.  
                     4. Use quotes when directly quoting text
                     5. If you find conflicting information, point it out 
-                    6. If the file name is 'uploads/Name.pdf', state the source as Name.pdf along with the page range from where the answer is extracted """
+                    6. If the file name is 'uploads/Name.pdf', state the source as the link of google drive link of the pdf along with the page range from where the answer is extracted
+                    7. DO NOT GIVE THE SCORES OF THE DOCUMENTS, REMOVE THE SCORES IF PRESENT. BUT IT IS COMPULSORY TO CITE DOCUMENTS AND PAGE NUMBERS  """
 
                 },
                 {

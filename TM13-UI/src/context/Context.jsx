@@ -20,6 +20,16 @@ const ContextProvider = (props) => {
 	const totalCharsRef = useRef(0); // Use a ref for total characters
 	const [fileHistory, setFileHistory] = useState([]);		// State to store the file history
 	const [isUpload, setIsUpload] = useState(false);		// State to check if the user is uploading a file
+	const [modelName, setModelName] = useState("gpt-4o")	// Model Name
+	const [formData, setFormData] = useState({
+		OPEN_AI_API_KEY_30: '',
+		GEMINI_API_KEY_30: '',
+		FINNHUB_API_KEY_30: '',
+		TAVILY_API_KEY_30: '',
+		VOYAGE_API_KEY: '',
+		JINA_API_KEY_30: '',
+		INDIAN_KANOON_API_KEY_30: modelName,
+	});
 
 	const pendingDataRef = useRef([]);
 	const resp = useRef(false);
