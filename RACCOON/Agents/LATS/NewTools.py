@@ -1,7 +1,9 @@
+"""
+ This file contains list of all tools that can be used by the agents. 
+"""
 from typing import Type , Dict , List , Union, Tuple, Callable, Any, Optional, Annotated
 from pydantic import BaseModel, Field
 import wikipedia
-import os 
 import requests
 import google.generativeai as genai
 from langchain_google_community import GoogleSearchAPIWrapper
@@ -29,31 +31,18 @@ import os.path
 import praw
 import http.server
 import socketserver
-import urllib.parse
-import os 
-import requests
-import json
-from datetime import datetime
 from langchain.tools import BaseTool, tool
 import time
 from edgar import *
 from edgar import Company
-from bs4 import BeautifulSoup
-from langchain.tools import tool
 import time
-import os
-from datetime import datetime
-import requests
-import json 
 import urllib.parse 
-
 from langchain.tools import Tool
 from langchain.llms import OpenAI
 from langchain.agents import initialize_agent, AgentType
 from typing import Dict
 
 ERROR_LOG_FILE = "./error_logs.log"
-#load_dotenv('../../../.env')
 load_dotenv('.env')
 
 # Step 1: Create a logger
@@ -76,18 +65,21 @@ def log_error(tool_name, error_message, additional_info=None):
 os.environ["GOOGLE_API_KEY"]= os.getenv('GEMINI_API_KEY_30')
 os.environ["OPENAI_API_KEY"] = os.getenv('OPEN_AI_API_KEY_30')
 os.environ["DISCORD_AUTH_KEY"] = os.getenv('DISCORD_AUTH_KEY')
-
+os.environ["GOOGLE_CSE_ID"] =  os.getenv("GOOGLE_CSE_ID_30")
+os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY_30")
+os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY_30")
+os.environ["reddit_client_id"]= os.getenv('reddit_client_id_30')
+os.environ["reddit_client_secret"] = os.getenv('reddit_client_secret_30')
+os.environ["reddit_user_agent"] = os.getenv('reddit_user_agent_30')
 finnhub_client = finnhub.Client(api_key=os.getenv('FINNHUB_API_KEY_30'))
-import re
+
 def clean_text(text):
     text = re.sub(r'http\S+|www\S+|https\S+', '', text)
     text = re.sub(r'[^a-zA-Z0-9\s.,!?\'"]', '', text)
     text = re.sub(r'\s+', ' ', text).strip()
     return text
 
-os.environ["GOOGLE_CSE_ID"] =  os.getenv("GOOGLE_CSE_ID_30")
-os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY_30")
-os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY_30")
+
 
 # Initialize Tavily search tool once
 from langchain_community.tools import TavilySearchResults
@@ -113,8 +105,12 @@ def web_scrape(url, query) -> Union[Dict, str]:
     """
     Use this to scrape a web page using links found using web search to give detailed response. Input should be the URL of the page to scrape.
     Returns the scraped data as JSON if successful, else move on to the next best site in case of errors like required login, captcha etc.
+    Args:
+        url (str): The URL of the page to scrape.
+        query (str): The query for which the page is being scraped.
+    Returns:
+        Union[Dict, str]: The scraped data as JSON if successful
     """
-    #url, query = tup
     api_url = f'http://35.184.195.118:3000/{url}'
     headers = {
         'Accept': 'application/json',
@@ -122,8 +118,6 @@ def web_scrape(url, query) -> Union[Dict, str]:
         
     }
     output_folder = 'temp_rag_space'
-    #print(os.getcwd())
-    #print(output_folder)
     try:
         # Create output folder if it doesn't exist
         os.makedirs(output_folder, exist_ok=True)
@@ -138,7 +132,6 @@ def web_scrape(url, query) -> Union[Dict, str]:
         try:
             data = response.json()
             data_str = str(data)
-            # print(data)
         except ValueError:
             data_str = response.text
         finally:
@@ -164,6 +157,10 @@ def web_search(query: str):
     """
     If you do not know about an entity, Perform web search using google search engine. 
     This should be followed by web scraping the most relevant page to get detailed response.
+    Args:
+        query (str): The query to search for.
+    Returns:
+        str: The URL of the most relevant page to scrape.
     """
     tavily_search = TavilySearchResults(
         max_results=2,
@@ -201,7 +198,11 @@ def web_search(query: str):
 @tool
 def web_search_simple(query: str):
     """
-    If you do not know about an entity, Perform web search using google search engine. 
+    If you do not know about an entity, Perform web search using google search engine.
+    Args:
+        query (str): The query to search for.
+    Returns:
+        str: The URL of the most relevant page to scrape.      
     """
     tavily_search = TavilySearchResults(
         max_results=3,
@@ -214,9 +215,6 @@ def web_search_simple(query: str):
     try:
         search_results = tavily_search.invoke({"query": query})
         return search_results
-        #for search_result in search_results:
-        #    url = search_result['url']
-        #    content = search_result['content']
             
     except Exception as e:
         # If both fail, return error message
@@ -278,7 +276,6 @@ def get_sec_filings(query:str,ticker: str, start_date: str, end_date: str, form:
             additional_info={"ticker": ticker, "start_date": start_date, "end_date": end_date, "form": form}
         )
         return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
-    # return ""
 
 @tool
 def get_and_download_annual_report(query:str,ticker: str, financial_year: str) -> str:
@@ -334,9 +331,6 @@ def get_and_download_annual_report(query:str,ticker: str, financial_year: str) -
         log_error("get_and_download_annual_report", str(e), {"ticker": ticker, "financial_year": financial_year})
         return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
-#================
-# NOT USING THIS
-#================
 @tool
 def break_query_into_subqueries(query: str) -> str:
     """
@@ -466,7 +460,6 @@ def get_indian_kanoon(query: str):
             error_message=str(e),
             additional_info={"query": query}
         )
-        # return web_search.invoke(f'What are the relevant Indian LAWs and CASE LAWs for: {query}') #TODO: Check if this is of any problem.
         return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 
@@ -474,7 +467,6 @@ def get_indian_kanoon(query: str):
 def case_law(query: str) -> Tuple[str, str]:
     """
     Provides legal research for the given queries, for instance case laws, precedents, legal documents etc.
-    
     Args:
         query (str): The search query for the case law.
 
@@ -504,7 +496,6 @@ def query_documents(prompt: str, source: str) -> Dict:
     Query documents using a Retrieval-Augmented Generation (RAG) endpoint.
     This should be the first choice before doing web search,
     if this fails or returns unsatisfactory results, then use web search for the same query.
-
     Args:
         prompt (str): The prompt to send to the RAG endpoint.
         source (str): The source URL of the document.
@@ -552,111 +543,6 @@ def query_documents(prompt: str, source: str) -> Dict:
             additional_info={"prompt": prompt, "source": source}
         )
         return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
-
-
-
-if __name__ == "__main__":
-    # Testing logging
-    #log_error("Test Tool", "This is a test error message", {"key": "value"})
-    resp = get_us_case_law.invoke("Kroger ESG legal compliance issues 2019..2024")
-    print(resp)
-        
-# @tool
-# def get_company_profile(company: str) -> str:
-#     """
-#     Get a company's profile information using the Finnhub API.
-    
-#     Args:
-#         company (str): This is the company's name
-        
-#     Returns:
-#         str: A formatted string containing company profile information
-#     """
-#     try:
-#         symbol = get_ticker.invoke(company)
-#         profile = finnhub_client.company_profile2(symbol=symbol)
-#         if not profile:
-#             log_error(
-#             tool_name="get_company_news",
-#             error_message=f"Failed to find company profile for symbol {symbol} from finnhub!",
-#             additional_info={"query": symbol}
-#             )
-            
-#             return web_search_simple.invoke(f"Find a Company Profile Information for {symbol}")
-#         else:
-
-#             formatted_str = (
-#                 "[Company Introduction]:\n\n{name} is a entity in the {finnhubIndustry} sector. "
-#                 "Incorporated and publicly traded since {ipo}, the company has established its reputation as "
-#                 "one of the key players in the market. As of today, {name} has a market capitalization "
-#                 "of {marketCapitalization:.2f} in {currency}, with {shareOutstanding:.2f} shares outstanding."
-#                 "\n\n{name} operates primarily in the {country}, trading under the ticker {ticker} on the {exchange}. "
-#                 "progress within the industry."
-#             ).format(**profile)
-
-#             return formatted_str
-    
-#     except Exception as e:
-#         log_error(
-#             tool_name="get_company_profile",
-#             error_message=str(e),
-#             additional_info={"symbol": symbol}
-#         )
-#         return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
-
-        
-    
-
-# @tool
-# def get_company_news(company: str, start_date: str, end_date: str, max_news_num: int = 10) -> dict:
-#     """
-#     Retrieve market news related to a designated company using Finnhub API.
-    
-#     Args:
-#         company (str): The company's name
-#         start_date (str): Start date in YYYY-MM-DD format
-#         end_date (str): End date in YYYY-MM-DD format
-#         max_news_num (int): Maximum number of news articles to return
-        
-#     Returns:
-#         dict: A dictionary containing company news data
-#     """
-#     try:
-#         symbol = get_ticker.invoke(company)
-#         news = finnhub_client.company_news(symbol, _from=start_date, to=end_date)
-#         if len(news) == 0:
-#             log_error(
-#             tool_name="get_company_news",
-#             error_message=f"error: No company news found for symbol {symbol} from finnhub!",
-#             additional_info={"query": symbol}
-#             )
-        
-#             return web_search_simple.invoke(f"Retrieve market news related to {symbol} from date {start_date} to {end_date}")
-
-#         else:
-#             news = [
-#                 {
-#                     "date": datetime.fromtimestamp(n["datetime"]).strftime("%Y%m%d%H%M%S"),
-#                     "headline": n["headline"],
-#                     "summary": n["summary"],
-#                 }
-#                 for n in news
-#             ]
-            
-#             if len(news) > max_news_num:
-#                 news = random.choices(news, k=max_news_num)
-#             news.sort(key=lambda x: x["date"])
-            
-#             return {"news": news}
-    
-#     except Exception as e:
-#         log_error(
-#             tool_name="get_company_news",
-#             error_message=str(e),
-#             additional_info={"symbol": symbol}
-#         )
-        
-#         return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
 
 @tool
 def get_basic_financials_history(company: str, freq: str, start_date: str, end_date: str, selected_columns: list = None,query=None) -> dict:
@@ -764,7 +650,15 @@ def get_stock_data(
     start_date: Annotated[str, "start date for retrieving stock price data, YYYY-mm-dd"],
     end_date: Annotated[str, "end date for retrieving stock price data, YYYY-mm-dd"]
 ):
-    """Retrieve stock price data for designated company."""
+    """
+    Retrieve stock price data for designated company.
+    Args:
+        company (str): The company name.
+        start_date (str): Start date in YYYY-MM-DD format.
+        end_date (str): End date in YYYY-MM-DD format.
+    Returns:
+        DataFrame: Stock price data for the company.
+    """
     try:
         symbol = get_ticker.invoke(company)
         if symbol:
@@ -782,7 +676,13 @@ def get_stock_data(
 
 @tool
 def get_stock_info(company: Annotated[str, "company name"]):
-    """Get the Summary description, Employee count, Marketcap, Volume, P/E ratios, and Dividends for a company's stock"""
+    """
+    Get the Summary description, Employee count, Marketcap, Volume, P/E ratios, and Dividends for a company's stock
+    Args:
+        company (str): The company name.
+    Returns:
+        dict: The stock information.
+    """
     try:
         symbol = get_ticker.invoke(company)
         if symbol:
@@ -810,7 +710,13 @@ def get_stock_info(company: Annotated[str, "company name"]):
 
 @tool
 def get_company_info(company: Annotated[str, "company name"]):
-    """Fetches and returns company information like Company Name, Industry, Sector, Country, Website"""
+    """
+    Fetches and returns company information like Company Name, Industry, Sector, Country, Website
+    Args:
+        company (str): The company name.
+    Returns:
+        dict: The company information.
+    """
     try:
         symbol = get_ticker.invoke(company)
         if symbol:
@@ -845,7 +751,13 @@ def get_company_info(company: Annotated[str, "company name"]):
 
 @tool
 def get_stock_dividends(company: Annotated[str, "company name"]):
-    """Fetches and returns the latest dividends data."""
+    """
+    Fetches and returns the latest dividends data.
+    Args:
+        company (str): The company name.
+    Returns:
+        DataFrame: The dividends data.
+    """
     try:
         symbol = get_ticker.invoke(company)
         if symbol:
@@ -875,7 +787,13 @@ def get_stock_dividends(company: Annotated[str, "company name"]):
 
 @tool
 def get_income_stmt(company: Annotated[str, "company name"]):
-    """Fetches and returns the latest income statement of the company."""
+    """
+    Fetches and returns the latest income statement of the company.
+    Args:
+        company (str): The company name.
+    Returns:
+        DataFrame: The income statement data.
+    """
     try:
         symbol = get_ticker.invoke(company)
         if symbol:
@@ -904,7 +822,13 @@ def get_income_stmt(company: Annotated[str, "company name"]):
 
 @tool
 def get_balance_sheet(company: Annotated[str, "company name"]):
-    """Fetches and returns the latest balance sheet of the company."""
+    """
+    Fetches and returns the latest balance sheet of the company.
+    Args:
+        company (str): The company name.
+    Returns:
+        DataFrame: The income statement data.
+    """
     try:
         symbol = get_ticker.invoke(company)
         if symbol:
@@ -933,7 +857,13 @@ def get_balance_sheet(company: Annotated[str, "company name"]):
 
 @tool
 def get_cash_flow(company: Annotated[str, "company name"]):
-    """Fetches and returns the latest cash flow statement of the company."""
+    """
+    Fetches and returns the latest cash flow statement of the company.
+    Args:
+        company (str): The company name.
+    Returns:
+        DataFrame: The income statement data.
+    """
     try:
         symbol = get_ticker.invoke(company)
         if symbol:
@@ -953,7 +883,13 @@ def get_cash_flow(company: Annotated[str, "company name"]):
 
 @tool
 def get_analyst_recommendations(company: Annotated[str, "company name"]):
-    """Fetches the latest analyst recommendations and returns the most common recommendation and its count."""
+    """
+    Fetches the latest analyst recommendations and returns the most common recommendation and its count.
+    Args:
+        company (str): The company name.
+    Returns:
+        DataFrame: The income statement data.
+    """
     try:
         symbol = get_ticker.invoke(company)
         if symbol:
@@ -989,7 +925,6 @@ def get_analyst_recommendations(company: Annotated[str, "company name"]):
 def get_wikipedia_summary(query: str):
     """
     Fetches a summary from Wikipedia based on a search query.
-
     Args:
         query (str): The search query terms to look up on Wikipedia. Also there should be less than four terms.
 
@@ -998,7 +933,6 @@ def get_wikipedia_summary(query: str):
              or if there is an error fetching the page, appropriate messages are returned.
     """
     
-
     try:
         search_results = wikipedia.search(query)
         if not search_results:
@@ -1017,11 +951,6 @@ def get_wikipedia_summary(query: str):
         )
         
         return "This tool is not working right now. DO NOT CALL THIS TOOL AGAIN!"
-
-
-# ========================
-# NOT MODIFIED AFTER THIS
-# ========================
 
 
 @tool
@@ -1080,23 +1009,6 @@ def get_discord(channel_id):
         }
         formatted_messages.append(formatted_message)
    
-
-
-#dependencies - pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client beautifulsoup4
-
-
-# First authenticate, by running authenticate_gmail_api script
-# Second, make sure to put credentials.json in same directory after downloading
-
-#  How to use?  Refer - https://developers.google.com/gmail/api/quickstart/python#step_3_set_up_the_sample
-#  After completing the process given in quickstart, download the credentials json in the same directory, named 'credentials.json'
-#  Have to add the gmail to google cloud console -> OAuth consent screen -> "Add user".
-#  if still face error 403 : Refer - https://stackoverflow.com/questions/65184355/error-403-access-denied-from-google-authentication-web-api-despite-google-acc  
-
-
-#  State the query in the function, Format -> "query/sender's email after: YY/MM/DD before: YY/MM/DD". 
-#  Also can change the no. of results 
-
 
 @tool 
 def gmail_search_tool(query: str, top_n: int = 10) -> str:
@@ -1185,67 +1097,7 @@ def gmail_search_tool(query: str, top_n: int = 10) -> str:
         
         return f"An error occurred: {error}"
     
-    
-
-
-
-#First do reddit authentication, if using first time with new credentials. To authenticate run 'reddit_authenticate' script
-
-# # Generate the OAuth URL ---- Authorization for reddit----
-# auth_url = reddit.auth.url(
-#     scopes=["identity"],
-#     state="unique_random_state_string",  # Provide a unique state string to avoid CSRF attacks
-#     duration="permanent",
-# )
-
-# print("Go to this URL and authorize the app: ", auth_url)
-
-# # Set up the simple HTTP server to capture the authorization code
-# class RedirectHandler(http.server.BaseHTTPRequestHandler):
-#     def do_GET(self):
-#         parsed_path = urllib.parse.urlparse(self.path)
-#         query_params = urllib.parse.parse_qs(parsed_path.query)
-
-#         # Extract the authorization code from the redirect URL
-#         if "code" in query_params:
-#             code = query_params["code"][0]
-#             print(f"Received code: {code}")
-            
-#             # Use the code to get the access token
-#             token = reddit.auth.authorize(code)
-#             print("Access token:", token)
-            
-#             # Send a simple response to indicate success
-#             self.send_response(200)
-#             self.send_header("Content-type", "text/html")
-#             self.end_headers()
-#             self.wfile.write(b"Authentication successful! You can now close this window.")
-#             return
-
-#         # If there's no code in the query params, show an error
-#         self.send_response(400)
-#         self.send_header("Content-type", "text/html")
-#         self.end_headers()
-#         self.wfile.write(b"Error: No code received")
-
-# # Start the server to listen for the redirect
-# def run_server():
-#     port = 8080
-#     with socketserver.TCPServer(("", port), RedirectHandler) as httpd:
-#         print(f"Server running on http://localhost:{port}")
-#         httpd.serve_forever()
-
-# # Run the server in the background to listen for the redirect
-# import threading
-# server_thread = threading.Thread(target=run_server)
-# server_thread.start()
-
 # Set up the Reddit instance with your credentials
-os.environ["reddit_client_id"]= os.getenv('reddit_client_id_30')
-os.environ["reddit_client_secret"] = os.getenv('reddit_client_secret_30')
-os.environ["reddit_user_agent"] = os.getenv('reddit_user_agent_30')
-
-
 reddit = praw.Reddit(
     client_id=os.environ["reddit_client_id"],  # Replace with your client_id
     client_secret=os.environ["reddit_client_secret"],  # Replace with your client_secret
@@ -1331,8 +1183,8 @@ def simple_query_documents(prompt: str) -> Dict:
         start = time.time()
         
         payload = {
-            "query": prompt,  # No need to quote the prompt
-            "destination": 'user'  # source should be a string, not a set
+            "query": prompt, 
+            "destination": 'user' 
         }
         print(payload)
         response = requests.post(
@@ -1374,11 +1226,9 @@ def retrieve_documents(prompt: str) -> str:
     Since this is the main source of information which is always 
     correct, this should be the first choice of tool for any agent.
     CALL THIS BEFORE CALLING ANY OTHER TOOL.
-
     Args:
         prompt (str): The prompt to send to the RAG endpoint.
         source (str): The source URL of the document.
-
     Returns:
         Dict: The JSON response from the RAG endpoint, containing the retrieved information and generated answer.
     """
@@ -1389,7 +1239,7 @@ def retrieve_documents(prompt: str) -> str:
         
         payload = {
             "query": prompt,
-            "k" : 2  , # No need to quote the prompt # source should be a string, not a set
+            "k" : 2  , 
             "destination" : 'user'
         }
         
@@ -1434,127 +1284,4 @@ def retrieve_documents(prompt: str) -> str:
             additional_info={"prompt": prompt}
         )
         return web_search_simple.invoke(prompt)
-
-# query = "random"
-# symbol = "random"
-# if __name__ == "__main__":
-#     try:
-#         print(get_reddit_search(query))
-#     except Exception as e:
-#         print(f"Error in `get_reddit_search`: {e}")
-#         pass
-
-#     try:
-#         print(gmail_search_tool(query))
-#     except Exception as e:
-#         print(f"Error in `gmail_search_tool`: {e}")
-#         pass
-
-#     try:
-#         print(get_discord("7463873939"))
-#     except Exception as e:
-#         print(f"Error in `get_discord`: {e}")
-#         pass
-
-#     try:
-#         print(get_wikipedia_summary("7463873939"))
-#     except Exception as e:
-#         print(f"Error in `get_wikipedia_summary`: {e}")
-#         pass
-
-#     try:
-#         print(generate_chart(query))
-#     except Exception as e:
-#         print(f"Error in `generate_chart`: {e}")
-#         pass
-
-#     try:
-#         print(get_analyst_recommendations.invoke(symbol))
-#     except Exception as e:
-#         print(f"Error in `get_analyst_recommendations`: {e}")
-#         pass
-
-#     try:
-#         print(get_cash_flow.invoke(query))
-#     except Exception as e:
-#         print(f"Error in `get_cash_flow`: {e}")
-#         pass
-
-#     try:
-#         print(get_balance_sheet.invoke(query))
-#     except Exception as e:
-#         print(f"Error in `get_balance_sheet`: {e}")
-#         pass
-
-#     try:
-#         print(get_income_stmt.invoke("7463873939"))
-#     except Exception as e:
-#         print(f"Error in `get_income_stmt`: {e}")
-#         pass
-
-#     try:
-#         print(get_stock_dividends.invoke(query))
-#     except Exception as e:
-#         print(f"Error in `get_stock_dividends`: {e}")
-#         pass
-
-#     try:
-#         print(get_indian_kanoon.invoke(query))
-#     except Exception as e:
-#         print(f"Error in `get_indian_kanoon`: {e}")
-#         pass
-
-#     try:
-#         print(get_us_case_law.invoke(query))
-#     except Exception as e:
-#         print(f"Error in `get_us_case_law`: {e}")
-#         pass
-
-#     try:
-#         print(query_documents.invoke("7463873939"))
-#     except Exception as e:
-#         print(f"Error in `query_documents`: {e}")
-#         pass
-
-#     try:
-#         print(get_company_profile.invoke(query))
-#     except Exception as e:
-#         print(f"Error in `get_company_profile`: {e}")
-#         pass
-
-#     try:
-#         print(get_company_news.invoke(symbol))
-#     except Exception as e:
-#         print(f"Error in `get_company_news`: {e}")
-#         pass
-
-#     try:
-#         print(get_basic_financials_history.invoke(query))
-#     except Exception as e:
-#         print(f"Error in `get_basic_financials_history`: {e}")
-#         pass
-
-#     try:
-#         print(get_balance_sheet.invoke(query))
-#     except Exception as e:
-#         print(f"Error in `get_balance_sheet`: {e}")
-#         pass
-
-#     try:
-#         print(get_income_stmt.invoke("7463873939"))
-#     except Exception as e:
-#         print(f"Error in `get_income_stmt`: {e}")
-#         pass
-
-#     try:
-#         print(break_query_into_subqueries(query))
-#     except Exception as e:
-#         print(f"Error in `break_query_into_subqueries`: {e}")
-#         pass
-
-#     try:
-#         print(web_scrape(query))
-#     except Exception as e:
-#         print(f"Error in `web_scrape`: {e}")
-#         pass
 

@@ -1,6 +1,12 @@
+""" 
+This module contains the custom functions for generating candidates in the LATS agent. 
+functions:
+    - custom_generate_candidates: This function generates candidates for the LATS agent.
+    - select: This function selects the best node in the tree.
+    - custom_expand: This function expands the tree.
+"""
 import os
 from langchain_openai import ChatOpenAI
-
 from Agents.LATS.Reflection import  Node,reflection_chain
 from langchain_core.prompt_values import ChatPromptValue
 from langchain_core.runnables import RunnableConfig
@@ -22,6 +28,9 @@ parser = JsonOutputToolsParser(return_id=True)
 from LLMs import GPT4o_mini_LATS
 
 def custom_generate_candidates(tools):
+    """ 
+    Generate candidates for the LATS agent.
+    """
     def generate_candidates(messages: ChatPromptValue, config: RunnableConfig):
         bound_kwargs = GPT4o_mini_LATS.bind_tools(tools=tools).kwargs
         chat_result = GPT4o_mini_LATS.generate(
@@ -34,7 +43,9 @@ def custom_generate_candidates(tools):
     return generate_candidates
 
 def select(root: Node) -> dict:
-    """Starting from the root node a child node is selected at each tree level until a leaf node is reached."""
+    """
+    Starting from the root node a child node is selected at each tree level until a leaf node is reached.
+    """
 
     if not root.children:
         return root
@@ -47,10 +58,19 @@ def select(root: Node) -> dict:
     return node
 
 def custom_expand(tools):
+    """ Expand the tree for the LATS agent.
+    Args:
+        tools: The tools available to the agent.
+    Returns:
+        function: The function to expand the tree.
+    """
     expansion_chain = prompt_template | custom_generate_candidates(tools)
     tool_node = tool_node = ToolNode(tools=tools)
+
     def expand(state: TreeState, config: RunnableConfig) -> dict:
-        """Starting from the "best" node in the tree, generate N candidates for the next step."""
+        """
+        Starting from the "best" node in the tree, generate N candidates for the next step.
+        """
         root = state["root"]
         best_candidate: Node = select(root)
         messages = best_candidate.get_trajectory() 
@@ -94,13 +114,12 @@ def custom_expand(tools):
             output_messages.append([candidate] + collected_responses[i])
 
         # Reflect on each candidate
-        # For tasks with external validation, you'd add that here.
         reflections = reflection_chain.batch(
             [{"input": state["input"], "candidate": msges} for msges in output_messages],
             config,
         )
-        # Grow tree    # We have already extended the tree directly, so we just return the state
 
+        # We have already extended the tree directly, so we just return the state
         child_nodes = [
             Node(cand, parent=best_candidate, reflection=reflection)
             for cand, reflection in zip(output_messages, reflections)

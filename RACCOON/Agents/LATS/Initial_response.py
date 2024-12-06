@@ -1,3 +1,8 @@
+""" 
+This file contains the code to generate the initial response for the LATS agent. 
+functions:
+    - custom_generate_initial_response: This function generates the initial response for the LATS agent.
+"""
 from langchain_core.output_parsers.openai_tools import (
     JsonOutputToolsParser,
     PydanticToolsParser,
@@ -36,6 +41,13 @@ prompt_template = ChatPromptTemplate.from_messages(
 
 # Define the node we will add to the graph
 def custom_generate_initial_response(tools):
+    """ 
+    Generate the initial response for the LATS agent.
+    Args:
+        tools: The tools available to the agent.
+    Returns:
+        function: The function to generate the initial response.
+    """
     tool_node = ToolNode(tools=tools)
     def generate_initial_response(state: TreeState) -> dict:
         initial_answer_chain = prompt_template | GPT4o_mini_LATS.bind_tools(tools=tools).with_config(
@@ -44,7 +56,7 @@ def custom_generate_initial_response(tools):
 
         parser = JsonOutputToolsParser(return_id=True)
 
-        """Generate the initial candidate response."""
+        #Generate the initial candidate response.
         res = initial_answer_chain.invoke({"input": state["input"]})
         parsed = parser.invoke(res)
         tool_responses = [
