@@ -7,19 +7,19 @@ import Viewer from "../file/fileSystem";
 
 const Sidebar = () => {
 	const [extended, setExtended] = useState(true);
-	const { prevPrompts, prevResults, setRecentPrompt, newChat, socket, setSocket, setIsUpload, isUpload } = useContext(Context);
+	const { prevPrompts, prevResults, setRecentPrompt, newChat, socket, setSocket, setIsUpload, isUpload,isEnv, setIsEnv, isStartFetch, setIsStartFetch, formData, setFormData } = useContext(Context);
 	const [isPopupVisible, setPopupVisible] = useState(false);
 	const [isFilePopupVisible, setFilePopupVisible] = useState(false);
 
-	const [formData, setFormData] = useState({
-		OPEN_AI_API_KEY_30: '',
-		GEMINI_API_KEY_30: '',
-		FINNHUB_API_KEY_30: '',
-		TAVILY_API_KEY_30: '',
-		VOYAGE_API_KEY: '',
-		JINA_API_KEY_30: '',
-		INDIAN_KANOON_API_KEY_30: '',
-	});
+	// const [formData, setFormData] = useState({
+	// 	OPEN_AI_API_KEY_30: '',
+	// 	GEMINI_API_KEY_30: '',
+	// 	FINNHUB_API_KEY_30: '',
+	// 	TAVILY_API_KEY_30: '',
+	// 	VOYAGE_API_KEY: '',
+	// 	JINA_API_KEY_30: '',
+	// 	INDIAN_KANOON_API_KEY_30: '',
+	// });
 
 	// Function to close the popup
 	const closePopup = () => {
@@ -84,6 +84,12 @@ const Sidebar = () => {
 		} else {
 			console.error('Please upload a valid JSON file');
 		}
+	};
+
+	const handleSubmitEnv = (e) => {
+		e.preventDefault();
+		// setIsEnv(false);
+		setIsStartFetch(false);
 	};
 
 	// Handle form submission
@@ -234,6 +240,98 @@ const Sidebar = () => {
 							</div>
 
 							<button type="submit" onClick={handleSubmit}>Submit</button>
+						</form>
+					</div>
+				</div>
+			)}
+			{isEnv && (
+				<div className="popup">
+					<div className="popup-overlay"></div>
+					<div className="popup-form">
+						<h2>Credentials</h2>
+						<form className="custom-form">
+							<div>
+
+								<label htmlFor="OPEN_AI_API_KEY_30">OpenAI API Key</label>
+								<input
+								required
+									type="text"
+									id="OPEN_AI_API_KEY_30"
+									name="OPEN_AI_API_KEY_30"
+									value={formData.OPEN_AI_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for OpenAI"
+								/>
+
+								<label htmlFor="GEMINI_API_KEY_30">Gemini API Key</label>
+								<input
+								required
+									type="text"
+									id="GEMINI_API_KEY_30"
+									name="GEMINI_API_KEY_30"
+									value={formData.GEMINI_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Gemini"
+								/>
+
+
+								<label htmlFor="FINNHUB_API_KEY_30">Finnhub API Key</label>
+								<input
+								required
+									type="text"
+									id="FINNHUB_API_KEY_30"
+									name="FINNHUB_API_KEY_30"
+									value={formData.FINNHUB_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Finnhub"
+								/>
+
+								<label htmlFor="TAVILY_API_KEY_30">Tavily API Key</label>
+								<input
+								required
+									type="text"
+									id="TAVILY_API_KEY_30"
+									name="TAVILY_API_KEY_30"
+									value={formData.TAVILY_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Tavily"
+								/>
+
+								<label htmlFor="VOYAGE_API_KEY">Voyage API Key</label>
+								<input
+								required
+									type="text"
+									id="VOYAGE_API_KEY"
+									name="VOYAGE_API_KEY"
+									value={formData.VOYAGE_API_KEY}
+									onChange={handleChange}
+									placeholder="API key for Voyage"
+								/>
+
+								<label htmlFor="JINA_API_KEY_30">Jina API Key</label>
+								<input
+								required
+									type="text"
+									id="JINA_API_KEY_30"
+									name="JINA_API_KEY_30"
+									value={formData.JINA_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Jina"
+								/>
+
+								<label htmlFor="INDIAN_KANOON_API_KEY_30">Indian Kanoon API Key</label>
+								<input
+								required
+									type="text"
+									id="INDIAN_KANOON_API_KEY_30"
+									name="INDIAN_KANOON_API_KEY_30"
+									value={formData.INDIAN_KANOON_API_KEY_30}
+									onChange={handleChange}
+									placeholder="API key for Indian Kanoon"
+								/>
+							</div>
+
+							<button type="submit" onClick={handleSubmitEnv}>Submit</button>
 						</form>
 					</div>
 				</div>

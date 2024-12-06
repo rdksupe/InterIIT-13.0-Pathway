@@ -44,6 +44,12 @@ const Main = () => {
 		resp,
 		isUpload,
 		setIsUpload,
+		isEnv,
+		setIsEnv,
+		isStartFetch,
+		setIsStartFetch,
+		formData,
+		setFormData,
 	} = useContext(Context);
 	const [socket1, setSocket1] = useState(null);
 	const resultDataRef = useRef(null); // Reference to the result-data container for auto scrolling
@@ -53,6 +59,8 @@ const Main = () => {
 	const [reccQs, setReccQs] = useState([])
 	const [isChecked, setIsChecked] = useState(false);
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const [isConnect, setIsConnect] = useState(false);
+	// const [isEnv, setIsEnv] = useState(false);
 
 	const ToggleSwitch = ({ label }) => {
 
@@ -261,12 +269,12 @@ const Main = () => {
 	// Toggle the dropdown visibility
 	const toggleDropdown = () => {
 		setIsDropdownOpen(!isDropdownOpen);
-	  };
-	
-	  // Close the dropdown
-	  const closeDropdown = () => {
+	};
+
+	// Close the dropdown
+	const closeDropdown = () => {
 		setIsDropdownOpen(false);
-	  };
+	};
 
 	// Close the dropdown if the user clicks outside of it
 	window.onclick = function (event) {
@@ -281,87 +289,157 @@ const Main = () => {
 
 	useEffect(() => {
 
-		try {
-			const ws = new WebSocket('ws://localhost:8090');
+		if (isChecked) {
+			try {
+				const ws = new WebSocket('ws://localhost:8090');
 
-			ws.onopen = () => {
-				console.log('WebSocket connected to agent server');
+				ws.onopen = () => {
+					console.log('WebSocket connected to agent server');
 
-			};
-			ws.onmessage = (event) => {
-				try {
-					const data = JSON.parse(event.data);
+				};
+				ws.onmessage = (event) => {
+					try {
+						const data = JSON.parse(event.data);
 
-					if (data.type === 'agents') {
+						if (data.type === 'agents') {
 
-						console.log("agents data", data);
-						if (agent.current === true) {
-							onRenderAgent(data.response);
-							setPrevResults(prev => [...prev, data.response]);
-							setRecentPrompt(prevPrompts)
+							console.log("agents data", data);
+							if (agent.current === true) {
+								onRenderAgent(data.response);
+								setPrevResults(prev => [...prev, data.response]);
+								setRecentPrompt(prevPrompts)
+								console.log(data.response);
+								setMarkdownContent(data.response);
+							}
+						}
+					} catch (error) {
+						console.error('Error parsing WebSocket message:', error);
+					}
+				};
+				ws.onclose = () => {
+					console.log('WebSocket disconnected');
+				};
+				setSocket1(ws);
+				return () => {
+					ws.close();
+				};
+			}
+			catch (error) {
+				console.error('Verbose WebSocket Server Not Connected', error);
+			}
+		}
+	}, [isConnect]);
+
+	useEffect(() => {
+		if (isConnect) {
+			const ws = new WebSocket('ws://localhost:8080');
+			try {
+				ws.onopen = () => {
+					console.log('WebSocket connected');
+				};
+				ws.onmessage = (event) => {
+					try {
+						const data = JSON.parse(event.data);
+						// console.log(data);
+						if (data.type === 'graph') {
+
+							const graph = JSON.parse(data.response);
+							console.log(graph);
+							setGraphData(graph);
+
+						} else if (data.type === 'response') {
+							agent.current = false;
+							onRender(data.response);
 							console.log(data.response);
 							setMarkdownContent(data.response);
 						}
+						else if (data.type === 'questions') {
+							console.log(data.response);
+							setReccQs(data.response);
+						}
+					} catch (error) {
+						console.error('Error parsing WebSocket message:', error);
 					}
-				} catch (error) {
-					console.error('Error parsing WebSocket message:', error);
-				}
-			};
-			ws.onclose = () => {
-				console.log('WebSocket disconnected');
-			};
-			setSocket1(ws);
-			return () => {
-				ws.close();
-			};
+				};
+				ws.onclose = () => {
+					console.log('WebSocket disconnected');
+				};
+				setSocket(ws);
+				return () => {
+					ws.close();
+				};
+			}
+			catch (error) {
+				console.error('Main WebSocket Server Not Connected', error);
+			}
 		}
-		catch (error) {
-			console.error('Verbose WebSocket Server Not Connected', error);
-		}
-	}, []);
+	}, [isConnect]);
 
 	useEffect(() => {
-		const ws = new WebSocket('ws://localhost:8080');
-		try {
-			ws.onopen = () => {
-				console.log('WebSocket connected');
-			};
-			ws.onmessage = (event) => {
+		if (!isStartFetch) {
+			// try {
+			// 	// Send a POST request
+			// 	const response = await fetch('http://localhost:8080/upload', {
+			// 		method: 'POST',
+			// 		body: { startCheck: true },
+			// 	});
+
+			// 	if (response.ok) {
+			// 		const result = await response.json();
+			// 		console.log('Response Recieved', result);
+			// 		// setIsUpload(true);
+			// 		// setTimeout(() => {
+			// 		// 	setIsUpload(false);
+			// 		// }, 1000);
+			// 		if (result.response === "Success") {
+			// 			setIsConnect(true);
+			// 		}
+			// 		// Update file history after successful upload
+
+
+			// 	} else {
+			// 		console.error('Resonse Code error', response.statusText);
+			// 	}
+			// } catch (error) {
+			// 	console.error('Unable to fetch:', error);
+			// }
+			let intervalId;
+
+			const checkUpload = async () => {
 				try {
-					const data = JSON.parse(event.data);
-					// console.log(data);
-					if (data.type === 'graph') {
+					// Send a POST request
+					console.log('Checking upload status...', formData);
+					const response = await fetch('http://localhost:8080/upload', {
+						method: 'POST',
+						body: JSON.stringify( formData ), // Use JSON.stringify for the body
+						headers: {
+							'Content-Type': 'application/json', // Specify JSON content type
+						},
+					});
 
-						const graph = JSON.parse(data.response);
-						console.log(graph);
-						setGraphData(graph);
+					if (response.ok) {
+						const result = await response.json();
+						console.log('Response Received', result);
 
-					} else if (data.type === 'response') {
-						agent.current = false;
-						onRender(data.response);
-						console.log(data.response);
-						setMarkdownContent(data.response);
-					}
-					else if (data.type === 'questions') {
-						console.log(data.response);
-						setReccQs(data.response);
+						if (result.response === true) {
+							setIsConnect(true);
+							setIsEnv(false);
+							console.log('Success! Breaking the loop.');
+							clearInterval(intervalId); // Stop the interval
+						}
+					} else {
+						console.error('Response Code Error:', response.statusText);
 					}
 				} catch (error) {
-					console.error('Error parsing WebSocket message:', error);
+					console.error('Unable to fetch:', error);
 				}
 			};
-			ws.onclose = () => {
-				console.log('WebSocket disconnected');
-			};
-			setSocket(ws);
-			return () => {
-				ws.close();
-			};
+
+			intervalId = setInterval(() => {
+				checkUpload();
+			  }, 1000);
 		}
-		catch (error) {
-			console.error('Main WebSocket Server Not Connected', error);
-		}
-	}, []);
+	}, [isStartFetch]);
 
 	return (
 
@@ -545,7 +623,7 @@ const Main = () => {
 											}}
 											onClick={() => handleCardClick(reccQs[1])}
 										>
-											<p style={{ textAlign: "left", fontSize: '15px',	 margin: '0px 6px', padding: '2px' }}>{reccQs[1]}</p>
+											<p style={{ textAlign: "left", fontSize: '15px', margin: '0px 6px', padding: '2px' }}>{reccQs[1]}</p>
 										</div>
 									}
 

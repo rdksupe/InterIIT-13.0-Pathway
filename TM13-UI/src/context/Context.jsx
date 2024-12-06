@@ -21,6 +21,9 @@ const ContextProvider = (props) => {
 	const [fileHistory, setFileHistory] = useState([]);		// State to store the file history
 	const [isUpload, setIsUpload] = useState(false);		// State to check if the user is uploading a file
 	const [modelName, setModelName] = useState("gpt-4o")	// Model Name
+	const [isEnv, setIsEnv] = useState(true);	// State to check if the user is uploading a file
+	const [isStartFetch, setIsStartFetch] = useState(true);	// State to check if the user is uploading a file
+
 	const [formData, setFormData] = useState({
 		OPEN_AI_API_KEY_30: '',
 		GEMINI_API_KEY_30: '',
@@ -28,8 +31,9 @@ const ContextProvider = (props) => {
 		TAVILY_API_KEY_30: '',
 		VOYAGE_API_KEY: '',
 		JINA_API_KEY_30: '',
-		INDIAN_KANOON_API_KEY_30: modelName,
+		INDIAN_KANOON_API_KEY_30: '',
 	});
+	
 
 	const pendingDataRef = useRef([]);
 	const resp = useRef(false);
@@ -229,6 +233,12 @@ const ContextProvider = (props) => {
 		resp,
 		isUpload,
 		setIsUpload,
+		isEnv,
+		setIsEnv,
+		isStartFetch,
+		setIsStartFetch,
+		formData,
+		setFormData,
 	};
 
 	return <Context.Provider value={contextValue}>{props.children}</Context.Provider>;
