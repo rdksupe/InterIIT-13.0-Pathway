@@ -291,7 +291,7 @@ animation: loader 4s infinite linear;
 
   .dropdown-content {
     position: absolute;
-    top: 86vh;
+    top: 80vh;
     left: 72vw;
     width: 11vw;
     background-color: red;

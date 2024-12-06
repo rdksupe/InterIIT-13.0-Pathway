@@ -579,7 +579,7 @@ const Main = () => {
 					)}
 				</div>
 				<div className="main-bottom">
-					<div className="search-box" style={{ marginTop: '-7%' }}>
+					<div className="search-box">
 						<textarea
 							ref={textAreaRef}
 							onChange={(e) => setInput(e.target.value)}
