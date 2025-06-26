@@ -1,5 +1,7 @@
 # DARTS : DYNAMIC AGENTIC REFLECTIVE TREE SEARCH
 
+## DARTS architecture
+![image](./image.png)
 ## Instructions to run the pipeline
 
 
